@@ -1,0 +1,174 @@
+object Form_Main: TForm_Main
+  Left = 248
+  Height = 511
+  Top = 250
+  Width = 825
+  Caption = 'MultiPing V0.1 ©2024 by I.Steiniger'
+  ClientHeight = 511
+  ClientWidth = 825
+  DesignTimePPI = 120
+  OnClose = FormClose
+  OnCreate = FormCreate
+  OnShow = FormShow
+  OnWindowStateChange = FormWindowStateChange
+  object Panel1: TPanel
+    Left = 0
+    Height = 88
+    Top = 0
+    Width = 825
+    Align = alTop
+    ClientHeight = 88
+    ClientWidth = 825
+    TabOrder = 0
+    object Btn_Start: TButton
+      AnchorSideLeft.Control = SE_Time
+      AnchorSideLeft.Side = asrBottom
+      AnchorSideTop.Control = SE_Time
+      Left = 79
+      Height = 31
+      Top = 36
+      Width = 94
+      BorderSpacing.Left = 5
+      Caption = 'Start'
+      TabOrder = 1
+      OnClick = Btn_StartClick
+    end
+    object Edit_AddTarget: TEdit
+      AnchorSideLeft.Control = Label1
+      AnchorSideTop.Control = Label1
+      AnchorSideTop.Side = asrBottom
+      Left = 193
+      Height = 28
+      Top = 36
+      Width = 200
+      BorderSpacing.Top = 5
+      TabOrder = 2
+      OnKeyDown = Edit_AddTargetKeyDown
+    end
+    object Label1: TLabel
+      AnchorSideLeft.Control = Btn_Start
+      AnchorSideLeft.Side = asrBottom
+      AnchorSideTop.Control = Label2
+      Left = 193
+      Height = 20
+      Top = 11
+      Width = 175
+      BorderSpacing.Left = 20
+      Caption = 'neues Ziel (IP oder Name):'
+    end
+    object Btn_AddTarget: TButton
+      AnchorSideLeft.Control = Edit_AddTarget
+      AnchorSideLeft.Side = asrBottom
+      AnchorSideTop.Control = Edit_AddTarget
+      Left = 398
+      Height = 31
+      Top = 36
+      Width = 94
+      BorderSpacing.Left = 5
+      Caption = 'Hinzufügen'
+      TabOrder = 3
+      OnClick = Btn_AddTargetClick
+    end
+    object Btn_Delete: TButton
+      AnchorSideLeft.Control = Btn_Details
+      AnchorSideTop.Control = Btn_Details
+      AnchorSideTop.Side = asrBottom
+      Left = 720
+      Height = 31
+      Top = 47
+      Width = 94
+      BorderSpacing.Top = 5
+      Caption = 'Löschen'
+      TabOrder = 4
+      OnClick = Btn_DeleteClick
+    end
+    object SE_Time: TSpinEdit
+      AnchorSideLeft.Control = Label2
+      AnchorSideTop.Control = Label2
+      AnchorSideTop.Side = asrBottom
+      Left = 11
+      Height = 28
+      Top = 36
+      Width = 63
+      BorderSpacing.Top = 5
+      MinValue = 1
+      OnKeyDown = SE_TimeKeyDown
+      TabOrder = 0
+      Value = 30
+    end
+    object Label2: TLabel
+      AnchorSideLeft.Control = Panel1
+      AnchorSideTop.Control = Panel1
+      Left = 11
+      Height = 20
+      Top = 11
+      Width = 45
+      BorderSpacing.Left = 10
+      BorderSpacing.Top = 10
+      Caption = 'Zeit(s):'
+    end
+    object Btn_Details: TButton
+      AnchorSideTop.Control = Panel1
+      AnchorSideRight.Control = Panel1
+      AnchorSideRight.Side = asrBottom
+      AnchorSideBottom.Side = asrBottom
+      Left = 720
+      Height = 31
+      Top = 11
+      Width = 94
+      Anchors = [akTop, akRight]
+      BorderSpacing.Top = 10
+      BorderSpacing.Right = 10
+      Caption = 'Details'
+      TabOrder = 5
+      OnClick = Btn_DetailsClick
+    end
+  end
+  object SG_Targets: TStringGrid
+    Left = 0
+    Height = 423
+    Top = 88
+    Width = 825
+    Align = alClient
+    ColCount = 4
+    Columns = <    
+      item
+        Title.Caption = 'Ziel'
+        Width = 153
+      end    
+      item
+        Title.Caption = 'Erreichbar'
+        Width = 105
+      end    
+      item
+        Title.Caption = 'Antwortzeit'
+        Width = 130
+      end    
+      item
+        Font.Height = -15
+        Title.Font.Height = -15
+        Title.Caption = 'letzter Versuch'
+        Width = 168
+      end>
+    FixedCols = 0
+    Options = [goFixedVertLine, goFixedHorzLine, goVertLine, goHorzLine, goColSizing, goRowSelect, goDblClickAutoSize, goSmoothScroll]
+    TabOrder = 1
+    OnDblClick = Btn_DetailsClick
+    OnDrawCell = SG_TargetsDrawCell
+    ColWidths = (
+      153
+      105
+      130
+      168
+    )
+  end
+  object Timer: TTimer
+    Enabled = False
+    Interval = 10000
+    OnTimer = TimerTimer
+    OnStartTimer = TimerStartTimer
+    OnStopTimer = TimerStopTimer
+    Left = 32
+    Top = 192
+  end
+end

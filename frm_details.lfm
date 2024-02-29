@@ -1,0 +1,21 @@
+object Form_Details: TForm_Details
+  Left = 352
+  Height = 391
+  Top = 32
+  Width = 428
+  Caption = 'Details'
+  ClientHeight = 391
+  ClientWidth = 428
+  DesignTimePPI = 120
+  Position = poMainFormCenter
+  object Memo1: TMemo
+    Left = 0
+    Height = 391
+    Top = 0
+    Width = 428
+    Align = alClient
+    ScrollBars = ssAutoBoth
+    TabOrder = 0
+    OnChange = Memo1Change
+  end
+end

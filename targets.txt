@@ -1,0 +1,3 @@
+google.de
+shokwave.de
+localhost
