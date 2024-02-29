@@ -118,7 +118,7 @@ begin
   begin
     Form_Details.Memo1.Clear;
     DetailsList := TargetList[SG_Targets.Row - 1].History;
-    Form_Details.Memo1.Append('Ziel: ' + TargetList[SG_Targets.Row - 1].Adress);
+    Form_Details.Caption:= 'Details für ' + TargetList[SG_Targets.Row - 1].Adress;
     for i := 0 to DetailsList.Count - 1 do
     begin
       Form_Details.Memo1.Append(DateTimeToStr(DetailsList.Items[i].Time) + ' - ' +

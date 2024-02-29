@@ -11,6 +11,7 @@ object Form_Main: TForm_Main
   OnCreate = FormCreate
   OnShow = FormShow
   OnWindowStateChange = FormWindowStateChange
+  LCLVersion = '3.0.0.3'
   object Panel1: TPanel
     Left = 0
     Height = 88
