@@ -33,6 +33,7 @@ type
     procedure Edit_AddTargetKeyDown(Sender: TObject; var Key: word; Shift: TShiftState);
     procedure FormClose(Sender: TObject; var CloseAction: TCloseAction);
     procedure FormCreate(Sender: TObject);
+    procedure FormResize(Sender: TObject);
     procedure FormShow(Sender: TObject);
     procedure FormWindowStateChange(Sender: TObject);
     procedure SE_TimeKeyDown(Sender: TObject; var Key: word; Shift: TShiftState);
@@ -144,13 +145,22 @@ begin
   AppDir := ExtractFilePath(ParamStr(0));
   PingCmd := TPINGSend.Create;
   TargetList := TTargetList.Create;
-  LoadConfig;
+end;
+
+procedure TForm_Main.FormResize(Sender: TObject);
+begin
+  if WindowState = wsNormal then
+  begin
+    myHeight:= Height;
+    myWidth:= Width;
+  end;
 end;
 
 procedure TForm_Main.FormShow(Sender: TObject);
 begin
   if isStartup then
   begin
+    LoadConfig;
     LoadTargets;
     PrintTargets;
     isStartup:= false;
@@ -159,7 +169,7 @@ end;
 
 procedure TForm_Main.FormWindowStateChange(Sender: TObject);
 begin
-  if (WindowState = wsNormal) then
+  if WindowState = wsNormal then
   begin
     Sleep(10); //ohne sleep reduziert sich das Fenster zur Unkenntlichkeit
     Height := myHeight;

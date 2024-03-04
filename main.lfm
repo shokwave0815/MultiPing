@@ -1,97 +1,98 @@
 object Form_Main: TForm_Main
   Left = 248
-  Height = 511
+  Height = 409
   Top = 250
-  Width = 825
+  Width = 660
   Caption = 'MultiPing V0.1 ©2024 by I.Steiniger'
-  ClientHeight = 511
-  ClientWidth = 825
-  DesignTimePPI = 120
+  ClientHeight = 409
+  ClientWidth = 660
   OnClose = FormClose
   OnCreate = FormCreate
+  OnResize = FormResize
   OnShow = FormShow
   OnWindowStateChange = FormWindowStateChange
-  LCLVersion = '3.0.0.3'
+  LCLVersion = '2.2.6.0'
   object Panel1: TPanel
     Left = 0
-    Height = 88
+    Height = 70
     Top = 0
     Width = 825
     Align = alTop
-    ClientHeight = 88
+    ClientHeight = 70
     ClientWidth = 825
     TabOrder = 0
     object Btn_Start: TButton
       AnchorSideLeft.Control = SE_Time
       AnchorSideLeft.Side = asrBottom
       AnchorSideTop.Control = SE_Time
-      Left = 79
-      Height = 31
-      Top = 36
-      Width = 94
-      BorderSpacing.Left = 5
+      Left = 63
+      Height = 25
+      Top = 29
+      Width = 75
+      BorderSpacing.Left = 4
       Caption = 'Start'
-      TabOrder = 1
       OnClick = Btn_StartClick
+      TabOrder = 1
     end
     object Edit_AddTarget: TEdit
       AnchorSideLeft.Control = Label1
       AnchorSideTop.Control = Label1
       AnchorSideTop.Side = asrBottom
-      Left = 193
+      Left = 154
       Height = 28
-      Top = 36
-      Width = 200
-      BorderSpacing.Top = 5
-      TabOrder = 2
+      Top = 29
+      Width = 160
+      BorderSpacing.Top = 4
       OnKeyDown = Edit_AddTargetKeyDown
+      TabOrder = 2
     end
     object Label1: TLabel
       AnchorSideLeft.Control = Btn_Start
       AnchorSideLeft.Side = asrBottom
       AnchorSideTop.Control = Label2
-      Left = 193
+      Left = 154
       Height = 20
-      Top = 11
+      Top = 9
       Width = 175
-      BorderSpacing.Left = 20
+      BorderSpacing.Left = 16
       Caption = 'neues Ziel (IP oder Name):'
+      ParentColor = False
     end
     object Btn_AddTarget: TButton
       AnchorSideLeft.Control = Edit_AddTarget
       AnchorSideLeft.Side = asrBottom
       AnchorSideTop.Control = Edit_AddTarget
-      Left = 398
-      Height = 31
-      Top = 36
-      Width = 94
-      BorderSpacing.Left = 5
+      Left = 318
+      Height = 25
+      Top = 29
+      Width = 75
+      BorderSpacing.Left = 4
       Caption = 'Hinzufügen'
-      TabOrder = 3
       OnClick = Btn_AddTargetClick
+      TabOrder = 3
     end
     object Btn_Delete: TButton
       AnchorSideLeft.Control = Btn_Details
       AnchorSideTop.Control = Btn_Details
       AnchorSideTop.Side = asrBottom
-      Left = 720
-      Height = 31
-      Top = 47
-      Width = 94
-      BorderSpacing.Top = 5
+      Left = 576
+      Height = 25
+      Top = 38
+      Width = 75
+      BorderSpacing.Top = 4
       Caption = 'Löschen'
-      TabOrder = 4
       OnClick = Btn_DeleteClick
+      TabOrder = 4
     end
     object SE_Time: TSpinEdit
       AnchorSideLeft.Control = Label2
       AnchorSideTop.Control = Label2
       AnchorSideTop.Side = asrBottom
-      Left = 11
+      Left = 9
       Height = 28
-      Top = 36
-      Width = 63
-      BorderSpacing.Top = 5
+      Top = 29
+      Width = 50
+      BorderSpacing.Top = 4
       MinValue = 1
       OnKeyDown = SE_TimeKeyDown
       TabOrder = 0
@@ -100,29 +101,30 @@ object Form_Main: TForm_Main
     object Label2: TLabel
       AnchorSideLeft.Control = Panel1
       AnchorSideTop.Control = Panel1
-      Left = 11
+      Left = 9
       Height = 20
-      Top = 11
+      Top = 9
       Width = 45
-      BorderSpacing.Left = 10
-      BorderSpacing.Top = 10
+      BorderSpacing.Left = 8
+      BorderSpacing.Top = 8
       Caption = 'Zeit(s):'
+      ParentColor = False
     end
     object Btn_Details: TButton
       AnchorSideTop.Control = Panel1
       AnchorSideRight.Control = Panel1
       AnchorSideRight.Side = asrBottom
       AnchorSideBottom.Side = asrBottom
-      Left = 720
-      Height = 31
-      Top = 11
-      Width = 94
+      Left = 739
+      Height = 25
+      Top = 9
+      Width = 75
       Anchors = [akTop, akRight]
-      BorderSpacing.Top = 10
-      BorderSpacing.Right = 10
+      BorderSpacing.Top = 8
+      BorderSpacing.Right = 8
       Caption = 'Details'
-      TabOrder = 5
       OnClick = Btn_DetailsClick
+      TabOrder = 5
     end
   end
   object SG_Targets: TStringGrid
@@ -134,22 +136,30 @@ object Form_Main: TForm_Main
     ColCount = 4
     Columns = <    
       item
+        MinSize = 8
+        MaxSize = 160
         Title.Caption = 'Ziel'
-        Width = 153
+        Width = 122
       end    
       item
+        MinSize = 8
+        MaxSize = 160
         Title.Caption = 'Erreichbar'
-        Width = 105
+        Width = 84
       end    
       item
+        MinSize = 8
+        MaxSize = 160
         Title.Caption = 'Antwortzeit'
-        Width = 130
+        Width = 104
       end    
       item
-        Font.Height = -15
-        Title.Font.Height = -15
+        Font.Height = -12
+        MinSize = 8
+        MaxSize = 160
+        Title.Font.Height = -12
         Title.Caption = 'letzter Versuch'
-        Width = 168
+        Width = 134
       end>
     FixedCols = 0
     Options = [goFixedVertLine, goFixedHorzLine, goVertLine, goHorzLine, goColSizing, goRowSelect, goDblClickAutoSize, goSmoothScroll]
@@ -157,10 +167,10 @@ object Form_Main: TForm_Main
     OnDblClick = Btn_DetailsClick
     OnDrawCell = SG_TargetsDrawCell
     ColWidths = (
-      153
-      105
-      130
-      168
+      122
+      84
+      104
+      134
     )
   end
   object Timer: TTimer
@@ -169,7 +179,7 @@ object Form_Main: TForm_Main
     OnTimer = TimerTimer
     OnStartTimer = TimerStartTimer
     OnStopTimer = TimerStopTimer
-    Left = 32
-    Top = 192
+    Left = 26
+    Top = 154
   end
 end
