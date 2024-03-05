@@ -18,8 +18,8 @@
         <HasResources Value="True"/>
         <ResourceBaseClass Value="Form"/>
         <IsVisibleTab Value="True"/>
-        <TopLine Value="135"/>
-        <CursorPos X="24" Y="142"/>
+        <TopLine Value="62"/>
+        <CursorPos X="5" Y="76"/>
         <UsageCount Value="30"/>
         <Loaded Value="True"/>
         <LoadedDesigner Value="True"/>
@@ -68,20 +68,16 @@
         <CursorPos Y="1138"/>
         <UsageCount Value="10"/>
       </Unit>
+      <Unit>
+        <Filename Value="../../lazarus/ide/transfermacros.pp"/>
+        <UnitName Value="TransferMacros"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="144"/>
+        <CursorPos X="40" Y="159"/>
+        <UsageCount Value="10"/>
+      </Unit>
     </Units>
     <JumpHistory HistoryIndex="29">
-      <Position>
-        <Filename Value="main.pas"/>
-        <Caret Line="71" TopLine="67"/>
-      </Position>
-      <Position>
-        <Filename Value="main.pas"/>
-        <Caret Line="73" Column="24" TopLine="52"/>
-      </Position>
-      <Position>
-        <Filename Value="main.pas"/>
-        <Caret Line="85" Column="24" TopLine="81"/>
-      </Position>
       <Position>
         <Filename Value="main.pas"/>
         <Caret Line="9" Column="59"/>
@@ -189,6 +185,18 @@
       <Position>
         <Filename Value="main.pas"/>
         <Caret Line="124" Column="53" TopLine="109"/>
+      </Position>
+      <Position>
+        <Filename Value="main.pas"/>
+        <Caret Line="144" Column="16"/>
+      </Position>
+      <Position>
+        <Filename Value="main.pas"/>
+        <Caret Line="239" Column="3" TopLine="235"/>
+      </Position>
+      <Position>
+        <Filename Value="main.pas"/>
+        <Caret Line="226" Column="34" TopLine="220"/>
       </Position>
     </JumpHistory>
     <RunParams>

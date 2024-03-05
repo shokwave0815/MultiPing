@@ -30,8 +30,8 @@ object Form_Main: TForm_Main
       Width = 75
       BorderSpacing.Left = 4
       Caption = 'Start'
-      OnClick = Btn_StartClick
       TabOrder = 1
+      OnClick = Btn_StartClick
     end
     object Edit_AddTarget: TEdit
       AnchorSideLeft.Control = Label1
@@ -42,8 +42,8 @@ object Form_Main: TForm_Main
       Top = 28
       Width = 160
       BorderSpacing.Top = 4
-      OnKeyDown = Edit_AddTargetKeyDown
       TabOrder = 2
+      OnKeyDown = Edit_AddTargetKeyDown
     end
     object Label1: TLabel
       AnchorSideLeft.Control = Btn_Start
@@ -67,8 +67,8 @@ object Form_Main: TForm_Main
       Width = 75
       BorderSpacing.Left = 4
       Caption = 'Hinzufügen'
-      OnClick = Btn_AddTargetClick
       TabOrder = 3
+      OnClick = Btn_AddTargetClick
     end
     object Btn_Delete: TButton
       AnchorSideLeft.Control = Btn_Details
@@ -80,8 +80,8 @@ object Form_Main: TForm_Main
       Width = 75
       BorderSpacing.Top = 4
       Caption = 'Löschen'
-      OnClick = Btn_DeleteClick
       TabOrder = 4
+      OnClick = Btn_DeleteClick
     end
     object SE_Time: TSpinEdit
       AnchorSideLeft.Control = Label2
@@ -122,16 +122,16 @@ object Form_Main: TForm_Main
       BorderSpacing.Top = 8
       BorderSpacing.Right = 8
       Caption = 'Details'
-      OnClick = Btn_DetailsClick
       TabOrder = 5
+      OnClick = Btn_DetailsClick
     end
     object ChBo_AllEvents: TCheckBox
       AnchorSideTop.Control = Btn_Details
       AnchorSideRight.Control = Btn_Details
-      Left = 444
+      Left = 446
       Height = 19
       Top = 9
-      Width = 127
+      Width = 125
       Anchors = [akTop, akRight]
       BorderSpacing.Right = 5
       Caption = 'zeige alle Ergebnisse'

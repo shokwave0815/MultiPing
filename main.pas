@@ -72,7 +72,8 @@ implementation
 
 procedure TForm_Main.Btn_StartClick(Sender: TObject);
 begin
-  Timer.Interval := SE_Time.Value * 1000;
+  if not Timer.Enabled then
+    Timer.Interval := SE_Time.Value * 1000;
   Timer.Enabled := not Timer.Enabled;
 end;
 
@@ -222,6 +223,7 @@ end;
 
 procedure TForm_Main.TimerStartTimer(Sender: TObject);
 begin
+  SE_Time.Enabled:= False;
   Btn_Start.Caption := 'Stop';
   TimerTimer(Sender);
 end;
@@ -229,6 +231,7 @@ end;
 procedure TForm_Main.TimerStopTimer(Sender: TObject);
 begin
   Btn_Start.Caption := 'Start';
+  SE_Time.Enabled:= True;
   PrintTargets;
 end;
 
