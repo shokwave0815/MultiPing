@@ -19,6 +19,7 @@ type
     Btn_AddTarget: TButton;
     Btn_Delete: TButton;
     Btn_Details: TButton;
+    ChBo_AllEvents: TCheckBox;
     Edit_AddTarget: TEdit;
     Label1: TLabel;
     Label2: TLabel;
@@ -112,7 +113,8 @@ end;
 
 procedure TForm_Main.Btn_DetailsClick(Sender: TObject);
 var
-  i: integer;
+  i: Integer;
+  LastState: Boolean;
   DetailsList: TDetailsList;
 begin
   if (SG_Targets.Row > 0) and (TargetList[SG_Targets.Row - 1].History.Count > 0) then
@@ -120,11 +122,16 @@ begin
     Form_Details.Memo1.Clear;
     DetailsList := TargetList[SG_Targets.Row - 1].History;
     Form_Details.Caption:= 'Details für ' + TargetList[SG_Targets.Row - 1].Adress;
+    LastState:= not DetailsList.First.Result;  //to print first event
     for i := 0 to DetailsList.Count - 1 do
     begin
-      Form_Details.Memo1.Append(DateTimeToStr(DetailsList.Items[i].Time) + ' - ' +
-        BoolToStr(DetailsList.Items[i].Result, 'OK', 'Fehler') + ' - ' +
-        IntToStr(DetailsList.Items[i].PingTime) + 'ms');
+      if (ChBo_AllEvents.Checked) or (LastState <> DetailsList.Items[i].Result) then
+      begin
+        Form_Details.Memo1.Append(DateTimeToStr(DetailsList.Items[i].Time) + ' - ' +
+          BoolToStr(DetailsList.Items[i].Result, 'OK', 'Fehler') + ' - ' +
+          IntToStr(DetailsList.Items[i].PingTime) + 'ms');
+        LastState:= DetailsList.Items[i].Result;
+      end;
     end;
     Form_Details.Show;
   end;
