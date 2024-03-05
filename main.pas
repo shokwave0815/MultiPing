@@ -332,6 +332,9 @@ begin
   SG_Targets.Columns.Items[2].Width := Scale96ToForm(cfgINI.ReadInteger('SG', '2', 130));
   SG_Targets.Columns.Items[3].Width := Scale96ToForm(cfgINI.ReadInteger('SG', '3', 200));
 
+  //Einstellungen
+  SE_Time.Value:= cfgINI.ReadInteger('Prefs', 'Time', 30);
+
   FreeAndNil(CfgINI);
 end;
 
@@ -354,6 +357,9 @@ begin
   cfgINI.WriteInteger('SG', '1', ScaleFormTo96(SG_Targets.Columns.Items[1].Width));
   cfgINI.WriteInteger('SG', '2', ScaleFormTo96(SG_Targets.Columns.Items[2].Width));
   cfgINI.WriteInteger('SG', '3', ScaleFormTo96(SG_Targets.Columns.Items[3].Width));
+
+  //Einstellungen
+  cfgIni.WriteInteger('Prefs', 'Time', SE_Time.Value);
   FreeAndNil(cfgINI);
 end;
 
