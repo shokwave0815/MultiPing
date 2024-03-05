@@ -134,8 +134,10 @@ procedure TForm_Main.FormClose(Sender: TObject; var CloseAction: TCloseAction);
 begin
   SaveConfig;
   SaveTargets;
-  TargetList.Free;
-  PingCmd.Free;
+
+  FreeAndNil(TargetList);
+  FreeAndNil(PingCmd);
+
   CloseAction := caFree;
 end;
 
@@ -295,7 +297,7 @@ begin
     begin
       AddTarget(sl[i]);
     end;
-    sl.Free;
+    FreeAndNil(sl);
   end;
 end;
 
@@ -310,7 +312,7 @@ begin
     sl.Append(TargetList.Items[i].Adress);
   end;
   sl.SaveToFile(AppDir + 'targets.txt');
-  sl.Free;
+  FreeAndNil(sl);
 end;
 
 procedure TForm_Main.LoadConfig;
