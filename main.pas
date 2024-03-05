@@ -139,6 +139,8 @@ end;
 
 procedure TForm_Main.FormClose(Sender: TObject; var CloseAction: TCloseAction);
 begin
+  Timer.Enabled:= False;
+
   SaveConfig;
   SaveTargets;
 
@@ -343,6 +345,7 @@ begin
 
   //Einstellungen
   SE_Time.Value:= cfgINI.ReadInteger('Prefs', 'Time', 30);
+  ChBo_AllEvents.Checked:= cfgIni.ReadBool('Prefs', 'allEvents', False);
 
   FreeAndNil(CfgINI);
 end;
@@ -369,6 +372,7 @@ begin
 
   //Einstellungen
   cfgIni.WriteInteger('Prefs', 'Time', SE_Time.Value);
+  cfgIni.WriteBool('Prefs', 'allEvents', ChBo_AllEvents.Checked);
   FreeAndNil(cfgINI);
 end;
 
