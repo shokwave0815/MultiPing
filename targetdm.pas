@@ -5,7 +5,7 @@ unit targetdm;
 interface
 
 uses
-  Classes, SysUtils, SQLite3Conn, SQLDB, target;
+  Classes, SysUtils, SQLite3Conn, SQLDB, target, Dialogs, DB;
 
 type
 
@@ -37,24 +37,19 @@ procedure TTargetData.CreateDatabase;
 begin
   SQLite3Connection.Open;
   SQLTransaction.Active:= True;
-  SQLite3Connection.ExecuteDirect('CREATE TABLE "tblTargets"("ID" Integer NOT NULL PRIMARY KEY AUTOINCREMENT, "TARGET" VCHAR(255));');
-  SQLite3Connection.ExecuteDirect('CREATE INDEX "idxTargets" ON "tblTargets"("ID" collate nocase);');
+  SQLite3Connection.ExecuteDirect('CREATE TABLE tblTargets(ID Integer NOT NULL PRIMARY KEY AUTOINCREMENT, TARGET VCHAR(255));');
+  SQLite3Connection.ExecuteDirect('CREATE INDEX idxTargets ON tblTargets(ID collate nocase);');
   SQLTransaction.Commit;
 end;
 
 procedure TTargetData.AddTarget(ATarget: string);
 begin
-  try
-    SQLQuery.Close;
-    SQLQuery.SQL.Clear;
-    SQLQuery.SQL.Text:= 'INSERT INTO "tblTargets" VALUES(NULL, :Target)';
-    SQLQuery.ParamByName('Target').AsString := ATarget;
-  finally
-    SQLQuery.ExecSQL;
-    SQLTransaction.Commit;
-
-  end;
-
+  SQLQuery.Close;
+  SQLQuery.SQL.Clear;
+  SQLQuery.SQL.Text:= 'INSERT INTO tblTargets VALUES(NULL, :Target);';
+  SQLQuery.ParamByName('Target').AsString := ATarget;
+  SQLQuery.ExecSQL;
+  SQLTransaction.Commit;
 end;
 
 procedure TTargetData.ReadTargets(var TargetList: TTargetList);

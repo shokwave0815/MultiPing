@@ -50,7 +50,6 @@ type
     procedure PingTarget(ATarget: TTarget);
     procedure ClearGrid;
     procedure PrintTargets;
-    procedure AddTarget(Target: string);
     procedure LoadTargets;
     procedure LoadConfig;
     procedure SaveConfig;
@@ -91,7 +90,7 @@ end;
 
 procedure TForm_Main.Edit_AddTargetKeyDown(Sender: TObject; var Key: word; Shift: TShiftState);
 begin
-  Shift:=Shift;;
+  Shift:=Shift;
   if key = VK_RETURN then
   begin
     Btn_AddTarget.Click;
@@ -103,10 +102,7 @@ begin
   if Trim(Edit_AddTarget.Text) <> '' then
   begin
     TargetData.AddTarget(Edit_AddTarget.Text);
-    AddTarget(Edit_AddTarget.Text);
-    Edit_AddTarget.Text := '';
-    SelectNext(Btn_Start, True, True);
-    SG_Targets.RowCount:= SG_Targets.RowCount + 1;
+    LoadTargets;
     PrintTargets;
   end;
 end;
@@ -287,20 +283,9 @@ begin
   end;
 end;
 
-procedure TForm_Main.AddTarget(Target: string);
-var
-  NewTarget: TTarget;
-begin
-  if Trim(Target) <> '' then
-  begin
-    NewTarget := TTarget.Create;
-    NewTarget.Adress := Target;
-    TargetList.Add(NewTarget);
-  end;
-end;
-
 procedure TForm_Main.LoadTargets;
 begin
+  TargetList.Clear;
   TargetData.ReadTargets(TargetList);
   SG_Targets.RowCount:= TargetList.Count + 1;
 end;
