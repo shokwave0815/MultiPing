@@ -6,11 +6,9 @@ interface
 
 uses
   Classes, SysUtils, Forms, Controls, Graphics, Dialogs, StdCtrls, ExtCtrls,
-  Grids, Spin, pingsend, target, fgl, frm_details, LCLType, Types, INIFiles;
+  Grids, Spin, pingsend, target, fgl, frm_details, LCLType, Types, INIFiles, targetdm;
 
 type
-
-  TTargetList = specialize TFPGObjectList<TTarget>;
 
   { TForm_Main }
 
@@ -54,7 +52,6 @@ type
     procedure PrintTargets;
     procedure AddTarget(Target: string);
     procedure LoadTargets;
-    procedure SaveTargets;
     procedure LoadConfig;
     procedure SaveConfig;
   public
@@ -84,6 +81,7 @@ begin
     if MessageDlg('Das Ziel "' + TargetList.Items[SG_Targets.Row - 1].Adress + '" wirklich löschen?',
       mtConfirmation, [mbYes, mbNo], 0) = mrYes then
     begin
+      TargetData.RemoveTarget(TargetList[SG_Targets.Row - 1].ID);
       TargetList.Delete(SG_Targets.Row - 1);
       SG_Targets.RowCount:= SG_Targets.RowCount - 1;
       PrintTargets;
@@ -104,6 +102,7 @@ procedure TForm_Main.Btn_AddTargetClick(Sender: TObject);
 begin
   if Trim(Edit_AddTarget.Text) <> '' then
   begin
+    TargetData.AddTarget(Edit_AddTarget.Text);
     AddTarget(Edit_AddTarget.Text);
     Edit_AddTarget.Text := '';
     SelectNext(Btn_Start, True, True);
@@ -143,7 +142,6 @@ begin
   Timer.Enabled:= False;
 
   SaveConfig;
-  SaveTargets;
 
   FreeAndNil(TargetList);
   FreeAndNil(PingCmd);
@@ -173,6 +171,12 @@ begin
   if isStartup then
   begin
     LoadConfig;
+    TargetData.SQLite3Connection.DatabaseName:= AppDir + 'targets.sqlite';
+    if not FileExists(TargetData.SQLite3Connection.DatabaseName) then
+    begin
+      TargetData.CreateDatabase;
+    end;
+    TargetData.SQLite3Connection.Connected:= True;
     LoadTargets;
     PrintTargets;
     isStartup:= false;
@@ -296,35 +300,9 @@ begin
 end;
 
 procedure TForm_Main.LoadTargets;
-var
-  sl: TStringList;
-  i: integer;
 begin
-  if FileExists(AppDir + 'targets.txt') then
-  begin
-    sl := TStringList.Create;
-    sl.LoadFromFile(AppDir + 'targets.txt');
-    SG_Targets.RowCount:= sl.Count + 1;
-    for i := 0 to sl.Count - 1 do
-    begin
-      AddTarget(sl[i]);
-    end;
-    FreeAndNil(sl);
-  end;
-end;
-
-procedure TForm_Main.SaveTargets;
-var
-  sl: TStringList;
-  i: integer;
-begin
-  sl := TStringList.Create;
-  for i := 0 to TargetList.Count - 1 do
-  begin
-    sl.Append(TargetList.Items[i].Adress);
-  end;
-  sl.SaveToFile(AppDir + 'targets.txt');
-  FreeAndNil(sl);
+  TargetData.ReadTargets(TargetList);
+  SG_Targets.RowCount:= TargetList.Count + 1;
 end;
 
 procedure TForm_Main.LoadConfig;

@@ -79,3 +79,5 @@ published/
 lib/
 *.exe
 *.dbg
+*.sqlite
+targets.txt

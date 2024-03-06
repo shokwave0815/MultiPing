@@ -1,0 +1,32 @@
+object TargetData: TTargetData
+  OldCreateOrder = False
+  Height = 333
+  HorizontalOffset = 350
+  VerticalOffset = 250
+  Width = 473
+  object SQLite3Connection: TSQLite3Connection
+    Connected = False
+    LoginPrompt = False
+    KeepConnection = False
+    Transaction = SQLTransaction
+    CharSet = 'UTF-8'
+    AlwaysUseBigint = False
+    Left = 40
+    Top = 8
+  end
+  object SQLQuery: TSQLQuery
+    FieldDefs = <>
+    Database = SQLite3Connection
+    Transaction = SQLTransaction
+    Params = <>
+    Macros = <>
+    Left = 136
+    Top = 8
+  end
+  object SQLTransaction: TSQLTransaction
+    Active = False
+    Database = SQLite3Connection
+    Left = 216
+    Top = 8
+  end
+end

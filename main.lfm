@@ -11,6 +11,7 @@ object Form_Main: TForm_Main
   OnResize = FormResize
   OnShow = FormShow
   OnWindowStateChange = FormWindowStateChange
+  LCLVersion = '3.2.0.0'
   object Panel1: TPanel
     Left = 0
     Height = 70
@@ -149,18 +150,21 @@ object Form_Main: TForm_Main
       item
         MinSize = 8
         MaxSize = 160
+        Title.Alignment = taCenter
         Title.Caption = 'Ziel'
         Width = 122
       end    
       item
         MinSize = 8
         MaxSize = 160
+        Title.Alignment = taCenter
         Title.Caption = 'Erreichbar'
         Width = 84
       end    
       item
         MinSize = 8
         MaxSize = 160
+        Title.Alignment = taCenter
         Title.Caption = 'Antwortzeit'
         Width = 104
       end    
@@ -168,8 +172,9 @@ object Form_Main: TForm_Main
         Font.Height = -12
         MinSize = 8
         MaxSize = 160
+        Title.Alignment = taCenter
         Title.Font.Height = -12
-        Title.Caption = 'letzter Versuch'
+        Title.Caption = 'Zeitpunkt'
         Width = 134
       end>
     FixedCols = 0

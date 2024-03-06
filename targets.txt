@@ -1,3 +1,2 @@
-google.de
-shokwave.de
 localhost
+127.0.0.1
