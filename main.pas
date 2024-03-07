@@ -122,6 +122,7 @@ var Target: TTarget;
 begin
   Target:= TargetList[StringGrid_Targets.Row - 1];
   Form_Change.Edit_Target.Text:= Target.Address;
+  Form_Change.Edit_Target.SelectAll;
   if Form_Change.ShowModal = mrOK then
   begin
     Target.Address:= Form_Change.Edit_Target.Text;

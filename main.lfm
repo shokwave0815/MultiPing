@@ -157,6 +157,7 @@ object Form_Main: TForm_Main
     Top = 70
     Width = 660
     Align = alClient
+    AutoEdit = False
     ColCount = 4
     Columns = <    
       item
