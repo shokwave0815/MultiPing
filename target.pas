@@ -9,26 +9,26 @@ uses
 
 type
 
-  TDetails = class
+  TLogEntry = class
     Time: TDateTime;
     Result: Boolean;
     PingTime: Integer;
     Interval: Cardinal;
   end;
 
-  TDetailsList = specialize TFPGObjectList<TDetails>;
+  TLog = specialize TFPGObjectList<TLogEntry>;
 
   { TTarget }
 
   TTarget = class(TObject)
   private
-    FAdress: String;
+    FAddress: String;
     FID: Integer;
-    FHistory: TDetailsList;
+    FLog: TLog;
   public
-    property Adress: String read FAdress write FAdress;
+    property Address: String read FAddress write FAddress;
     property ID: Integer read FID write FID;
-    property History: TDetailsList read FHistory write FHistory;
+    property Log: TLog read FLog write FLog;
     constructor Create;
     destructor Destroy; override;
   end;
@@ -42,12 +42,12 @@ implementation
 constructor TTarget.Create;
 begin
   inherited Create;
-  FHistory:= TDetailsList.Create;
+  FLog:= TLog.Create;
 end;
 
 destructor TTarget.Destroy;
 begin
-  FHistory.Free;
+  FLog.Free;
   inherited Destroy;
 end;
 

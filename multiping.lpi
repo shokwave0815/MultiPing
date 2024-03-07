@@ -100,6 +100,12 @@
         <HasResources Value="True"/>
         <ResourceBaseClass Value="DataModule"/>
       </Unit>
+      <Unit>
+        <Filename Value="frm_change.pas"/>
+        <IsPartOfProject Value="True"/>
+        <ComponentName Value="Form_Change"/>
+        <ResourceBaseClass Value="Form"/>
+      </Unit>
     </Units>
   </ProjectOptions>
   <CompilerOptions>

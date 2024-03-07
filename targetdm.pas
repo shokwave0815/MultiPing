@@ -21,6 +21,7 @@ type
     procedure CreateDatabase;
     procedure AddTarget(ATarget: string);
     procedure ReadTargets(var ATargetList: TTargetList);
+    procedure ChangeTarget(AID: Integer; AAddress: String);
     procedure RemoveTarget(AID: Integer);
   end;
 
@@ -54,6 +55,8 @@ begin
 
   SQLQuery.ExecSQL;
   SQLTransaction.Commit;
+
+  //TODO: hier die vergebene ID herausfinden und im ATarget eintragen
 end;
 
 procedure TTargetData.ReadTargets(var ATargetList: TTargetList);
@@ -71,12 +74,25 @@ begin
   for i:= 0 to SQLQuery.RecordCount -1 do
   begin
     NewTarget := TTarget.Create;
-    NewTarget.Adress := SQLQuery.FieldByName('TARGET').AsString;
+    NewTarget.Address := SQLQuery.FieldByName('TARGET').AsString;
     NewTarget.ID := SQLQuery.FieldByName('ID').AsInteger;
 
     ATargetList.Add(NewTarget);
     SQLQuery.Next;
   end;
+end;
+
+procedure TTargetData.ChangeTarget(AID: Integer; AAddress: String);
+begin
+  SQLQuery.Close;
+  SQLQuery.SQL.Clear;
+
+  SQLQuery.SQL.Text:= 'UPDATE tblTargets SET TARGET= :Target WHERE ID= :TargetID;';
+  SQLQuery.ParamByName('Target').AsString := AAddress;
+  SQLQuery.ParamByName('TargetID').AsInteger := AID;
+
+  SQLQuery.ExecSQL;
+  SQLTransaction.Commit;
 end;
 
 procedure TTargetData.RemoveTarget(AID: Integer);

@@ -6,17 +6,18 @@ interface
 
 uses
   Classes, SysUtils, Forms, Controls, Graphics, Dialogs, StdCtrls, ExtCtrls,
-  Grids, Spin, pingsend, target, fgl, frm_details, LCLType, Types, INIFiles, targetdm;
+  Grids, Spin, pingsend, target, fgl, frm_details, LCLType, Types, INIFiles, targetdm, frm_change;
 
 type
 
   { TForm_Main }
 
   TForm_Main = class(TForm)
+    Button_Change: TButton;
     Button_Start: TButton;
     Button_AddTarget: TButton;
     Button_Delete: TButton;
-    Button_Details: TButton;
+    Button_Log: TButton;
     CheckBox_AllEvents: TCheckBox;
     Edit_AddTarget: TEdit;
     Label_AddTarget: TLabel;
@@ -26,7 +27,8 @@ type
     SpinEdit_Time: TSpinEdit;
     Timer: TTimer;
     procedure Button_AddTargetClick(Sender: TObject);
-    procedure Button_DetailsClick(Sender: TObject);
+    procedure Button_ChangeClick(Sender: TObject);
+    procedure Button_LogClick(Sender: TObject);
     procedure Button_StartClick(Sender: TObject);
     procedure Button_DeleteClick(Sender: TObject);
     procedure Edit_AddTargetKeyDown(Sender: TObject; var Key: word; Shift: TShiftState);
@@ -80,7 +82,7 @@ procedure TForm_Main.Button_DeleteClick(Sender: TObject);
 begin
   if StringGrid_Targets.Row > 0 then
   begin
-    if MessageDlg('Das Ziel "' + TargetList.Items[StringGrid_Targets.Row - 1].Adress + '" wirklich löschen?',
+    if MessageDlg('Das Ziel "' + TargetList.Items[StringGrid_Targets.Row - 1].Address + '" wirklich löschen?',
       mtConfirmation, [mbYes, mbNo], 0) = mrYes then
     begin
       TargetData.RemoveTarget(TargetList[StringGrid_Targets.Row - 1].ID);
@@ -110,26 +112,42 @@ begin
   end;
 end;
 
-procedure TForm_Main.Button_DetailsClick(Sender: TObject);
+procedure TForm_Main.Button_ChangeClick(Sender: TObject);
+var Target: TTarget;
+begin
+  Target:= TargetList[StringGrid_Targets.Row - 1];
+  Form_Change.Edit_Target.Text:= Target.Address;
+  if Form_Change.ShowModal = mrOK then
+  begin
+    Target.Address:= Form_Change.Edit_Target.Text;
+    TargetData.ChangeTarget(Target.ID, Target.Address);
+    PrintTargets;
+  end;
+end;
+
+procedure TForm_Main.Button_LogClick(Sender: TObject);
 var
   i: Integer;
   LastState: Boolean;
-  DetailsList: TDetailsList;
+  DetailsList: TLog;
 begin
-  if (StringGrid_Targets.Row > 0) and (TargetList[StringGrid_Targets.Row - 1].History.Count > 0) then
+  if (StringGrid_Targets.Row > 0) then
   begin
     Form_Details.Memo_Details.Clear;
-    DetailsList := TargetList[StringGrid_Targets.Row - 1].History;
-    Form_Details.Caption:= 'Details für ' + TargetList[StringGrid_Targets.Row - 1].Adress;
-    LastState:= not DetailsList.First.Result;  //to print first event
-    for i := 0 to DetailsList.Count - 1 do
+    DetailsList := TargetList[StringGrid_Targets.Row - 1].Log;
+    Form_Details.Caption:= 'Details für ' + TargetList[StringGrid_Targets.Row - 1].Address;
+    if DetailsList.Count > 0 then
     begin
-      if (CheckBox_AllEvents.Checked) or (LastState <> DetailsList.Items[i].Result) then
+      LastState:= not DetailsList.First.Result;  //to print first event
+      for i := 0 to DetailsList.Count - 1 do
       begin
-        Form_Details.Memo_Details.Append(DateTimeToStr(DetailsList.Items[i].Time) + ' - ' +
-          BoolToStr(DetailsList.Items[i].Result, 'OK', 'Fehler') + ' - ' +
-          IntToStr(DetailsList.Items[i].PingTime) + 'ms');
-        LastState:= DetailsList.Items[i].Result;
+        if (CheckBox_AllEvents.Checked) or (LastState <> DetailsList.Items[i].Result) then
+        begin
+          Form_Details.Memo_Details.Append(DateTimeToStr(DetailsList.Items[i].Time) + ' - ' +
+            BoolToStr(DetailsList.Items[i].Result, 'OK', 'Fehler') + ' - ' +
+            IntToStr(DetailsList.Items[i].PingTime) + 'ms');
+          LastState:= DetailsList.Items[i].Result;
+        end;
       end;
     end;
     Form_Details.Show;
@@ -248,16 +266,16 @@ end;
 
 procedure TForm_Main.PingTarget(ATarget: TTarget);
 var
-  Details: TDetails;
+  Details: TLogEntry;
 begin
-  Details := TDetails.Create;
+  Details := TLogEntry.Create;
 
-  Details.Result := PingCmd.Ping(ATarget.Adress);
+  Details.Result := PingCmd.Ping(ATarget.Address);
   Details.Time := now;
   Details.PingTime := PingCmd.PingTime;
   Details.Interval:= Timer.Interval;
 
-  ATarget.History.Add(Details);
+  ATarget.Log.Add(Details);
 end;
 
 procedure TForm_Main.ClearGrid;
@@ -283,12 +301,12 @@ begin
   StringGrid_Targets.RowCount:= TargetList.Count + 1;
   for i := 0 to TargetList.Count - 1 do
   begin
-    StringGrid_Targets.Cells[0, i + 1] := TargetList[i].Adress;
-    if TargetList[i].History.Count > 0 then
+    StringGrid_Targets.Cells[0, i + 1] := TargetList[i].Address;
+    if TargetList[i].Log.Count > 0 then
     begin
-      StringGrid_Targets.Cells[1, i + 1] := BoolToStr(TargetList[i].History.Last.Result, 'ja', 'nein');
-      StringGrid_Targets.Cells[2, i + 1] := IntToStr(TargetList[i].History.Last.PingTime) + 'ms';
-      StringGrid_Targets.Cells[3, i + 1] := DateTimeToStr(TargetList[i].History.Last.Time);
+      StringGrid_Targets.Cells[1, i + 1] := BoolToStr(TargetList[i].Log.Last.Result, 'ja', 'nein');
+      StringGrid_Targets.Cells[2, i + 1] := IntToStr(TargetList[i].Log.Last.PingTime) + 'ms';
+      StringGrid_Targets.Cells[3, i + 1] := DateTimeToStr(TargetList[i].Log.Last.Time);
     end;
   end;
 end;
