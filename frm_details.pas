@@ -12,8 +12,8 @@ type
   { TForm_Details }
 
   TForm_Details = class(TForm)
-    Memo1: TMemo;
-    procedure Memo1Change(Sender: TObject);
+    Memo_Details: TMemo;
+    procedure Memo_DetailsChange(Sender: TObject);
   private
 
   public
@@ -29,7 +29,7 @@ implementation
 
 { TForm_Details }
 
-procedure TForm_Details.Memo1Change(Sender: TObject);
+procedure TForm_Details.Memo_DetailsChange(Sender: TObject);
 begin
 
 end;

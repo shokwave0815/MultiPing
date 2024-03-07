@@ -8,7 +8,7 @@ object Form_Details: TForm_Details
   ClientWidth = 428
   DesignTimePPI = 120
   Position = poMainFormCenter
-  object Memo1: TMemo
+  object Memo_Details: TMemo
     Left = 0
     Height = 391
     Top = 0
@@ -16,6 +16,6 @@ object Form_Details: TForm_Details
     Align = alClient
     ScrollBars = ssAutoBoth
     TabOrder = 0
-    OnChange = Memo1Change
+    OnChange = Memo_DetailsChange
   end
 end
