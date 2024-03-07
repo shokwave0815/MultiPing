@@ -1,4 +1,4 @@
-unit targetdm;
+unit frm_targetdm;
 
 {$mode ObjFPC}{$H+}
 

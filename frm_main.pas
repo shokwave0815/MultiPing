@@ -1,4 +1,4 @@
-unit main;
+unit frm_main;
 
 {$mode objfpc}{$H+}
 
@@ -7,7 +7,7 @@ interface
 uses
   Classes, SysUtils, Forms, Controls, Graphics, Dialogs, StdCtrls, ExtCtrls,
   Grids, Spin, pingsend, target, fgl, frm_log, LCLType, Menus, Types, INIFiles,
-  targetdm, frm_change;
+  frm_targetdm, frm_change;
 
 type
 

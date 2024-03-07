@@ -76,7 +76,7 @@
         <IsPartOfProject Value="True"/>
       </Unit>
       <Unit>
-        <Filename Value="main.pas"/>
+        <Filename Value="frm_main.pas"/>
         <IsPartOfProject Value="True"/>
         <ComponentName Value="Form_Main"/>
         <HasResources Value="True"/>
@@ -94,7 +94,7 @@
         <ResourceBaseClass Value="Form"/>
       </Unit>
       <Unit>
-        <Filename Value="targetdm.pas"/>
+        <Filename Value="frm_targetdm.pas"/>
         <IsPartOfProject Value="True"/>
         <ComponentName Value="TargetData"/>
         <HasResources Value="True"/>
