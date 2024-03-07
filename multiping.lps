@@ -39,8 +39,8 @@
         <HasResources Value="True"/>
         <ResourceBaseClass Value="Form"/>
         <EditorIndex Value="3"/>
-        <TopLine Value="11"/>
-        <CursorPos Y="34"/>
+        <TopLine Value="30"/>
+        <CursorPos X="6" Y="41"/>
         <UsageCount Value="49"/>
         <Loaded Value="True"/>
         <LoadedDesigner Value="True"/>
@@ -55,6 +55,17 @@
         <TopLine Value="50"/>
         <CursorPos X="6" Y="59"/>
         <UsageCount Value="46"/>
+        <Loaded Value="True"/>
+        <LoadedDesigner Value="True"/>
+      </Unit>
+      <Unit>
+        <Filename Value="frm_change.pas"/>
+        <IsPartOfProject Value="True"/>
+        <ComponentName Value="Form_Change"/>
+        <HasResources Value="True"/>
+        <ResourceBaseClass Value="Form"/>
+        <EditorIndex Value="2"/>
+        <UsageCount Value="22"/>
         <Loaded Value="True"/>
         <LoadedDesigner Value="True"/>
       </Unit>
@@ -101,30 +112,8 @@
         <TopLine Value="16"/>
         <UsageCount Value="8"/>
       </Unit>
-      <Unit>
-        <Filename Value="frm_change.pas"/>
-        <IsPartOfProject Value="True"/>
-        <ComponentName Value="Form_Change"/>
-        <ResourceBaseClass Value="Form"/>
-        <EditorIndex Value="2"/>
-        <UsageCount Value="22"/>
-        <Loaded Value="True"/>
-        <LoadedDesigner Value="True"/>
-      </Unit>
     </Units>
     <JumpHistory HistoryIndex="29">
-      <Position>
-        <Filename Value="main.pas"/>
-        <Caret Line="287" TopLine="229"/>
-      </Position>
-      <Position>
-        <Filename Value="targetdm.pas"/>
-        <Caret Line="24" Column="31" TopLine="5"/>
-      </Position>
-      <Position>
-        <Filename Value="targetdm.pas"/>
-        <Caret Line="55" Column="45" TopLine="52"/>
-      </Position>
       <Position>
         <Filename Value="targetdm.pas"/>
         <Caret Line="23" Column="42" TopLine="12"/>
@@ -232,6 +221,18 @@
       <Position>
         <Filename Value="main.pas"/>
         <Caret Line="30" Column="25"/>
+      </Position>
+      <Position>
+        <Filename Value="frm_log.pas"/>
+        <Caret Line="35" TopLine="13"/>
+      </Position>
+      <Position>
+        <Filename Value="frm_log.pas"/>
+        <Caret Line="8" Column="75"/>
+      </Position>
+      <Position>
+        <Filename Value="frm_log.pas"/>
+        <Caret Line="41" Column="3" TopLine="30"/>
       </Position>
     </JumpHistory>
     <RunParams>

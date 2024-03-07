@@ -5,7 +5,7 @@ unit frm_log;
 interface
 
 uses
-  Classes, SysUtils, Forms, Controls, Graphics, Dialogs, StdCtrls;
+  Classes, SysUtils, Forms, Controls, Graphics, Dialogs, StdCtrls, LCLType;
 
 type
 
@@ -13,6 +13,7 @@ type
 
   TForm_Log = class(TForm)
     Memo_Log: TMemo;
+    procedure FormKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
     procedure Memo_LogChange(Sender: TObject);
   private
 
@@ -32,6 +33,14 @@ implementation
 procedure TForm_Log.Memo_LogChange(Sender: TObject);
 begin
 
+end;
+
+procedure TForm_Log.FormKeyDown(Sender: TObject; var Key: Word;
+  Shift: TShiftState);
+begin
+  Shift := Shift;
+  if key = VK_ESCAPE then
+    Close;
 end;
 
 end.
