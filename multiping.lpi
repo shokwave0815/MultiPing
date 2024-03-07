@@ -87,9 +87,9 @@
         <IsPartOfProject Value="True"/>
       </Unit>
       <Unit>
-        <Filename Value="frm_details.pas"/>
+        <Filename Value="frm_log.pas"/>
         <IsPartOfProject Value="True"/>
-        <ComponentName Value="Form_Details"/>
+        <ComponentName Value="Form_Log"/>
         <HasResources Value="True"/>
         <ResourceBaseClass Value="Form"/>
       </Unit>

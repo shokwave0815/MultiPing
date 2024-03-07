@@ -1,0 +1,21 @@
+object Form_Log: TForm_Log
+  Left = 352
+  Height = 313
+  Top = 32
+  Width = 342
+  BorderIcons = [biSystemMenu]
+  Caption = 'Protokoll'
+  ClientHeight = 313
+  ClientWidth = 342
+  Position = poMainFormCenter
+  object Memo_Log: TMemo
+    Left = 0
+    Height = 313
+    Top = 0
+    Width = 342
+    Align = alClient
+    ScrollBars = ssAutoBoth
+    TabOrder = 0
+    OnChange = Memo_LogChange
+  end
+end

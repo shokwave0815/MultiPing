@@ -3,6 +3,7 @@ object Form_Change: TForm_Change
   Height = 90
   Top = 250
   Width = 320
+  BorderIcons = [biSystemMenu]
   Caption = 'Ziel ändern'
   ClientHeight = 90
   ClientWidth = 320

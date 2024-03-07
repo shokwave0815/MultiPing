@@ -6,7 +6,8 @@ interface
 
 uses
   Classes, SysUtils, Forms, Controls, Graphics, Dialogs, StdCtrls, ExtCtrls,
-  Grids, Spin, pingsend, target, fgl, frm_details, LCLType, Types, INIFiles, targetdm, frm_change;
+  Grids, Spin, pingsend, target, fgl, frm_log, LCLType, Menus, Types, INIFiles,
+  targetdm, frm_change;
 
 type
 
@@ -22,7 +23,11 @@ type
     Edit_AddTarget: TEdit;
     Label_AddTarget: TLabel;
     Label_Time: TLabel;
+    MenuItem_Delete: TMenuItem;
+    MenuItem_Change: TMenuItem;
+    MenuItem_Log: TMenuItem;
     Panel_Header: TPanel;
+    PopupMenu_StringGrid: TPopupMenu;
     StringGrid_Targets: TStringGrid;
     SpinEdit_Time: TSpinEdit;
     Timer: TTimer;
@@ -129,28 +134,28 @@ procedure TForm_Main.Button_LogClick(Sender: TObject);
 var
   i: Integer;
   LastState: Boolean;
-  DetailsList: TLog;
+  Log: TLog;
 begin
   if (StringGrid_Targets.Row > 0) then
   begin
-    Form_Details.Memo_Details.Clear;
-    DetailsList := TargetList[StringGrid_Targets.Row - 1].Log;
-    Form_Details.Caption:= 'Details für ' + TargetList[StringGrid_Targets.Row - 1].Address;
-    if DetailsList.Count > 0 then
+    Form_Log.Memo_Log.Clear;
+    Log := TargetList[StringGrid_Targets.Row - 1].Log;
+    Form_Log.Caption:= 'Protokoll für ' + TargetList[StringGrid_Targets.Row - 1].Address;
+    if Log.Count > 0 then
     begin
-      LastState:= not DetailsList.First.Result;  //to print first event
-      for i := 0 to DetailsList.Count - 1 do
+      LastState:= not Log.First.Result;  //to print first event
+      for i := 0 to Log.Count - 1 do
       begin
-        if (CheckBox_AllEvents.Checked) or (LastState <> DetailsList.Items[i].Result) then
+        if (CheckBox_AllEvents.Checked) or (LastState <> Log.Items[i].Result) then
         begin
-          Form_Details.Memo_Details.Append(DateTimeToStr(DetailsList.Items[i].Time) + ' - ' +
-            BoolToStr(DetailsList.Items[i].Result, 'OK', 'Fehler') + ' - ' +
-            IntToStr(DetailsList.Items[i].PingTime) + 'ms');
-          LastState:= DetailsList.Items[i].Result;
+          Form_Log.Memo_Log.Append(DateTimeToStr(Log.Items[i].Time) + ' - ' +
+            BoolToStr(Log.Items[i].Result, 'OK', 'Fehler') + ' - ' +
+            IntToStr(Log.Items[i].PingTime) + 'ms');
+          LastState:= Log.Items[i].Result;
         end;
       end;
     end;
-    Form_Details.Show;
+    Form_Log.Show;
   end;
 end;
 

@@ -19,7 +19,7 @@ object Form_Main: TForm_Main
     Align = alTop
     ClientHeight = 70
     ClientWidth = 660
-    TabOrder = 0
+    TabOrder = 1
     object Button_Start: TButton
       AnchorSideLeft.Control = SpinEdit_Time
       AnchorSideLeft.Side = asrBottom
@@ -191,7 +191,8 @@ object Form_Main: TForm_Main
       end>
     FixedCols = 0
     Options = [goFixedVertLine, goFixedHorzLine, goVertLine, goHorzLine, goColSizing, goRowSelect, goDblClickAutoSize, goSmoothScroll]
-    TabOrder = 1
+    PopupMenu = PopupMenu_StringGrid
+    TabOrder = 0
     OnDblClick = Button_LogClick
     OnDrawCell = StringGrid_TargetsDrawCell
     ColWidths = (
@@ -207,7 +208,24 @@ object Form_Main: TForm_Main
     OnTimer = TimerTimer
     OnStartTimer = TimerStartTimer
     OnStopTimer = TimerStopTimer
-    Left = 26
-    Top = 154
+    Left = 16
+    Top = 184
+  end
+  object PopupMenu_StringGrid: TPopupMenu
+    Left = 96
+    Top = 184
+    object MenuItem_Log: TMenuItem
+      Caption = 'zeige Protokoll'
+      Default = True
+      OnClick = Button_LogClick
+    end
+    object MenuItem_Change: TMenuItem
+      Caption = 'Ziel ändern'
+      OnClick = Button_ChangeClick
+    end
+    object MenuItem_Delete: TMenuItem
+      Caption = 'Ziel löschen'
+      OnClick = Button_DeleteClick
+    end
   end
 end
