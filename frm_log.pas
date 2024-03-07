@@ -13,7 +13,7 @@ type
 
   TForm_Log = class(TForm)
     Memo_Log: TMemo;
-    procedure FormKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
+    procedure FormKeyDown(Sender: TObject; var Key: word; Shift: TShiftState);
     procedure Memo_LogChange(Sender: TObject);
   private
 
@@ -35,8 +35,7 @@ begin
 
 end;
 
-procedure TForm_Log.FormKeyDown(Sender: TObject; var Key: Word;
-  Shift: TShiftState);
+procedure TForm_Log.FormKeyDown(Sender: TObject; var Key: word; Shift: TShiftState);
 begin
   Shift := Shift;
   if key = VK_ESCAPE then
@@ -44,4 +43,3 @@ begin
 end;
 
 end.
-

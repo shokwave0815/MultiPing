@@ -48,10 +48,10 @@ type
     procedure TimerStopTimer(Sender: TObject);
     procedure TimerTimer(Sender: TObject);
   private
-    isStartup: Boolean;
-    AppDir: String;
+    isStartup: boolean;
+    AppDir: string;
     cfgIni: TIniFile;
-    myHeight, myWidth: Integer;
+    myHeight, myWidth: integer;
     PingCmd: TPINGSend;
     TargetList: TTargetList;
     procedure PingTarget(ATarget: TTarget);
@@ -87,12 +87,12 @@ procedure TForm_Main.Button_DeleteClick(Sender: TObject);
 begin
   if StringGrid_Targets.Row > 0 then
   begin
-    if MessageDlg('Das Ziel "' + TargetList.Items[StringGrid_Targets.Row - 1].Address + '" wirklich löschen?',
-      mtConfirmation, [mbYes, mbNo], 0) = mrYes then
+    if MessageDlg('Das Ziel "' + TargetList.Items[StringGrid_Targets.Row - 1].Address +
+      '" wirklich löschen?', mtConfirmation, [mbYes, mbNo], 0) = mrYes then
     begin
       TargetData.RemoveTarget(TargetList[StringGrid_Targets.Row - 1].ID);
       TargetList.Delete(StringGrid_Targets.Row - 1);
-      StringGrid_Targets.RowCount:= StringGrid_Targets.RowCount - 1;
+      StringGrid_Targets.RowCount := StringGrid_Targets.RowCount - 1;
       PrintTargets;
     end;
   end;
@@ -100,7 +100,7 @@ end;
 
 procedure TForm_Main.Edit_AddTargetKeyDown(Sender: TObject; var Key: word; Shift: TShiftState);
 begin
-  Shift:=Shift;
+  Shift := Shift;
   if key = VK_RETURN then
   begin
     Button_AddTarget.Click;
@@ -118,14 +118,15 @@ begin
 end;
 
 procedure TForm_Main.Button_ChangeClick(Sender: TObject);
-var Target: TTarget;
+var
+  Target: TTarget;
 begin
-  Target:= TargetList[StringGrid_Targets.Row - 1];
-  Form_Change.Edit_Target.Text:= Target.Address;
+  Target := TargetList[StringGrid_Targets.Row - 1];
+  Form_Change.Edit_Target.Text := Target.Address;
   Form_Change.Edit_Target.SelectAll;
-  if Form_Change.ShowModal = mrOK then
+  if Form_Change.ShowModal = mrOk then
   begin
-    Target.Address:= Form_Change.Edit_Target.Text;
+    Target.Address := Form_Change.Edit_Target.Text;
     TargetData.ChangeTarget(Target.ID, Target.Address);
     PrintTargets;
   end;
@@ -133,26 +134,26 @@ end;
 
 procedure TForm_Main.Button_LogClick(Sender: TObject);
 var
-  i: Integer;
-  LastState: Boolean;
+  i: integer;
+  LastState: boolean;
   Log: TLog;
 begin
   if (StringGrid_Targets.Row > 0) then
   begin
     Form_Log.Memo_Log.Clear;
     Log := TargetList[StringGrid_Targets.Row - 1].Log;
-    Form_Log.Caption:= 'Protokoll für ' + TargetList[StringGrid_Targets.Row - 1].Address;
+    Form_Log.Caption := 'Protokoll für ' + TargetList[StringGrid_Targets.Row - 1].Address;
     if Log.Count > 0 then
     begin
-      LastState:= not Log.First.Result;  //to print first event
+      LastState := not Log.First.Result;  //to print first event
       for i := 0 to Log.Count - 1 do
       begin
         if (CheckBox_AllEvents.Checked) or (LastState <> Log.Items[i].Result) then
         begin
           Form_Log.Memo_Log.Append(DateTimeToStr(Log.Items[i].Time) + ' - ' +
-            BoolToStr(Log.Items[i].Result, 'OK', 'Fehler') + ' - ' +
-            IntToStr(Log.Items[i].PingTime) + 'ms');
-          LastState:= Log.Items[i].Result;
+            BoolToStr(Log.Items[i].Result, 'OK', 'Fehler') + ' - ' + IntToStr(
+            Log.Items[i].PingTime) + 'ms');
+          LastState := Log.Items[i].Result;
         end;
       end;
     end;
@@ -162,7 +163,7 @@ end;
 
 procedure TForm_Main.FormClose(Sender: TObject; var CloseAction: TCloseAction);
 begin
-  Timer.Enabled:= False;
+  Timer.Enabled := False;
 
   SaveConfig;
 
@@ -174,7 +175,7 @@ end;
 
 procedure TForm_Main.FormCreate(Sender: TObject);
 begin
-  isStartup:= true;
+  isStartup := True;
   AppDir := ExtractFilePath(ParamStr(0));
   PingCmd := TPINGSend.Create;
   TargetList := TTargetList.Create;
@@ -184,8 +185,8 @@ procedure TForm_Main.FormResize(Sender: TObject);
 begin
   if WindowState = wsNormal then
   begin
-    myHeight:= Height;
-    myWidth:= Width;
+    myHeight := Height;
+    myWidth := Width;
   end;
 end;
 
@@ -199,7 +200,7 @@ begin
     LoadTargets;
     PrintTargets;
 
-    isStartup:= false;
+    isStartup := False;
   end;
 end;
 
@@ -215,14 +216,15 @@ end;
 
 procedure TForm_Main.SpinEdit_TimeKeyDown(Sender: TObject; var Key: word; Shift: TShiftState);
 begin
-  Shift:= Shift;
+  Shift := Shift;
   if key = VK_RETURN then
   begin
     Button_Start.Click;
   end;
 end;
 
-procedure TForm_Main.StringGrid_TargetsDrawCell(Sender: TObject; aCol, aRow: integer; aRect: TRect; aState: TGridDrawState);
+procedure TForm_Main.StringGrid_TargetsDrawCell(Sender: TObject; aCol, aRow: integer;
+  aRect: TRect; aState: TGridDrawState);
 begin
   if not (gdFixed in aState) and not (gdSelected in aState) and Timer.Enabled then
   begin
@@ -247,7 +249,7 @@ end;
 
 procedure TForm_Main.TimerStartTimer(Sender: TObject);
 begin
-  SpinEdit_Time.Enabled:= False;
+  SpinEdit_Time.Enabled := False;
   Button_Start.Caption := 'Stop';
   TimerTimer(Sender);
 end;
@@ -255,7 +257,7 @@ end;
 procedure TForm_Main.TimerStopTimer(Sender: TObject);
 begin
   Button_Start.Caption := 'Start';
-  SpinEdit_Time.Enabled:= True;
+  SpinEdit_Time.Enabled := True;
   PrintTargets;
 end;
 
@@ -272,16 +274,16 @@ end;
 
 procedure TForm_Main.PingTarget(ATarget: TTarget);
 var
-  Details: TLogEntry;
+  LogEntry: TLogEntry;
 begin
-  Details := TLogEntry.Create;
+  LogEntry := TLogEntry.Create;
 
-  Details.Result := PingCmd.Ping(ATarget.Address);
-  Details.Time := now;
-  Details.PingTime := PingCmd.PingTime;
-  Details.Interval:= Timer.Interval;
+  LogEntry.Result := PingCmd.Ping(ATarget.Address);
+  LogEntry.Time := now;
+  LogEntry.PingTime := PingCmd.PingTime;
+  LogEntry.Interval := Timer.Interval;
 
-  ATarget.Log.Add(Details);
+  ATarget.Log.Add(LogEntry);
 end;
 
 procedure TForm_Main.ClearGrid;
@@ -292,19 +294,19 @@ end;
 
 procedure TForm_Main.PrepareDatabase;
 begin
-  TargetData.SQLite3Connection.DatabaseName:= AppDir + 'targets.sqlite';
+  TargetData.SQLite3Connection.DatabaseName := AppDir + 'targets.sqlite';
   if not FileExists(TargetData.SQLite3Connection.DatabaseName) then
   begin
     TargetData.CreateDatabase;
   end;
-  TargetData.SQLite3Connection.Connected:= True;
+  TargetData.SQLite3Connection.Connected := True;
 end;
 
 procedure TForm_Main.PrintTargets;
 var
   i: integer;
 begin
-  StringGrid_Targets.RowCount:= TargetList.Count + 1;
+  StringGrid_Targets.RowCount := TargetList.Count + 1;
   for i := 0 to TargetList.Count - 1 do
   begin
     StringGrid_Targets.Cells[0, i + 1] := TargetList[i].Address;
@@ -343,8 +345,8 @@ begin
   StringGrid_Targets.Columns.Items[3].Width := Scale96ToForm(cfgINI.ReadInteger('SG', '3', 200));
 
   //Einstellungen
-  SpinEdit_Time.Value:= cfgINI.ReadInteger('Prefs', 'Time', 30);
-  CheckBox_AllEvents.Checked:= cfgIni.ReadBool('Prefs', 'allEvents', False);
+  SpinEdit_Time.Value := cfgINI.ReadInteger('Prefs', 'Time', 30);
+  CheckBox_AllEvents.Checked := cfgIni.ReadBool('Prefs', 'allEvents', False);
 
   FreeAndNil(CfgINI);
 end;

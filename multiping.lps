@@ -8,7 +8,6 @@
         <Filename Value="multiping.lpr"/>
         <IsPartOfProject Value="True"/>
         <EditorIndex Value="5"/>
-        <TopLine Value="6"/>
         <CursorPos Y="18"/>
         <UsageCount Value="61"/>
         <Loaded Value="True"/>
@@ -19,8 +18,7 @@
         <ComponentName Value="Form_Main"/>
         <HasResources Value="True"/>
         <ResourceBaseClass Value="Form"/>
-        <IsVisibleTab Value="True"/>
-        <CursorPos X="36" Y="125"/>
+        <CursorPos X="32" Y="279"/>
         <UsageCount Value="61"/>
         <Loaded Value="True"/>
         <LoadedDesigner Value="True"/>
@@ -28,6 +26,7 @@
       <Unit>
         <Filename Value="target.pas"/>
         <IsPartOfProject Value="True"/>
+        <IsVisibleTab Value="True"/>
         <EditorIndex Value="4"/>
         <CursorPos X="19" Y="31"/>
         <UsageCount Value="61"/>
@@ -40,8 +39,7 @@
         <HasResources Value="True"/>
         <ResourceBaseClass Value="Form"/>
         <EditorIndex Value="3"/>
-        <TopLine Value="30"/>
-        <CursorPos X="6" Y="41"/>
+        <CursorPos X="6" Y="40"/>
         <UsageCount Value="54"/>
         <Loaded Value="True"/>
         <LoadedDesigner Value="True"/>
@@ -53,7 +51,7 @@
         <HasResources Value="True"/>
         <ResourceBaseClass Value="DataModule"/>
         <EditorIndex Value="1"/>
-        <CursorPos Y="55"/>
+        <CursorPos Y="56"/>
         <UsageCount Value="51"/>
         <Loaded Value="True"/>
         <LoadedDesigner Value="True"/>
@@ -113,7 +111,7 @@
         <UsageCount Value="8"/>
       </Unit>
     </Units>
-    <JumpHistory HistoryIndex="9">
+    <JumpHistory HistoryIndex="10">
       <Position>
         <Filename Value="target.pas"/>
         <Caret Line="25" Column="13" TopLine="4"/>
@@ -153,6 +151,10 @@
       <Position>
         <Filename Value="frm_log.pas"/>
         <Caret Line="41" Column="3" TopLine="30"/>
+      </Position>
+      <Position>
+        <Filename Value="frm_main.pas"/>
+        <Caret Line="275" Column="11" TopLine="263"/>
       </Position>
     </JumpHistory>
     <RunParams>

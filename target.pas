@@ -11,9 +11,9 @@ type
 
   TLogEntry = class
     Time: TDateTime;
-    Result: Boolean;
-    PingTime: Integer;
-    Interval: Cardinal;
+    Result: boolean;
+    PingTime: integer;
+    Interval: cardinal;
   end;
 
   TLog = specialize TFPGObjectList<TLogEntry>;
@@ -22,12 +22,12 @@ type
 
   TTarget = class(TObject)
   private
-    FAddress: String;
-    FID: Integer;
+    FAddress: string;
+    FID: integer;
     FLog: TLog;
   public
-    property Address: String read FAddress write FAddress;
-    property ID: Integer read FID write FID;
+    property Address: string read FAddress write FAddress;
+    property ID: integer read FID write FID;
     property Log: TLog read FLog write FLog;
     constructor Create;
     destructor Destroy; override;
@@ -42,7 +42,7 @@ implementation
 constructor TTarget.Create;
 begin
   inherited Create;
-  FLog:= TLog.Create;
+  FLog := TLog.Create;
 end;
 
 destructor TTarget.Destroy;
@@ -52,4 +52,3 @@ begin
 end;
 
 end.
-

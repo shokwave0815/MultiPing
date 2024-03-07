@@ -21,8 +21,8 @@ type
     procedure CreateDatabase;
     procedure AddTarget(ATarget: string);
     procedure ReadTargets(var ATargetList: TTargetList);
-    procedure ChangeTarget(AID: Integer; AAddress: String);
-    procedure RemoveTarget(AID: Integer);
+    procedure ChangeTarget(AID: integer; AAddress: string);
+    procedure RemoveTarget(AID: integer);
   end;
 
 var
@@ -37,9 +37,10 @@ implementation
 procedure TTargetData.CreateDatabase;
 begin
   SQLite3Connection.Open;
-  SQLTransaction.Active:= True;
+  SQLTransaction.Active := True;
 
-  SQLite3Connection.ExecuteDirect('CREATE TABLE tblTargets(ID Integer NOT NULL PRIMARY KEY AUTOINCREMENT, TARGET VCHAR(255));');
+  SQLite3Connection.ExecuteDirect(
+    'CREATE TABLE tblTargets(ID Integer NOT NULL PRIMARY KEY AUTOINCREMENT, TARGET VCHAR(255));');
   SQLite3Connection.ExecuteDirect('CREATE INDEX idxTargets ON tblTargets(ID collate nocase);');
 
   SQLTransaction.Commit;
@@ -50,7 +51,7 @@ begin
   SQLQuery.Close;
   SQLQuery.SQL.Clear;
 
-  SQLQuery.SQL.Text:= 'INSERT INTO tblTargets VALUES(NULL, :Target);';
+  SQLQuery.SQL.Text := 'INSERT INTO tblTargets VALUES(NULL, :Target);';
   SQLQuery.ParamByName('Target').AsString := ATarget;
 
   SQLQuery.ExecSQL;
@@ -60,18 +61,19 @@ begin
 end;
 
 procedure TTargetData.ReadTargets(var ATargetList: TTargetList);
-var i: Integer;
-    NewTarget: TTarget;
+var
+  i: integer;
+  NewTarget: TTarget;
 begin
   SQLQuery.Close;
   SQLQuery.SQL.Clear;
 
-  SQLQuery.SQL.Text:= 'SELECT ID, TARGET FROM tblTargets;';
+  SQLQuery.SQL.Text := 'SELECT ID, TARGET FROM tblTargets;';
 
   SQLQuery.Open;
 
   SQLQuery.First;
-  for i:= 0 to SQLQuery.RecordCount -1 do
+  for i := 0 to SQLQuery.RecordCount - 1 do
   begin
     NewTarget := TTarget.Create;
     NewTarget.Address := SQLQuery.FieldByName('TARGET').AsString;
@@ -82,12 +84,12 @@ begin
   end;
 end;
 
-procedure TTargetData.ChangeTarget(AID: Integer; AAddress: String);
+procedure TTargetData.ChangeTarget(AID: integer; AAddress: string);
 begin
   SQLQuery.Close;
   SQLQuery.SQL.Clear;
 
-  SQLQuery.SQL.Text:= 'UPDATE tblTargets SET TARGET= :Target WHERE ID= :TargetID;';
+  SQLQuery.SQL.Text := 'UPDATE tblTargets SET TARGET= :Target WHERE ID= :TargetID;';
   SQLQuery.ParamByName('Target').AsString := AAddress;
   SQLQuery.ParamByName('TargetID').AsInteger := AID;
 
@@ -95,12 +97,12 @@ begin
   SQLTransaction.Commit;
 end;
 
-procedure TTargetData.RemoveTarget(AID: Integer);
+procedure TTargetData.RemoveTarget(AID: integer);
 begin
   SQLQuery.Close;
   SQLQuery.SQL.Clear;
 
-  SQLQuery.SQL.Text:= 'DELETE FROM tblTargets WHERE ID= :TargetID;';
+  SQLQuery.SQL.Text := 'DELETE FROM tblTargets WHERE ID= :TargetID;';
   SQLQuery.ParamByName('TargetID').AsInteger := AID;
 
   SQLQuery.ExecSQL;
