@@ -16,7 +16,7 @@
     <VersionInfo>
       <UseVersionInfo Value="True"/>
       <AutoIncrementBuild Value="True"/>
-      <MinorVersionNr Value="2"/>
+      <MinorVersionNr Value="3"/>
       <BuildNr Value="3"/>
       <Language Value="0407"/>
       <StringTable CompanyName="Ingo Steiniger" OriginalFilename="multiping.exe" ProductName="MultiPing" ProductVersion="0.1"/>
