@@ -10,7 +10,7 @@ uses
 type
 
   TLogEntry = class
-    Time: TDateTime;
+    Start: TDateTime;
     Result: boolean;
     PingTime: integer;
     Interval: cardinal;

@@ -141,7 +141,7 @@ begin
   if (StringGrid_Targets.Row > 0) then
   begin
     Form_Log.Memo_Log.Clear;
-    Log := TargetList[StringGrid_Targets.Row - 1].Log;
+{    Log := TargetList[StringGrid_Targets.Row - 1].Log;
     Form_Log.Caption := 'Protokoll für ' + TargetList[StringGrid_Targets.Row - 1].Address;
     if Log.Count > 0 then
     begin
@@ -150,13 +150,14 @@ begin
       begin
         if (CheckBox_AllEvents.Checked) or (LastState <> Log.Items[i].Result) then
         begin
-          Form_Log.Memo_Log.Append(DateTimeToStr(Log.Items[i].Time) + ' - ' +
+          Form_Log.Memo_Log.Append(DateTimeToStr(Log.Items[i].Start) + ' - ' +
             BoolToStr(Log.Items[i].Result, 'OK', 'Fehler') + ' - ' + IntToStr(
             Log.Items[i].PingTime) + 'ms');
           LastState := Log.Items[i].Result;
         end;
       end;
-    end;
+    end;     }
+    Form_Log.Memo_Log.Append(TargetData.ReadLog(TargetList[StringGrid_Targets.Row - 1], CheckBox_AllEvents.Checked));
     Form_Log.Show;
   end;
 end;
@@ -279,11 +280,12 @@ begin
   LogEntry := TLogEntry.Create;
 
   LogEntry.Result := PingCmd.Ping(ATarget.Address);
-  LogEntry.Time := now;
+  LogEntry.Start := now;
   LogEntry.PingTime := PingCmd.PingTime;
   LogEntry.Interval := Timer.Interval;
 
-  ATarget.Log.Add(LogEntry);
+  //ATarget.Log.Add(LogEntry);
+  TargetData.AddLogEntry(ATarget, LogEntry);
 end;
 
 procedure TForm_Main.ClearGrid;
@@ -314,7 +316,7 @@ begin
     begin
       StringGrid_Targets.Cells[1, i + 1] := BoolToStr(TargetList[i].Log.Last.Result, 'ja', 'nein');
       StringGrid_Targets.Cells[2, i + 1] := IntToStr(TargetList[i].Log.Last.PingTime) + 'ms';
-      StringGrid_Targets.Cells[3, i + 1] := DateTimeToStr(TargetList[i].Log.Last.Time);
+      StringGrid_Targets.Cells[3, i + 1] := DateTimeToStr(TargetList[i].Log.Last.Start);
     end;
   end;
 end;
