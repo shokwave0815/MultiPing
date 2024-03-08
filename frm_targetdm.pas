@@ -39,9 +39,10 @@ begin
   SQLite3Connection.Open;
   SQLTransaction.Active := True;
 
-  SQLite3Connection.ExecuteDirect(
-    'CREATE TABLE tblTargets(ID Integer NOT NULL PRIMARY KEY AUTOINCREMENT, TARGET VCHAR(255));');
-  SQLite3Connection.ExecuteDirect('CREATE INDEX idxTargets ON tblTargets(ID collate nocase);');
+  SQLite3Connection.ExecuteDirect('CREATE TABLE tblTargets(id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT, target TEXT NOT NULL);');
+  SQLite3Connection.ExecuteDirect('CREATE INDEX idxTargets ON tblTargets(id COLLATE NOCASE);');
+
+  SQLite3Connection.ExecuteDirect('CREATE TABLE tblLog(ping_result NUMERIC, ping_start DATETIME, ping_time INTEGER, target_id INTEGER NOT NULL, FOREIGN KEY (target_id) REFERENCES tblTargets (id));');
 
   SQLTransaction.Commit;
 end;
@@ -68,7 +69,7 @@ begin
   SQLQuery.Close;
   SQLQuery.SQL.Clear;
 
-  SQLQuery.SQL.Text := 'SELECT ID, TARGET FROM tblTargets;';
+  SQLQuery.SQL.Text := 'SELECT id, target FROM tblTargets;';
 
   SQLQuery.Open;
 
@@ -76,8 +77,8 @@ begin
   for i := 0 to SQLQuery.RecordCount - 1 do
   begin
     NewTarget := TTarget.Create;
-    NewTarget.Address := SQLQuery.FieldByName('TARGET').AsString;
-    NewTarget.ID := SQLQuery.FieldByName('ID').AsInteger;
+    NewTarget.Address := SQLQuery.FieldByName('target').AsString;
+    NewTarget.ID := SQLQuery.FieldByName('id').AsInteger;
 
     ATargetList.Add(NewTarget);
     SQLQuery.Next;
@@ -89,7 +90,7 @@ begin
   SQLQuery.Close;
   SQLQuery.SQL.Clear;
 
-  SQLQuery.SQL.Text := 'UPDATE tblTargets SET TARGET= :Target WHERE ID= :TargetID;';
+  SQLQuery.SQL.Text := 'UPDATE tblTargets SET target= :Target WHERE id= :TargetID;';
   SQLQuery.ParamByName('Target').AsString := AAddress;
   SQLQuery.ParamByName('TargetID').AsInteger := AID;
 
@@ -102,7 +103,7 @@ begin
   SQLQuery.Close;
   SQLQuery.SQL.Clear;
 
-  SQLQuery.SQL.Text := 'DELETE FROM tblTargets WHERE ID= :TargetID;';
+  SQLQuery.SQL.Text := 'DELETE FROM tblTargets WHERE id= :TargetID;';
   SQLQuery.ParamByName('TargetID').AsInteger := AID;
 
   SQLQuery.ExecSQL;

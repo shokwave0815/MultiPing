@@ -1,10 +1,9 @@
 object TargetData: TTargetData
   OldCreateOrder = False
-  Height = 416
-  HorizontalOffset = 438
-  VerticalOffset = 313
-  Width = 591
-  PPI = 120
+  Height = 333
+  HorizontalOffset = 350
+  VerticalOffset = 250
+  Width = 473
   object SQLite3Connection: TSQLite3Connection
     Connected = False
     LoginPrompt = False
@@ -12,8 +11,8 @@ object TargetData: TTargetData
     Transaction = SQLTransaction
     CharSet = 'UTF-8'
     AlwaysUseBigint = False
-    Left = 50
-    Top = 10
+    Left = 40
+    Top = 8
   end
   object SQLQuery: TSQLQuery
     FieldDefs = <>
@@ -21,13 +20,13 @@ object TargetData: TTargetData
     Transaction = SQLTransaction
     Params = <>
     Macros = <>
-    Left = 170
-    Top = 10
+    Left = 136
+    Top = 8
   end
   object SQLTransaction: TSQLTransaction
     Active = False
     Database = SQLite3Connection
-    Left = 270
-    Top = 10
+    Left = 216
+    Top = 8
   end
 end
