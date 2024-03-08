@@ -21,9 +21,9 @@ type
     procedure CreateDatabase;
     procedure AddTarget(ATarget: string);
     procedure ReadTargets(var ATargetList: TTargetList);
-    procedure ChangeTarget(AID: integer; AAddress: string);
+    procedure ChangeTarget(ATarget: TTarget);
     procedure RemoveTarget(AID: integer);
-    procedure AddLogEntry(ATarget: TTarget; ALogEntry: TLogEntry);
+    procedure AddLogEntry(ATarget: TTarget);
     function ReadLog(ATarget: TTarget; AAll: Boolean): String;
   end;
 
@@ -84,14 +84,14 @@ begin
   end;
 end;
 
-procedure TTargetData.ChangeTarget(AID: integer; AAddress: string);
+procedure TTargetData.ChangeTarget(ATarget: TTarget);
 begin
   SQLQuery.Close;
   SQLQuery.SQL.Clear;
 
   SQLQuery.SQL.Text := 'UPDATE tblTargets SET target= :Target WHERE id= :TargetID;';
-  SQLQuery.ParamByName('Target').AsString := AAddress;
-  SQLQuery.ParamByName('TargetID').AsInteger := AID;
+  SQLQuery.ParamByName('Target').AsString := ATarget.Address;
+  SQLQuery.ParamByName('TargetID').AsInteger := ATarget.ID;
 
   SQLQuery.ExecSQL;
   SQLTransaction.Commit;
@@ -109,15 +109,15 @@ begin
   SQLTransaction.Commit;
 end;
 
-procedure TTargetData.AddLogEntry(ATarget: TTarget; ALogEntry: TLogEntry);
+procedure TTargetData.AddLogEntry(ATarget: TTarget);
 begin
   SQLQuery.Close;
   SQLQuery.SQL.Clear;
 
   SQLQuery.SQL.Text := 'INSERT INTO tblLog VALUES(:PingResult, :PingStart, :PingTime, :TargetID);';
-  SQLQuery.ParamByName('PingResult').AsBoolean := ALogEntry.Result;
-  SQLQuery.ParamByName('PingStart').AsDateTime := ALogEntry.Start;
-  SQLQuery.ParamByName('PingTime').AsInteger := ALogEntry.PingTime;
+  SQLQuery.ParamByName('PingResult').AsBoolean := ATarget.LastLogEntry.Result;
+  SQLQuery.ParamByName('PingStart').AsDateTime := ATarget.LastLogEntry.Start;
+  SQLQuery.ParamByName('PingTime').AsInteger := ATarget.LastLogEntry.PingTime;
   SQLQuery.ParamByName('TargetID').AsInteger := ATarget.ID;
 
   SQLQuery.ExecSQL;

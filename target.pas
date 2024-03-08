@@ -16,7 +16,6 @@ type
     Interval: cardinal;
   end;
 
-  TLog = specialize TFPGObjectList<TLogEntry>;
 
   { TTarget }
 
@@ -24,11 +23,11 @@ type
   private
     FAddress: string;
     FID: integer;
-    FLog: TLog;
+    FLastLogEntry: TLogEntry;
   public
     property Address: string read FAddress write FAddress;
     property ID: integer read FID write FID;
-    property Log: TLog read FLog write FLog;
+    property LastLogEntry: TLogEntry read FLastLogEntry write FLastLogEntry;
     constructor Create;
     destructor Destroy; override;
   end;
@@ -42,12 +41,12 @@ implementation
 constructor TTarget.Create;
 begin
   inherited Create;
-  FLog := TLog.Create;
+  FLastLogEntry := TLogEntry.Create;
 end;
 
 destructor TTarget.Destroy;
 begin
-  FLog.Free;
+  FreeAndNil(FLastLogEntry);
   inherited Destroy;
 end;
 

@@ -127,16 +127,12 @@ begin
   if Form_Change.ShowModal = mrOk then
   begin
     Target.Address := Form_Change.Edit_Target.Text;
-    TargetData.ChangeTarget(Target.ID, Target.Address);
+    TargetData.ChangeTarget(Target);
     PrintTargets;
   end;
 end;
 
 procedure TForm_Main.Button_LogClick(Sender: TObject);
-var
-  i: integer;
-  LastState: boolean;
-  Log: TLog;
 begin
   if (StringGrid_Targets.Row > 0) then
   begin
@@ -274,18 +270,13 @@ begin
 end;
 
 procedure TForm_Main.PingTarget(ATarget: TTarget);
-var
-  LogEntry: TLogEntry;
 begin
-  LogEntry := TLogEntry.Create;
+  ATarget.LastLogEntry.Result := PingCmd.Ping(ATarget.Address);
+  ATarget.LastLogEntry.Start := now;
+  ATarget.LastLogEntry.PingTime := PingCmd.PingTime;
+  ATarget.LastLogEntry.Interval := Timer.Interval;
 
-  LogEntry.Result := PingCmd.Ping(ATarget.Address);
-  LogEntry.Start := now;
-  LogEntry.PingTime := PingCmd.PingTime;
-  LogEntry.Interval := Timer.Interval;
-
-  //ATarget.Log.Add(LogEntry);
-  TargetData.AddLogEntry(ATarget, LogEntry);
+  TargetData.AddLogEntry(ATarget);
 end;
 
 procedure TForm_Main.ClearGrid;
@@ -307,16 +298,19 @@ end;
 procedure TForm_Main.PrintTargets;
 var
   i: integer;
+  LastLogEntry: TLogEntry;
 begin
   StringGrid_Targets.RowCount := TargetList.Count + 1;
   for i := 0 to TargetList.Count - 1 do
   begin
     StringGrid_Targets.Cells[0, i + 1] := TargetList[i].Address;
-    if TargetList[i].Log.Count > 0 then
+
+    LastLogEntry:= TargetList[i].LastLogEntry;
+    if (LastLogEntry <> NIL) and (LastLogEntry.Start > 0) then
     begin
-      StringGrid_Targets.Cells[1, i + 1] := BoolToStr(TargetList[i].Log.Last.Result, 'ja', 'nein');
-      StringGrid_Targets.Cells[2, i + 1] := IntToStr(TargetList[i].Log.Last.PingTime) + 'ms';
-      StringGrid_Targets.Cells[3, i + 1] := DateTimeToStr(TargetList[i].Log.Last.Start);
+      StringGrid_Targets.Cells[1, i + 1] := BoolToStr(LastLogEntry.Result, 'ja', 'nein');
+      StringGrid_Targets.Cells[2, i + 1] := IntToStr(LastLogEntry.PingTime) + 'ms';
+      StringGrid_Targets.Cells[3, i + 1] := DateTimeToStr(LastLogEntry.Start);
     end;
   end;
 end;
