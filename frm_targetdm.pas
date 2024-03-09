@@ -159,7 +159,7 @@ begin
   begin
     if (AAll) or (LastState <> SQLQuery.FieldByName('ping_result').AsBoolean) then
     begin
-      Result += DateTimeToStr(SQLQuery.FieldByName('ping_start').AsDateTime) + ' - '  + BoolToStr(SQLQuery.FieldByName('ping_result').AsBoolean, 'OK', 'Fehler') + ' - ' + IntToStr(SQLQuery.FieldByName('ping_time').AsInteger) + 'ms' + LineEnding;
+      Result += TimeToStr(SQLQuery.FieldByName('ping_start').AsDateTime) + ' - '  + BoolToStr(SQLQuery.FieldByName('ping_result').AsBoolean, 'OK', 'Fehler') + ' - ' + IntToStr(SQLQuery.FieldByName('ping_time').AsInteger) + 'ms' + LineEnding;
       LastState := SQLQuery.FieldByName('ping_result').AsBoolean;
     end;
     SQLQuery.Next;
