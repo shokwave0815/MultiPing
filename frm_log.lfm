@@ -9,17 +9,69 @@ object Form_Log: TForm_Log
   ClientWidth = 428
   DesignTimePPI = 120
   KeyPreview = True
+  OnCreate = FormCreate
   OnKeyDown = FormKeyDown
+  OnShow = FormShow
   Position = poMainFormCenter
   object Memo_Log: TMemo
     Left = 0
-    Height = 391
-    Top = 0
+    Height = 328
+    Top = 63
     Width = 428
     Align = alClient
     ReadOnly = True
     ScrollBars = ssAutoBoth
+    TabOrder = 1
+  end
+  object Panel1: TPanel
+    Left = 0
+    Height = 63
+    Top = 0
+    Width = 428
+    Align = alTop
+    ClientHeight = 63
+    ClientWidth = 428
     TabOrder = 0
-    OnChange = Memo_LogChange
+    object DatePicker_Log: TDateTimePicker
+      AnchorSideLeft.Control = Panel1
+      AnchorSideTop.Control = Panel1
+      Left = 11
+      Height = 28
+      Top = 11
+      Width = 99
+      CenturyFrom = 1941
+      MaxDate = 2958465
+      MinDate = -53780
+      TabOrder = 0
+      BorderSpacing.Left = 10
+      BorderSpacing.Top = 10
+      TrailingSeparator = False
+      TextForNullDate = 'NULL'
+      LeadingZeros = True
+      Kind = dtkDate
+      TimeFormat = tf24
+      TimeDisplay = tdHMS
+      DateMode = dmComboBox
+      Date = 45360
+      Time = 0.445715439811465
+      UseDefaultSeparators = True
+      HideDateTimeParts = []
+      MonthNames = 'Long'
+      OnEditingDone = DatePicker_LogEditingDone
+    end
+    object CheckBox_AllEvents: TCheckBox
+      AnchorSideLeft.Control = DatePicker_Log
+      AnchorSideLeft.Side = asrBottom
+      AnchorSideTop.Control = DatePicker_Log
+      Left = 115
+      Height = 24
+      Top = 11
+      Width = 170
+      BorderSpacing.Left = 5
+      BorderSpacing.Right = 6
+      Caption = 'ausführliches Protokoll'
+      TabOrder = 1
+      OnChange = CheckBox_AllEventsChange
+    end
   end
 end

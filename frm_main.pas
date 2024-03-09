@@ -19,7 +19,6 @@ type
     Button_AddTarget: TButton;
     Button_Delete: TButton;
     Button_Log: TButton;
-    CheckBox_AllEvents: TCheckBox;
     Edit_AddTarget: TEdit;
     Label_AddTarget: TLabel;
     Label_Time: TLabel;
@@ -48,7 +47,7 @@ type
     procedure TimerStopTimer(Sender: TObject);
     procedure TimerTimer(Sender: TObject);
   private
-    isStartup: boolean;
+    isStartup: Boolean;
     AppDir: string;
     cfgIni: TIniFile;
     myHeight, myWidth: integer;
@@ -136,24 +135,8 @@ procedure TForm_Main.Button_LogClick(Sender: TObject);
 begin
   if (StringGrid_Targets.Row > 0) then
   begin
-    Form_Log.Memo_Log.Clear;
-{    Log := TargetList[StringGrid_Targets.Row - 1].Log;
-    Form_Log.Caption := 'Protokoll für ' + TargetList[StringGrid_Targets.Row - 1].Address;
-    if Log.Count > 0 then
-    begin
-      LastState := not Log.First.Result;  //to print first event
-      for i := 0 to Log.Count - 1 do
-      begin
-        if (CheckBox_AllEvents.Checked) or (LastState <> Log.Items[i].Result) then
-        begin
-          Form_Log.Memo_Log.Append(DateTimeToStr(Log.Items[i].Start) + ' - ' +
-            BoolToStr(Log.Items[i].Result, 'OK', 'Fehler') + ' - ' + IntToStr(
-            Log.Items[i].PingTime) + 'ms');
-          LastState := Log.Items[i].Result;
-        end;
-      end;
-    end;     }
-    Form_Log.Memo_Log.Append(TargetData.ReadLog(TargetList[StringGrid_Targets.Row - 1], CheckBox_AllEvents.Checked));
+    Form_Log.LogTarget:= TargetList[StringGrid_Targets.Row - 1];
+    Form_Log.ReadLog;
     Form_Log.Show;
   end;
 end;
@@ -342,7 +325,7 @@ begin
 
   //Einstellungen
   SpinEdit_Time.Value := cfgINI.ReadInteger('Prefs', 'Time', 30);
-  CheckBox_AllEvents.Checked := cfgIni.ReadBool('Prefs', 'allEvents', False);
+  Form_Log.CheckBox_AllEvents.Checked := cfgIni.ReadBool('Prefs', 'allEvents', False);
 
   FreeAndNil(CfgINI);
 end;
@@ -369,7 +352,7 @@ begin
 
   //Einstellungen
   cfgIni.WriteInteger('Prefs', 'Time', SpinEdit_Time.Value);
-  cfgIni.WriteBool('Prefs', 'allEvents', CheckBox_AllEvents.Checked);
+  cfgIni.WriteBool('Prefs', 'allEvents', Form_Log.CheckBox_AllEvents.Checked);
   FreeAndNil(cfgINI);
 end;
 

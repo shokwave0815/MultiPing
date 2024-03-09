@@ -16,7 +16,6 @@ type
     SQLQuery: TSQLQuery;
     SQLTransaction: TSQLTransaction;
   private
-
   public
     procedure CreateDatabase;
     procedure AddTarget(ATarget: string);
@@ -24,7 +23,7 @@ type
     procedure ChangeTarget(ATarget: TTarget);
     procedure RemoveTarget(AID: integer);
     procedure AddLogEntry(ATarget: TTarget);
-    function ReadLog(ATarget: TTarget; AAll: Boolean): String;
+    function ReadLog(ATarget: TTarget; AAll: Boolean; ADate: TDate): String;
   end;
 
 var
@@ -124,15 +123,18 @@ begin
   SQLTransaction.Commit;
 end;
 
-function TTargetData.ReadLog(ATarget: TTarget; AAll: Boolean): String;
+function TTargetData.ReadLog(ATarget: TTarget; AAll: Boolean; ADate: TDate): String;
 var i: Integer;
     LastState: boolean;
 begin
   SQLQuery.Close;
   SQLQuery.SQL.Clear;
 
-  SQLQuery.SQL.Text := 'SELECT ping_result, ping_start, ping_time FROM tblLog WHERE target_id= :TargetID;';
+  SQLQuery.SQL.Text := 'SELECT ping_result, ping_start, ping_time ' +
+                       'FROM tblLog ' +
+                       'WHERE target_id = :TargetID AND date(ping_start) = :PingStart;';
   SQLQuery.ParamByName('TargetID').asInteger := ATarget.ID;
+  SQLQuery.ParamByName('PingStart').asString := FormatDateTime('YYYY"-"MM"-"DD', ADate);
 
   SQLQuery.Open;
 
