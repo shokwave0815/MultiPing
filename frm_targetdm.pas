@@ -18,6 +18,7 @@ type
   private
   public
     procedure CreateDatabase;
+    procedure ClearDatabase;
     procedure AddTarget(ATarget: string);
     procedure ReadTargets(var ATargetList: TTargetList);
     procedure ChangeTarget(ATarget: TTarget);
@@ -45,6 +46,13 @@ begin
   SQLite3Connection.ExecuteDirect('CREATE TABLE tblLog(ping_result BOOLEAN, ping_start DATETIME, ping_time INTEGER, target_id INTEGER NOT NULL, FOREIGN KEY (target_id) REFERENCES tblTargets (id));');
 
   SQLTransaction.Commit;
+end;
+
+procedure TTargetData.ClearDatabase;
+begin
+  SQLite3Connection.ExecuteDirect('End Transaction');
+  SQLite3Connection.ExecuteDirect('VACUUM;');
+  SQLite3Connection.ExecuteDirect('Begin Transaction');
 end;
 
 procedure TTargetData.AddTarget(ATarget: string);
@@ -100,11 +108,19 @@ begin
   SQLQuery.Close;
   SQLQuery.SQL.Clear;
 
+  SQLQuery.SQL.Text := 'DELETE FROM tblLog WHERE target_id= :TargetID;';
+  SQLQuery.ParamByName('TargetID').AsInteger := AID;
+
+  SQLQuery.ExecSQL;
+  SQLTransaction.Commit;
+
   SQLQuery.SQL.Text := 'DELETE FROM tblTargets WHERE id= :TargetID;';
   SQLQuery.ParamByName('TargetID').AsInteger := AID;
 
   SQLQuery.ExecSQL;
   SQLTransaction.Commit;
+
+  ClearDatabase;
 end;
 
 procedure TTargetData.AddLogEntry(ATarget: TTarget);

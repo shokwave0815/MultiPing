@@ -2,14 +2,14 @@
 <CONFIG>
   <ProjectSession>
     <Version Value="12"/>
-    <BuildModes Active="Release"/>
+    <BuildModes Active="Debug"/>
     <Units>
       <Unit>
         <Filename Value="multiping.lpr"/>
         <IsPartOfProject Value="True"/>
         <EditorIndex Value="5"/>
         <CursorPos Y="18"/>
-        <UsageCount Value="102"/>
+        <UsageCount Value="110"/>
         <Loaded Value="True"/>
       </Unit>
       <Unit>
@@ -18,10 +18,9 @@
         <ComponentName Value="Form_Main"/>
         <HasResources Value="True"/>
         <ResourceBaseClass Value="Form"/>
-        <IsVisibleTab Value="True"/>
         <TopLine Value="298"/>
         <CursorPos Y="140"/>
-        <UsageCount Value="102"/>
+        <UsageCount Value="110"/>
         <Loaded Value="True"/>
         <LoadedDesigner Value="True"/>
       </Unit>
@@ -31,7 +30,7 @@
         <EditorIndex Value="4"/>
         <TopLine Value="31"/>
         <CursorPos X="29" Y="49"/>
-        <UsageCount Value="102"/>
+        <UsageCount Value="110"/>
         <Loaded Value="True"/>
       </Unit>
       <Unit>
@@ -43,7 +42,7 @@
         <EditorIndex Value="3"/>
         <TopLine Value="41"/>
         <CursorPos X="14" Y="55"/>
-        <UsageCount Value="95"/>
+        <UsageCount Value="103"/>
         <Loaded Value="True"/>
         <LoadedDesigner Value="True"/>
       </Unit>
@@ -53,10 +52,11 @@
         <ComponentName Value="TargetData"/>
         <HasResources Value="True"/>
         <ResourceBaseClass Value="DataModule"/>
+        <IsVisibleTab Value="True"/>
         <EditorIndex Value="1"/>
-        <TopLine Value="62"/>
-        <CursorPos X="4" Y="63"/>
-        <UsageCount Value="92"/>
+        <TopLine Value="41"/>
+        <CursorPos Y="56"/>
+        <UsageCount Value="100"/>
         <Loaded Value="True"/>
         <LoadedDesigner Value="True"/>
       </Unit>
@@ -67,7 +67,7 @@
         <HasResources Value="True"/>
         <ResourceBaseClass Value="Form"/>
         <EditorIndex Value="2"/>
-        <UsageCount Value="68"/>
+        <UsageCount Value="76"/>
         <Loaded Value="True"/>
         <LoadedDesigner Value="True"/>
       </Unit>
@@ -116,42 +116,6 @@
       </Unit>
     </Units>
     <JumpHistory HistoryIndex="29">
-      <Position>
-        <Filename Value="frm_targetdm.pas"/>
-        <Caret Line="141" Column="112" TopLine="130"/>
-      </Position>
-      <Position>
-        <Filename Value="frm_targetdm.pas"/>
-        <Caret Line="137" Column="42" TopLine="125"/>
-      </Position>
-      <Position>
-        <Filename Value="frm_targetdm.pas"/>
-        <Caret Line="139" TopLine="125"/>
-      </Position>
-      <Position>
-        <Filename Value="frm_targetdm.pas"/>
-        <Caret Line="120" Column="55" TopLine="108"/>
-      </Position>
-      <Position>
-        <Filename Value="frm_targetdm.pas"/>
-        <Caret Line="117" Column="77" TopLine="108"/>
-      </Position>
-      <Position>
-        <Filename Value="frm_targetdm.pas"/>
-        <Caret Line="137" Column="53" TopLine="127"/>
-      </Position>
-      <Position>
-        <Filename Value="frm_targetdm.pas"/>
-        <Caret Line="135" Column="75" TopLine="131"/>
-      </Position>
-      <Position>
-        <Filename Value="frm_targetdm.pas"/>
-        <Caret Line="140" Column="50" TopLine="128"/>
-      </Position>
-      <Position>
-        <Filename Value="frm_log.pas"/>
-        <Caret Line="41" Column="6" TopLine="17"/>
-      </Position>
       <Position>
         <Filename Value="frm_log.pas"/>
         <Caret Line="42" Column="6" TopLine="18"/>
@@ -235,6 +199,42 @@
       <Position>
         <Filename Value="frm_log.pas"/>
         <Caret Line="65" Column="20" TopLine="45"/>
+      </Position>
+      <Position>
+        <Filename Value="frm_targetdm.pas"/>
+        <Caret Line="21" Column="29" TopLine="17"/>
+      </Position>
+      <Position>
+        <Filename Value="frm_targetdm.pas"/>
+        <Caret Line="126" Column="17" TopLine="103"/>
+      </Position>
+      <Position>
+        <Filename Value="frm_targetdm.pas"/>
+        <Caret Line="54" Column="33" TopLine="44"/>
+      </Position>
+      <Position>
+        <Filename Value="frm_targetdm.pas"/>
+        <Caret Line="55" Column="17" TopLine="44"/>
+      </Position>
+      <Position>
+        <Filename Value="frm_targetdm.pas"/>
+        <Caret Line="59" Column="5" TopLine="44"/>
+      </Position>
+      <Position>
+        <Filename Value="frm_targetdm.pas"/>
+        <Caret Line="53" Column="26" TopLine="44"/>
+      </Position>
+      <Position>
+        <Filename Value="frm_targetdm.pas"/>
+        <Caret Line="57" Column="27" TopLine="44"/>
+      </Position>
+      <Position>
+        <Filename Value="frm_targetdm.pas"/>
+        <Caret Line="56" Column="29" TopLine="49"/>
+      </Position>
+      <Position>
+        <Filename Value="frm_targetdm.pas"/>
+        <Caret Line="59" Column="38" TopLine="49"/>
       </Position>
     </JumpHistory>
     <RunParams>
