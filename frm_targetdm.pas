@@ -61,7 +61,6 @@ end;
 
 procedure TTargetData.ReadTargets(var ATargetList: TTargetList);
 var
-  i: integer;
   NewTarget: TTarget;
 begin
   SQLQuery.Close;
@@ -72,7 +71,7 @@ begin
   SQLQuery.Open;
 
   SQLQuery.First;
-  for i := 0 to SQLQuery.RecordCount - 1 do
+  while not SQLQuery.EOF do
   begin
     NewTarget := TTarget.Create;
     NewTarget.Address := SQLQuery.FieldByName('target').AsString;
@@ -124,8 +123,7 @@ begin
 end;
 
 function TTargetData.ReadLog(ATarget: TTarget; AAll: Boolean; ADate: TDate): String;
-var i: Integer;
-    LastState: boolean;
+var LastState: boolean;
 begin
   SQLQuery.Close;
   SQLQuery.SQL.Clear;
@@ -141,7 +139,7 @@ begin
   SQLQuery.First;
   Result:='';
   LastState := not SQLQuery.FieldByName('ping_result').AsBoolean;  //to print first event
-  for i := 0 to SQLQuery.RecordCount - 1 do
+  while not SQLQuery.EOF do
   begin
     if (AAll) or (LastState <> SQLQuery.FieldByName('ping_result').AsBoolean) then
     begin
