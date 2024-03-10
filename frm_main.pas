@@ -231,10 +231,10 @@ begin
     if Timer.Enabled then
     begin
       case StringGrid_Targets.Cells[2, aRow] of
-        'ja': begin
+        'ja': begin //erreichbares Ziel
           StringGrid_Targets.canvas.Brush.Color := TColor($A0DDA0);
         end;
-        'nein': begin
+        'nein': begin //nicht erreichbares Ziel
           StringGrid_Targets.canvas.Brush.Color := TColor($A0A0FF);
         end;
         else
@@ -244,16 +244,17 @@ begin
       end;
     end;
 
+    //deaktiviertes Ziel
     if StringGrid_Targets.Cells[0, aRow] = 'nein' then
     begin
       StringGrid_Targets.canvas.Brush.Color := TColor($E0E0E0);
     end;
 
     if gdSelected in aState then
-    begin
+    begin //selektierte Zeile
       StringGrid_Targets.Canvas.Font.Style:= [fsBold];
     end else
-    begin
+    begin //nicht selektierte Zeile
       StringGrid_Targets.Canvas.Font.Style:= [];
     end;
 
@@ -283,22 +284,22 @@ var
 begin
   for i := 0 to TargetList.Count - 1 do
   begin
-    PingTarget(TargetList.Items[i]);
+    if TargetList.Items[i].Active then
+    begin
+      PingTarget(TargetList.Items[i]);
+    end;
   end;
   PrintTargets;
 end;
 
 procedure TForm_Main.PingTarget(ATarget: TTarget);
 begin
-  if ATarget.Active then
-  begin
     ATarget.LastLogEntry.Result := PingCmd.Ping(ATarget.Address);
     ATarget.LastLogEntry.Start := now;
     ATarget.LastLogEntry.PingTime := PingCmd.PingTime;
     ATarget.LastLogEntry.Interval := Timer.Interval;
 
     TargetData.AddLogEntry(ATarget);
-  end;
 end;
 
 procedure TForm_Main.ClearGrid;

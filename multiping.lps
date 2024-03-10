@@ -19,8 +19,7 @@
         <HasResources Value="True"/>
         <ResourceBaseClass Value="Form"/>
         <IsVisibleTab Value="True"/>
-        <TopLine Value="360"/>
-        <CursorPos X="34" Y="376"/>
+        <CursorPos X="36" Y="257"/>
         <UsageCount Value="142"/>
         <Loaded Value="True"/>
         <LoadedDesigner Value="True"/>
@@ -29,7 +28,6 @@
         <Filename Value="target.pas"/>
         <IsPartOfProject Value="True"/>
         <EditorIndex Value="4"/>
-        <TopLine Value="26"/>
         <CursorPos X="17" Y="46"/>
         <UsageCount Value="142"/>
         <Loaded Value="True"/>
@@ -41,7 +39,6 @@
         <HasResources Value="True"/>
         <ResourceBaseClass Value="Form"/>
         <EditorIndex Value="3"/>
-        <TopLine Value="56"/>
         <CursorPos X="3" Y="66"/>
         <UsageCount Value="135"/>
         <Loaded Value="True"/>
@@ -54,7 +51,6 @@
         <HasResources Value="True"/>
         <ResourceBaseClass Value="DataModule"/>
         <EditorIndex Value="1"/>
-        <TopLine Value="158"/>
         <CursorPos X="23" Y="178"/>
         <UsageCount Value="132"/>
         <Loaded Value="True"/>
@@ -67,7 +63,6 @@
         <HasResources Value="True"/>
         <ResourceBaseClass Value="Form"/>
         <EditorIndex Value="2"/>
-        <TopLine Value="31"/>
         <UsageCount Value="108"/>
         <Loaded Value="True"/>
         <LoadedDesigner Value="True"/>
@@ -77,7 +72,7 @@
         <EditorIndex Value="-1"/>
         <TopLine Value="38"/>
         <CursorPos X="96" Y="41"/>
-        <UsageCount Value="1"/>
+        <UsageCount Value="0"/>
       </Unit>
       <Unit>
         <Filename Value="../../lazarus/lcl/grids.pas"/>
@@ -85,14 +80,14 @@
         <EditorIndex Value="-1"/>
         <TopLine Value="5492"/>
         <CursorPos Y="5502"/>
-        <UsageCount Value="2"/>
+        <UsageCount Value="1"/>
       </Unit>
       <Unit>
         <Filename Value="../../lazarus/fpc/3.2.2/source/rtl/objpas/fgl.pp"/>
         <EditorIndex Value="-1"/>
         <TopLine Value="1094"/>
         <CursorPos Y="1108"/>
-        <UsageCount Value="4"/>
+        <UsageCount Value="3"/>
       </Unit>
       <Unit>
         <Filename Value="../../lazarus/ide/transfermacros.pp"/>
@@ -100,20 +95,20 @@
         <EditorIndex Value="-1"/>
         <TopLine Value="144"/>
         <CursorPos X="40" Y="159"/>
-        <UsageCount Value="2"/>
+        <UsageCount Value="1"/>
       </Unit>
       <Unit>
         <Filename Value="../../lazarus/components/paradox/regparadox.pp"/>
         <EditorIndex Value="-1"/>
         <TopLine Value="5"/>
         <CursorPos X="65" Y="19"/>
-        <UsageCount Value="2"/>
+        <UsageCount Value="1"/>
       </Unit>
       <Unit>
         <Filename Value="../../lazarus/fpc/3.2.2/source/packages/fcl-db/src/paradox/paradox.pp"/>
         <EditorIndex Value="-1"/>
         <TopLine Value="16"/>
-        <UsageCount Value="2"/>
+        <UsageCount Value="1"/>
       </Unit>
     </Units>
     <JumpHistory HistoryIndex="29">
