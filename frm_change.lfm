@@ -7,18 +7,18 @@ object Form_Change: TForm_Change
   Caption = 'Ziel ändern'
   ClientHeight = 112
   ClientWidth = 400
+  Color = clWindow
   DesignTimePPI = 120
   Position = poMainFormCenter
-  LCLVersion = '3.2.0.0'
   object Edit_Target: TEdit
     AnchorSideLeft.Control = Owner
     AnchorSideTop.Control = Owner
     AnchorSideRight.Control = Owner
     AnchorSideRight.Side = asrBottom
     Left = 12
-    Height = 23
+    Height = 28
     Top = 12
-    Width = 300
+    Width = 376
     Anchors = [akTop, akLeft, akRight]
     BorderSpacing.Left = 12
     BorderSpacing.Top = 12
@@ -31,7 +31,7 @@ object Form_Change: TForm_Change
     AnchorSideBottom.Side = asrBottom
     Left = 12
     Height = 38
-    Top = 42
+    Top = 62
     Width = 94
     Anchors = [akLeft, akBottom]
     BorderSpacing.Left = 12
@@ -47,9 +47,9 @@ object Form_Change: TForm_Change
     AnchorSideRight.Side = asrBottom
     AnchorSideBottom.Control = Owner
     AnchorSideBottom.Side = asrBottom
-    Left = 186
+    Left = 264
     Height = 38
-    Top = 42
+    Top = 62
     Width = 124
     Anchors = [akRight, akBottom]
     BorderSpacing.Right = 12

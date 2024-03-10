@@ -136,6 +136,7 @@ begin
   if (StringGrid_Targets.Row > 0) then
   begin
     Form_Log.LogTarget:= TargetList[StringGrid_Targets.Row - 1];
+    Form_Log.Caption:= 'Protokoll für ' + Form_Log.LogTarget.Address;
     Form_Log.ReadLog;
     Form_Log.Show;
   end;
@@ -179,6 +180,7 @@ begin
     PrepareDatabase;
     LoadTargets;
     PrintTargets;
+    Form_Log.DatePicker_Log.Date:= now;
 
     isStartup := False;
   end;
@@ -206,21 +208,34 @@ end;
 procedure TForm_Main.StringGrid_TargetsDrawCell(Sender: TObject; aCol, aRow: integer;
   aRect: TRect; aState: TGridDrawState);
 begin
-  if not (gdFixed in aState) and not (gdSelected in aState) and Timer.Enabled then
+  StringGrid_Targets.Canvas.Brush.Color := clWindow;
+  StringGrid_Targets.Canvas.Font.Color := clWindowText;
+
+  if not (gdFixed in aState) then
   begin
-    case StringGrid_Targets.Cells[1, aRow] of
-      'ja': begin
-        StringGrid_Targets.canvas.Brush.Color := TColor($80CC80);
-      end;
-      'nein': begin
-        StringGrid_Targets.canvas.Brush.Color := TColor($A0A0FF);
-      end;
-      else
-      begin
-        StringGrid_Targets.Canvas.Font.Color := clBlack;
+    if Timer.Enabled then
+    begin
+      case StringGrid_Targets.Cells[1, aRow] of
+        'ja': begin
+          StringGrid_Targets.canvas.Brush.Color := TColor($A0DDA0);
+        end;
+        'nein': begin
+          StringGrid_Targets.canvas.Brush.Color := TColor($A0A0FF);
+        end;
+        else
+        begin
+          StringGrid_Targets.Canvas.Font.Color := clWindowText;
+        end;
       end;
     end;
 
+    if gdSelected in aState then
+    begin
+      StringGrid_Targets.Canvas.Font.Style:= [fsBold];
+    end else
+    begin
+      StringGrid_Targets.Canvas.Font.Style:= [];
+    end;
     StringGrid_Targets.Canvas.FillRect(arect);
     StringGrid_Targets.Canvas.TextOut(aRect.Left + 2, aRect.Top + 2, StringGrid_Targets.Cells[aCol, aRow]);
     StringGrid_Targets.Canvas.FrameRect(aRect);
@@ -317,6 +332,9 @@ begin
   myHeight := Height;
   myWidth := Width;
 
+  Form_Log.Width := Scale96ToForm(cfgINI.ReadInteger('LogWindow', 'Width', 450));
+  Form_Log.Height := Scale96ToForm(cfgINI.ReadInteger('LogWindow', 'Height', 400));
+
   //Größe der Spalten des StringGrid
   StringGrid_Targets.Columns.Items[0].Width := Scale96ToForm(cfgINI.ReadInteger('SG', '0', 300));
   StringGrid_Targets.Columns.Items[1].Width := Scale96ToForm(cfgINI.ReadInteger('SG', '1', 150));
@@ -343,6 +361,9 @@ begin
     cfgINI.WriteInteger('Window', 'Height', ScaleFormTo96(Height));
   end;
   cfgINI.WriteInteger('Window', 'State', Ord(WindowState));
+
+  cfgINI.WriteInteger('LogWindow', 'Width', ScaleFormTo96(Form_Log.Width));
+  cfgINI.WriteInteger('LogWindow', 'Height', ScaleFormTo96(Form_Log.Height));
 
   //Größe der Spalten des StringGrid
   cfgINI.WriteInteger('SG', '0', ScaleFormTo96(StringGrid_Targets.Columns.Items[0].Width));

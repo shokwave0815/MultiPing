@@ -1,12 +1,12 @@
 object Form_Log: TForm_Log
   Left = 352
-  Height = 391
+  Height = 400
   Top = 32
-  Width = 428
+  Width = 450
   BorderIcons = [biSystemMenu]
   Caption = 'Protokoll'
-  ClientHeight = 391
-  ClientWidth = 428
+  ClientHeight = 400
+  ClientWidth = 450
   DesignTimePPI = 120
   KeyPreview = True
   OnCreate = FormCreate
@@ -15,9 +15,9 @@ object Form_Log: TForm_Log
   Position = poMainFormCenter
   object Memo_Log: TMemo
     Left = 0
-    Height = 328
-    Top = 63
-    Width = 428
+    Height = 320
+    Top = 80
+    Width = 450
     Align = alClient
     ReadOnly = True
     ScrollBars = ssAutoBoth
@@ -25,26 +25,29 @@ object Form_Log: TForm_Log
   end
   object Panel1: TPanel
     Left = 0
-    Height = 63
+    Height = 80
     Top = 0
-    Width = 428
+    Width = 450
     Align = alTop
-    ClientHeight = 63
-    ClientWidth = 428
+    ClientHeight = 80
+    ClientWidth = 450
+    Color = clWindow
+    ParentBackground = False
+    ParentColor = False
     TabOrder = 0
     object DatePicker_Log: TDateTimePicker
-      AnchorSideLeft.Control = Panel1
-      AnchorSideTop.Control = Panel1
+      AnchorSideLeft.Control = Label_Date
+      AnchorSideTop.Control = Label_Date
+      AnchorSideTop.Side = asrBottom
       Left = 11
       Height = 28
-      Top = 11
+      Top = 36
       Width = 99
       CenturyFrom = 1941
       MaxDate = 2958465
       MinDate = -53780
       TabOrder = 0
-      BorderSpacing.Left = 10
-      BorderSpacing.Top = 10
+      BorderSpacing.Top = 5
       TrailingSeparator = False
       TextForNullDate = 'NULL'
       LeadingZeros = True
@@ -62,16 +65,26 @@ object Form_Log: TForm_Log
     object CheckBox_AllEvents: TCheckBox
       AnchorSideLeft.Control = DatePicker_Log
       AnchorSideLeft.Side = asrBottom
-      AnchorSideTop.Control = DatePicker_Log
-      Left = 115
+      AnchorSideTop.Control = Label_Date
+      Left = 120
       Height = 24
       Top = 11
       Width = 170
-      BorderSpacing.Left = 5
-      BorderSpacing.Right = 6
+      BorderSpacing.Left = 10
       Caption = 'ausführliches Protokoll'
       TabOrder = 1
       OnChange = CheckBox_AllEventsChange
+    end
+    object Label_Date: TLabel
+      AnchorSideLeft.Control = Panel1
+      AnchorSideTop.Control = Panel1
+      Left = 11
+      Height = 20
+      Top = 11
+      Width = 48
+      BorderSpacing.Left = 10
+      BorderSpacing.Top = 10
+      Caption = 'Datum:'
     end
   end
 end

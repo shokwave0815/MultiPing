@@ -15,6 +15,7 @@ type
   TForm_Log = class(TForm)
     CheckBox_AllEvents: TCheckBox;
     DatePicker_Log: TDateTimePicker;
+    Label_Date: TLabel;
     Memo_Log: TMemo;
     Panel1: TPanel;
     procedure CheckBox_AllEventsChange(Sender: TObject);
