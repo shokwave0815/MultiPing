@@ -9,14 +9,17 @@ uses
 
 type
 
-  { TTargetData }
+  { TTargetDatabase }
 
-  TTargetData = class(TDataModule)
+  TTargetDatabase = class(TDataModule)
     SQLite3Connection: TSQLite3Connection;
     SQLQuery: TSQLQuery;
     SQLTransaction: TSQLTransaction;
   private
+    procedure SetFilename(AFilename: String);
+    function GetFilename: String;
   public
+    property Filename: String read GetFilename write SetFilename;
     procedure CreateDatabase;
     procedure ClearDatabase;
     procedure AddTarget(ATarget: string);
@@ -28,7 +31,7 @@ type
   end;
 
 var
-  TargetData: TTargetData;
+  TargetDatabase: TTargetDatabase;
 
 implementation
 
@@ -39,11 +42,23 @@ begin
   Result:= a.Position - b.Position;
 end;
 
-{ TTargetData }
+{ TTargetDatabase }
 
-{*** Database ***}
+{*****************************************************************************
+                                      Database
+******************************************************************************}
 
-procedure TTargetData.CreateDatabase;
+procedure TTargetDatabase.SetFilename(AFilename: String);
+begin
+  SQLite3Connection.DatabaseName:= AFilename;
+end;
+
+function TTargetDatabase.GetFilename: String;
+begin
+  Result:= SQLite3Connection.DatabaseName;
+end;
+
+procedure TTargetDatabase.CreateDatabase;
 begin
   SQLite3Connection.Open;
   SQLTransaction.Active := True;
@@ -55,16 +70,18 @@ begin
   SQLTransaction.Commit;
 end;
 
-procedure TTargetData.ClearDatabase;
+procedure TTargetDatabase.ClearDatabase;
 begin
   SQLite3Connection.ExecuteDirect('End Transaction');
   SQLite3Connection.ExecuteDirect('VACUUM;');
   SQLite3Connection.ExecuteDirect('Begin Transaction');
 end;
 
-{*** Target ***}
+{*****************************************************************************
+                                      Target
+******************************************************************************}
 
-procedure TTargetData.AddTarget(ATarget: string);
+procedure TTargetDatabase.AddTarget(ATarget: string);
 begin
   SQLQuery.Close;
   SQLQuery.SQL.Clear;
@@ -78,7 +95,7 @@ begin
   SQLTransaction.Commit;
 end;
 
-procedure TTargetData.ReadTargets(var ATargetList: TTargetList);
+procedure TTargetDatabase.ReadTargets(var ATargetList: TTargetList);
 var
   NewTarget: TTarget;
 begin
@@ -104,7 +121,7 @@ begin
   ATargetList.Sort(@CompareTargetsByPosition);
 end;
 
-procedure TTargetData.ChangeTarget(ATarget: TTarget);
+procedure TTargetDatabase.ChangeTarget(ATarget: TTarget);
 begin
   SQLQuery.Close;
   SQLQuery.SQL.Clear;
@@ -121,7 +138,7 @@ begin
   SQLTransaction.Commit;
 end;
 
-procedure TTargetData.RemoveTarget(AID: integer);
+procedure TTargetDatabase.RemoveTarget(AID: integer);
 begin
   SQLQuery.Close;
   SQLQuery.SQL.Clear;
@@ -141,9 +158,11 @@ begin
   ClearDatabase;
 end;
 
-{*** Log ***}
+{*****************************************************************************
+                                      Log
+******************************************************************************}
 
-procedure TTargetData.AddLogEntry(ATarget: TTarget);
+procedure TTargetDatabase.AddLogEntry(ATarget: TTarget);
 begin
   SQLQuery.Close;
   SQLQuery.SQL.Clear;
@@ -158,7 +177,7 @@ begin
   SQLTransaction.Commit;
 end;
 
-function TTargetData.ReadLog(ATarget: TTarget; AAll: Boolean; AFiltered: Boolean; ADate: TDate): String;
+function TTargetDatabase.ReadLog(ATarget: TTarget; AAll: Boolean; AFiltered: Boolean; ADate: TDate): String;
 var LastState: boolean;
 begin
   SQLQuery.Close;

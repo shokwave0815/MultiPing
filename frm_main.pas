@@ -57,18 +57,18 @@ type
     procedure TimerStopTimer(Sender: TObject);
     procedure TimerTimer(Sender: TObject);
   private
-    isStartup: Boolean;
+    isStartup: boolean;
     AppDir: string;
     cfgIni: TIniFile;
     myHeight, myWidth: integer;
     PingCmd: TPINGSend;
     TargetList: TTargetList;
-    procedure EnableTargetControls(AEnabled: Boolean);
+    procedure EnableTargetControls(AEnabled: boolean);
     procedure PingTarget(ATarget: TTarget);
-    procedure ClearGrid;
+    procedure ClearStringGrid;
     procedure PrepareDatabase;
-    procedure SaveOrder;
-    procedure PrintTargets;
+    procedure SaveTargetsOrder;
+    procedure FillStringGrid;
     procedure LoadTargets;
     procedure LoadConfig;
     procedure SaveConfig;
@@ -101,10 +101,10 @@ begin
     if MessageDlg('Das Ziel "' + TargetList.Items[StringGrid_Targets.Row - 1].Address +
       '" wirklich löschen?', mtConfirmation, [mbYes, mbNo], 0) = mrYes then
     begin
-      TargetData.RemoveTarget(TargetList[StringGrid_Targets.Row - 1].ID);
+      TargetDatabase.RemoveTarget(TargetList[StringGrid_Targets.Row - 1].ID);
       TargetList.Delete(StringGrid_Targets.Row - 1);
-      StringGrid_Targets.RowCount := StringGrid_Targets.RowCount - 1;
-      PrintTargets;
+      SaveTargetsOrder;
+      FillStringGrid;
       EnableTargetControls(StringGrid_Targets.Row > 0);
     end;
   end;
@@ -123,10 +123,10 @@ procedure TForm_Main.Button_AddTargetClick(Sender: TObject);
 begin
   if Trim(Edit_AddTarget.Text) <> '' then
   begin
-    TargetData.AddTarget(Edit_AddTarget.Text);
+    TargetDatabase.AddTarget(Edit_AddTarget.Text);
+    SaveTargetsOrder;
     LoadTargets;
-    SaveOrder;
-    PrintTargets;
+    FillStringGrid;
     EnableTargetControls(StringGrid_Targets.Row > 0);
   end;
 end;
@@ -136,9 +136,9 @@ var
   Target: TTarget;
 begin
   Target := TargetList[StringGrid_Targets.Row - 1];
-  Target.Active:= not Target.Active;
-  TargetData.ChangeTarget(Target);
-  PrintTargets;
+  Target.Active := not Target.Active;
+  TargetDatabase.ChangeTarget(Target);
+  FillStringGrid;
 end;
 
 procedure TForm_Main.Button_MoveUpClick(Sender: TObject);
@@ -146,9 +146,9 @@ begin
   if StringGrid_Targets.Row > 1 then
   begin
     TargetList.Move(StringGrid_Targets.Row - 1, StringGrid_Targets.Row - 2);
-    SaveOrder;
-    PrintTargets;
-    StringGrid_Targets.Row:= StringGrid_Targets.Row - 1;
+    SaveTargetsOrder;
+    FillStringGrid;
+    StringGrid_Targets.Row := StringGrid_Targets.Row - 1;
   end;
 end;
 
@@ -157,9 +157,9 @@ begin
   if StringGrid_Targets.Row < StringGrid_Targets.RowCount - 1 then
   begin
     TargetList.Move(StringGrid_Targets.Row - 1, StringGrid_Targets.Row);
-    SaveOrder;
-    PrintTargets;
-    StringGrid_Targets.Row:= StringGrid_Targets.Row + 1;
+    SaveTargetsOrder;
+    FillStringGrid;
+    StringGrid_Targets.Row := StringGrid_Targets.Row + 1;
   end;
 end;
 
@@ -170,11 +170,12 @@ begin
   Target := TargetList[StringGrid_Targets.Row - 1];
   Form_Change.Edit_Target.Text := Target.Address;
   Form_Change.Edit_Target.SelectAll;
+
   if Form_Change.ShowModal = mrOk then
   begin
     Target.Address := Form_Change.Edit_Target.Text;
-    TargetData.ChangeTarget(Target);
-    PrintTargets;
+    TargetDatabase.ChangeTarget(Target);
+    FillStringGrid;
   end;
 end;
 
@@ -182,8 +183,8 @@ procedure TForm_Main.Button_LogClick(Sender: TObject);
 begin
   if (StringGrid_Targets.Row > 0) then
   begin
-    Form_Log.LogTarget:= TargetList[StringGrid_Targets.Row - 1];
-    Form_Log.Caption:= 'Protokoll für ' + Form_Log.LogTarget.Address;
+    Form_Log.LogTarget := TargetList[StringGrid_Targets.Row - 1];
+    Form_Log.Caption := 'Protokoll für ' + Form_Log.LogTarget.Address;
     Form_Log.ReadLog;
     Form_Log.Show;
   end;
@@ -226,9 +227,11 @@ begin
 
     PrepareDatabase;
     LoadTargets;
-    PrintTargets;
-    Form_Log.DatePicker_Log.Date:= now;
+    FillStringGrid;
+
+    Form_Log.DatePicker_Log.Date := now;
     EnableTargetControls(StringGrid_Targets.Row > 0);
+
     isStartup := False;
   end;
 end;
@@ -245,10 +248,10 @@ end;
 
 procedure TForm_Main.PopupMenu_StringGridPopup(Sender: TObject);
 begin
-  MenuItem_Active.Enabled:= StringGrid_Targets.Row > 0;
-  MenuItem_Change.Enabled:= StringGrid_Targets.Row > 0;
-  MenuItem_Delete.Enabled:= StringGrid_Targets.Row > 0;
-  MenuItem_Log.Enabled:= StringGrid_Targets.Row > 0;
+  MenuItem_Active.Enabled := StringGrid_Targets.Row > 0;
+  MenuItem_Change.Enabled := StringGrid_Targets.Row > 0;
+  MenuItem_Delete.Enabled := StringGrid_Targets.Row > 0;
+  MenuItem_Log.Enabled := StringGrid_Targets.Row > 0;
 end;
 
 procedure TForm_Main.SpinEdit_TimeKeyDown(Sender: TObject; var Key: word; Shift: TShiftState);
@@ -278,10 +281,6 @@ begin
         'nein': begin //nicht erreichbares Ziel
           StringGrid_Targets.canvas.Brush.Color := TColor($A0A0FF);
         end;
-        else
-        begin
-          StringGrid_Targets.Canvas.Font.Color := clWindowText;
-        end;
       end;
     end;
 
@@ -293,10 +292,11 @@ begin
 
     if gdSelected in aState then
     begin //selektierte Zeile
-      StringGrid_Targets.Canvas.Font.Style:= [fsBold];
-    end else
+      StringGrid_Targets.Canvas.Font.Style := [fsBold];
+    end
+    else
     begin //nicht selektierte Zeile
-      StringGrid_Targets.Canvas.Font.Style:= [];
+      StringGrid_Targets.Canvas.Font.Style := [];
     end;
 
     StringGrid_Targets.Canvas.FillRect(arect);
@@ -316,7 +316,7 @@ procedure TForm_Main.TimerStopTimer(Sender: TObject);
 begin
   Button_Start.Caption := 'Start';
   SpinEdit_Time.Enabled := True;
-  PrintTargets;
+  FillStringGrid;
 end;
 
 procedure TForm_Main.TimerTimer(Sender: TObject);
@@ -330,26 +330,26 @@ begin
       PingTarget(TargetList.Items[i]);
     end;
   end;
-  PrintTargets;
+  FillStringGrid;
 end;
 
-procedure TForm_Main.EnableTargetControls(AEnabled: Boolean);
+procedure TForm_Main.EnableTargetControls(AEnabled: boolean);
 begin
-  Panel_Footer.Enabled:= AEnabled;
-  Button_Start.Enabled:= AEnabled;
+  Panel_Footer.Enabled := AEnabled;
+  Button_Start.Enabled := AEnabled;
 end;
 
 procedure TForm_Main.PingTarget(ATarget: TTarget);
 begin
-    ATarget.LastLogEntry.Result := PingCmd.Ping(ATarget.Address);
-    ATarget.LastLogEntry.Start := now;
-    ATarget.LastLogEntry.PingTime := PingCmd.PingTime;
-    ATarget.LastLogEntry.Interval := Timer.Interval;
+  ATarget.LastLogEntry.Result := PingCmd.Ping(ATarget.Address);
+  ATarget.LastLogEntry.Start := now;
+  ATarget.LastLogEntry.PingTime := PingCmd.PingTime;
+  ATarget.LastLogEntry.Interval := Timer.Interval;
 
-    TargetData.AddLogEntry(ATarget);
+  TargetDatabase.AddLogEntry(ATarget);
 end;
 
-procedure TForm_Main.ClearGrid;
+procedure TForm_Main.ClearStringGrid;
 begin
   StringGrid_Targets.RowCount := 1;
   StringGrid_Targets.RowCount := TargetList.Count + 1;
@@ -357,25 +357,26 @@ end;
 
 procedure TForm_Main.PrepareDatabase;
 begin
-  TargetData.SQLite3Connection.DatabaseName := AppDir + 'targets.sqlite';
-  if not FileExists(TargetData.SQLite3Connection.DatabaseName) then
+  TargetDatabase.Filename := AppDir + 'targets.sqlite';
+  if not FileExists(TargetDatabase.Filename) then
   begin
-    TargetData.CreateDatabase;
+    TargetDatabase.CreateDatabase;
   end;
-  TargetData.SQLite3Connection.Connected := True;
+  TargetDatabase.SQLite3Connection.Connected := True;
 end;
 
-procedure TForm_Main.SaveOrder;
-var i: Integer;
+procedure TForm_Main.SaveTargetsOrder;
+var
+  i: integer;
 begin
-  for i:= 0 to TargetList.Count -1 do
+  for i := 0 to TargetList.Count - 1 do
   begin
     TargetList[i].Position := i;
-    TargetData.ChangeTarget(TargetList[i]);
+    TargetDatabase.ChangeTarget(TargetList[i]);
   end;
 end;
 
-procedure TForm_Main.PrintTargets;
+procedure TForm_Main.FillStringGrid;
 var
   i: integer;
   LastLogEntry: TLogEntry;
@@ -387,8 +388,8 @@ begin
     StringGrid_Targets.Cells[0, i + 1] := BoolToStr(TargetList[i].Active, 'ja', 'nein');
     StringGrid_Targets.Cells[1, i + 1] := TargetList[i].Address;
 
-    LastLogEntry:= TargetList[i].LastLogEntry;
-    if (LastLogEntry <> NIL) and (LastLogEntry.Start > 0) then
+    LastLogEntry := TargetList[i].LastLogEntry;
+    if (LastLogEntry <> nil) and (LastLogEntry.Start > 0) then
     begin
       StringGrid_Targets.Cells[2, i + 1] := BoolToStr(LastLogEntry.Result, 'ja', 'nein');
       StringGrid_Targets.Cells[3, i + 1] := IntToStr(LastLogEntry.PingTime) + ' ms';
@@ -401,7 +402,7 @@ end;
 procedure TForm_Main.LoadTargets;
 begin
   TargetList.Clear;
-  TargetData.ReadTargets(TargetList);
+  TargetDatabase.ReadTargets(TargetList);
 end;
 
 procedure TForm_Main.LoadConfig;

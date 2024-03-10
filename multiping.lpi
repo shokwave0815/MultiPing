@@ -17,7 +17,7 @@
       <UseVersionInfo Value="True"/>
       <AutoIncrementBuild Value="True"/>
       <MinorVersionNr Value="4"/>
-      <BuildNr Value="6"/>
+      <BuildNr Value="7"/>
       <Language Value="0407"/>
       <StringTable CompanyName="Ingo Steiniger" OriginalFilename="multiping.exe" ProductName="MultiPing" ProductVersion="0.1"/>
     </VersionInfo>
@@ -108,7 +108,7 @@
       <Unit>
         <Filename Value="frm_targetdm.pas"/>
         <IsPartOfProject Value="True"/>
-        <ComponentName Value="TargetData"/>
+        <ComponentName Value="TargetDatabase"/>
         <HasResources Value="True"/>
         <ResourceBaseClass Value="DataModule"/>
       </Unit>

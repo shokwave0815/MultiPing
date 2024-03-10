@@ -21,7 +21,7 @@ begin
   Application.Initialize;
   Application.CreateForm(TForm_Main, Form_Main);
   Application.CreateForm(TForm_Log, Form_Log);
-  Application.CreateForm(TTargetData, TargetData);
+  Application.CreateForm(TTargetDatabase, TargetDatabase);
   Application.CreateForm(TForm_Change, Form_Change);
   Application.Run;
 end.

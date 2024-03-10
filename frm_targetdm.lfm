@@ -1,4 +1,4 @@
-object TargetData: TTargetData
+object TargetDatabase: TTargetDatabase
   OldCreateOrder = False
   Height = 416
   HorizontalOffset = 438
