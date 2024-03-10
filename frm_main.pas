@@ -391,7 +391,7 @@ begin
     if (LastLogEntry <> NIL) and (LastLogEntry.Start > 0) then
     begin
       StringGrid_Targets.Cells[2, i + 1] := BoolToStr(LastLogEntry.Result, 'ja', 'nein');
-      StringGrid_Targets.Cells[3, i + 1] := IntToStr(LastLogEntry.PingTime) + 'ms';
+      StringGrid_Targets.Cells[3, i + 1] := IntToStr(LastLogEntry.PingTime) + ' ms';
       StringGrid_Targets.Cells[4, i + 1] := DateTimeToStr(LastLogEntry.Start);
     end;
   end;

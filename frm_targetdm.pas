@@ -189,10 +189,10 @@ begin
     begin
       if AFiltered then
       begin
-        Result += TimeToStr(SQLQuery.FieldByName('ping_start').AsDateTime) + ' - '  + BoolToStr(SQLQuery.FieldByName('ping_result').AsBoolean, 'OK', 'Fehler') + ' - ' + IntToStr(SQLQuery.FieldByName('ping_time').AsInteger) + 'ms' + LineEnding;
+        Result += TimeToStr(SQLQuery.FieldByName('ping_start').AsDateTime) + ' - '  + BoolToStr(SQLQuery.FieldByName('ping_result').AsBoolean, 'OK', 'Fehler') + ' - ' + IntToStr(SQLQuery.FieldByName('ping_time').AsInteger) + ' ms' + LineEnding;
       end else
       begin
-        Result += DateTimeToStr(SQLQuery.FieldByName('ping_start').AsDateTime) + ' - '  + BoolToStr(SQLQuery.FieldByName('ping_result').AsBoolean, 'OK', 'Fehler') + ' - ' + IntToStr(SQLQuery.FieldByName('ping_time').AsInteger) + 'ms' + LineEnding;
+        Result += DateTimeToStr(SQLQuery.FieldByName('ping_start').AsDateTime) + ' - '  + BoolToStr(SQLQuery.FieldByName('ping_result').AsBoolean, 'OK', 'Fehler') + ' - ' + IntToStr(SQLQuery.FieldByName('ping_time').AsInteger) + ' ms' + LineEnding;
       end;
       LastState := SQLQuery.FieldByName('ping_result').AsBoolean;
     end;
