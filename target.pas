@@ -21,12 +21,14 @@ type
 
   TTarget = class(TObject)
   private
+    FActive: Boolean;
     FAddress: string;
     FID: integer;
     FLastLogEntry: TLogEntry;
   public
-    property Address: string read FAddress write FAddress;
-    property ID: integer read FID write FID;
+    property Active: Boolean read FActive write FActive;
+    property Address: String read FAddress write FAddress;
+    property ID: Integer read FID write FID;
     property LastLogEntry: TLogEntry read FLastLogEntry write FLastLogEntry;
     constructor Create;
     destructor Destroy; override;
@@ -41,6 +43,7 @@ implementation
 constructor TTarget.Create;
 begin
   inherited Create;
+  FActive:= True;
   FLastLogEntry := TLogEntry.Create;
 end;
 

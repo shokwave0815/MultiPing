@@ -14,6 +14,7 @@ type
   { TForm_Main }
 
   TForm_Main = class(TForm)
+    Button_Active: TButton;
     Button_Change: TButton;
     Button_Start: TButton;
     Button_AddTarget: TButton;
@@ -22,6 +23,8 @@ type
     Edit_AddTarget: TEdit;
     Label_AddTarget: TLabel;
     Label_Time: TLabel;
+    Separator1: TMenuItem;
+    MenuItem_Active: TMenuItem;
     MenuItem_Delete: TMenuItem;
     MenuItem_Change: TMenuItem;
     MenuItem_Log: TMenuItem;
@@ -30,6 +33,7 @@ type
     StringGrid_Targets: TStringGrid;
     SpinEdit_Time: TSpinEdit;
     Timer: TTimer;
+    procedure Button_ActiveClick(Sender: TObject);
     procedure Button_AddTargetClick(Sender: TObject);
     procedure Button_ChangeClick(Sender: TObject);
     procedure Button_LogClick(Sender: TObject);
@@ -114,6 +118,16 @@ begin
     LoadTargets;
     PrintTargets;
   end;
+end;
+
+procedure TForm_Main.Button_ActiveClick(Sender: TObject);
+var
+  Target: TTarget;
+begin
+  Target := TargetList[StringGrid_Targets.Row - 1];
+  Target.Active:= not Target.Active;
+  TargetData.ChangeTarget(Target);
+  PrintTargets;
 end;
 
 procedure TForm_Main.Button_ChangeClick(Sender: TObject);
@@ -213,9 +227,10 @@ begin
 
   if not (gdFixed in aState) then
   begin
+
     if Timer.Enabled then
     begin
-      case StringGrid_Targets.Cells[1, aRow] of
+      case StringGrid_Targets.Cells[2, aRow] of
         'ja': begin
           StringGrid_Targets.canvas.Brush.Color := TColor($A0DDA0);
         end;
@@ -229,6 +244,11 @@ begin
       end;
     end;
 
+    if StringGrid_Targets.Cells[0, aRow] = 'nein' then
+    begin
+      StringGrid_Targets.canvas.Brush.Color := TColor($E0E0E0);
+    end;
+
     if gdSelected in aState then
     begin
       StringGrid_Targets.Canvas.Font.Style:= [fsBold];
@@ -236,6 +256,7 @@ begin
     begin
       StringGrid_Targets.Canvas.Font.Style:= [];
     end;
+
     StringGrid_Targets.Canvas.FillRect(arect);
     StringGrid_Targets.Canvas.TextOut(aRect.Left + 2, aRect.Top + 2, StringGrid_Targets.Cells[aCol, aRow]);
     StringGrid_Targets.Canvas.FrameRect(aRect);
@@ -269,12 +290,15 @@ end;
 
 procedure TForm_Main.PingTarget(ATarget: TTarget);
 begin
-  ATarget.LastLogEntry.Result := PingCmd.Ping(ATarget.Address);
-  ATarget.LastLogEntry.Start := now;
-  ATarget.LastLogEntry.PingTime := PingCmd.PingTime;
-  ATarget.LastLogEntry.Interval := Timer.Interval;
+  if ATarget.Active then
+  begin
+    ATarget.LastLogEntry.Result := PingCmd.Ping(ATarget.Address);
+    ATarget.LastLogEntry.Start := now;
+    ATarget.LastLogEntry.PingTime := PingCmd.PingTime;
+    ATarget.LastLogEntry.Interval := Timer.Interval;
 
-  TargetData.AddLogEntry(ATarget);
+    TargetData.AddLogEntry(ATarget);
+  end;
 end;
 
 procedure TForm_Main.ClearGrid;
@@ -298,19 +322,22 @@ var
   i: integer;
   LastLogEntry: TLogEntry;
 begin
+  StringGrid_Targets.BeginUpdate;
   StringGrid_Targets.RowCount := TargetList.Count + 1;
   for i := 0 to TargetList.Count - 1 do
   begin
-    StringGrid_Targets.Cells[0, i + 1] := TargetList[i].Address;
+    StringGrid_Targets.Cells[0, i + 1] := BoolToStr(TargetList[i].Active, 'ja', 'nein');
+    StringGrid_Targets.Cells[1, i + 1] := TargetList[i].Address;
 
     LastLogEntry:= TargetList[i].LastLogEntry;
     if (LastLogEntry <> NIL) and (LastLogEntry.Start > 0) then
     begin
-      StringGrid_Targets.Cells[1, i + 1] := BoolToStr(LastLogEntry.Result, 'ja', 'nein');
-      StringGrid_Targets.Cells[2, i + 1] := IntToStr(LastLogEntry.PingTime) + 'ms';
-      StringGrid_Targets.Cells[3, i + 1] := DateTimeToStr(LastLogEntry.Start);
+      StringGrid_Targets.Cells[2, i + 1] := BoolToStr(LastLogEntry.Result, 'ja', 'nein');
+      StringGrid_Targets.Cells[3, i + 1] := IntToStr(LastLogEntry.PingTime) + 'ms';
+      StringGrid_Targets.Cells[4, i + 1] := DateTimeToStr(LastLogEntry.Start);
     end;
   end;
+  StringGrid_Targets.EndUpdate;
 end;
 
 procedure TForm_Main.LoadTargets;
@@ -336,10 +363,11 @@ begin
   Form_Log.Height := Scale96ToForm(cfgINI.ReadInteger('LogWindow', 'Height', 400));
 
   //Größe der Spalten des StringGrid
-  StringGrid_Targets.Columns.Items[0].Width := Scale96ToForm(cfgINI.ReadInteger('SG', '0', 300));
-  StringGrid_Targets.Columns.Items[1].Width := Scale96ToForm(cfgINI.ReadInteger('SG', '1', 150));
-  StringGrid_Targets.Columns.Items[2].Width := Scale96ToForm(cfgINI.ReadInteger('SG', '2', 130));
-  StringGrid_Targets.Columns.Items[3].Width := Scale96ToForm(cfgINI.ReadInteger('SG', '3', 200));
+  StringGrid_Targets.Columns.Items[0].Width := Scale96ToForm(cfgINI.ReadInteger('SG', '0', 130));
+  StringGrid_Targets.Columns.Items[1].Width := Scale96ToForm(cfgINI.ReadInteger('SG', '1', 300));
+  StringGrid_Targets.Columns.Items[2].Width := Scale96ToForm(cfgINI.ReadInteger('SG', '2', 150));
+  StringGrid_Targets.Columns.Items[3].Width := Scale96ToForm(cfgINI.ReadInteger('SG', '3', 130));
+  StringGrid_Targets.Columns.Items[4].Width := Scale96ToForm(cfgINI.ReadInteger('SG', '4', 200));
 
   //Einstellungen
   SpinEdit_Time.Value := cfgINI.ReadInteger('Prefs', 'Time', 30);
@@ -370,6 +398,7 @@ begin
   cfgINI.WriteInteger('SG', '1', ScaleFormTo96(StringGrid_Targets.Columns.Items[1].Width));
   cfgINI.WriteInteger('SG', '2', ScaleFormTo96(StringGrid_Targets.Columns.Items[2].Width));
   cfgINI.WriteInteger('SG', '3', ScaleFormTo96(StringGrid_Targets.Columns.Items[3].Width));
+  cfgINI.WriteInteger('SG', '4', ScaleFormTo96(StringGrid_Targets.Columns.Items[4].Width));
 
   //Einstellungen
   cfgIni.WriteInteger('Prefs', 'Time', SpinEdit_Time.Value);

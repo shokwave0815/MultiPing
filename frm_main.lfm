@@ -3,7 +3,7 @@ object Form_Main: TForm_Main
   Height = 511
   Top = 250
   Width = 825
-  Caption = 'MultiPing V0.3 ©2024 by I.Steiniger'
+  Caption = 'MultiPing V0.4 ©2024 by I.Steiniger'
   ClientHeight = 511
   ClientWidth = 825
   Color = clWindow
@@ -143,6 +143,19 @@ object Form_Main: TForm_Main
       TabOrder = 5
       OnClick = Button_ChangeClick
     end
+    object Button_Active: TButton
+      AnchorSideTop.Control = Label_AddTarget
+      AnchorSideRight.Control = Button_Log
+      Left = 621
+      Height = 31
+      Top = 11
+      Width = 94
+      Anchors = [akTop, akRight]
+      BorderSpacing.Right = 5
+      Caption = '(de)aktivieren'
+      TabOrder = 7
+      OnClick = Button_ActiveClick
+    end
   end
   object StringGrid_Targets: TStringGrid
     Left = 10
@@ -153,8 +166,14 @@ object Form_Main: TForm_Main
     AutoEdit = False
     BorderSpacing.Around = 10
     BorderStyle = bsNone
-    ColCount = 4
     Columns = <    
+      item
+        Font.Height = -15
+        Title.Alignment = taCenter
+        Title.Font.Height = -15
+        Title.Caption = 'Aktiv'
+        Width = 80
+      end    
       item
         MinSize = 10
         MaxSize = 200
@@ -193,6 +212,7 @@ object Form_Main: TForm_Main
     OnDblClick = Button_LogClick
     OnDrawCell = StringGrid_TargetsDrawCell
     ColWidths = (
+      80
       152
       105
       130
@@ -219,6 +239,13 @@ object Form_Main: TForm_Main
     object MenuItem_Change: TMenuItem
       Caption = 'Ziel ändern'
       OnClick = Button_ChangeClick
+    end
+    object MenuItem_Active: TMenuItem
+      Caption = 'Ziel (de)aktivieren'
+      OnClick = Button_ActiveClick
+    end
+    object Separator1: TMenuItem
+      Caption = '-'
     end
     object MenuItem_Delete: TMenuItem
       Caption = 'Ziel löschen'
