@@ -16,10 +16,10 @@
     <VersionInfo>
       <UseVersionInfo Value="True"/>
       <AutoIncrementBuild Value="True"/>
-      <MinorVersionNr Value="4"/>
-      <BuildNr Value="7"/>
+      <MinorVersionNr Value="5"/>
+      <BuildNr Value="8"/>
       <Language Value="0407"/>
-      <StringTable CompanyName="Ingo Steiniger" OriginalFilename="multiping.exe" ProductName="MultiPing" ProductVersion="0.1"/>
+      <StringTable CompanyName="Ingo Steiniger" OriginalFilename="multiping.exe" ProductName="MultiPing" ProductVersion="0.5"/>
     </VersionInfo>
     <BuildModes>
       <Item Name="Debug" Default="True"/>
@@ -113,9 +113,9 @@
         <ResourceBaseClass Value="DataModule"/>
       </Unit>
       <Unit>
-        <Filename Value="frm_change.pas"/>
+        <Filename Value="frm_edit.pas"/>
         <IsPartOfProject Value="True"/>
-        <ComponentName Value="Form_Change"/>
+        <ComponentName Value="Form_Edit"/>
         <HasResources Value="True"/>
         <ResourceBaseClass Value="Form"/>
       </Unit>

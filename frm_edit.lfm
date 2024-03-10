@@ -1,10 +1,10 @@
-object Form_Change: TForm_Change
+object Form_Edit: TForm_Edit
   Left = 350
   Height = 112
   Top = 250
   Width = 400
   BorderIcons = [biSystemMenu]
-  Caption = 'Ziel ändern'
+  Caption = 'Ziel bearbeiten'
   ClientHeight = 112
   ClientWidth = 400
   Color = clWindow

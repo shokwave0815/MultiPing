@@ -1,4 +1,4 @@
-unit frm_change;
+unit frm_edit;
 
 {$mode ObjFPC}{$H+}
 
@@ -9,9 +9,9 @@ uses
 
 type
 
-  { TForm_Change }
+  { TForm_Edit }
 
-  TForm_Change = class(TForm)
+  TForm_Edit = class(TForm)
     BitBtn_OK: TBitBtn;
     BitBtn_Cancel: TBitBtn;
     Edit_Target: TEdit;
@@ -22,7 +22,7 @@ type
   end;
 
 var
-  Form_Change: TForm_Change;
+  Form_Edit: TForm_Edit;
 
 implementation
 

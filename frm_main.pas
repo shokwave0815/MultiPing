@@ -7,7 +7,7 @@ interface
 uses
   Classes, SysUtils, Forms, Controls, Graphics, Dialogs, StdCtrls, ExtCtrls,
   Grids, Spin, pingsend, target, fgl, frm_log, LCLType, Menus, Types, INIFiles,
-  frm_targetdm, frm_change;
+  frm_targetdm, frm_edit;
 
 type
 
@@ -17,7 +17,7 @@ type
     Button_MoveDown: TButton;
     Button_MoveUp: TButton;
     Button_Active: TButton;
-    Button_Change: TButton;
+    Button_Edit: TButton;
     Button_Delete: TButton;
     Button_Log: TButton;
     Button_Start: TButton;
@@ -40,7 +40,7 @@ type
     procedure Button_MoveUpClick(Sender: TObject);
     procedure Button_ActiveClick(Sender: TObject);
     procedure Button_AddTargetClick(Sender: TObject);
-    procedure Button_ChangeClick(Sender: TObject);
+    procedure Button_EditClick(Sender: TObject);
     procedure Button_LogClick(Sender: TObject);
     procedure Button_StartClick(Sender: TObject);
     procedure Button_DeleteClick(Sender: TObject);
@@ -53,6 +53,10 @@ type
     procedure PopupMenu_StringGridPopup(Sender: TObject);
     procedure SpinEdit_TimeKeyDown(Sender: TObject; var Key: word; Shift: TShiftState);
     procedure StringGrid_TargetsDrawCell(Sender: TObject; aCol, aRow: integer; aRect: TRect; aState: TGridDrawState);
+    procedure StringGrid_TargetsKeyDown(Sender: TObject; var Key: Word;
+      Shift: TShiftState);
+    procedure StringGrid_TargetsMouseDown(Sender: TObject;
+      Button: TMouseButton; Shift: TShiftState; X, Y: Integer);
     procedure TimerStartTimer(Sender: TObject);
     procedure TimerStopTimer(Sender: TObject);
     procedure TimerTimer(Sender: TObject);
@@ -63,6 +67,12 @@ type
     myHeight, myWidth: integer;
     PingCmd: TPINGSend;
     TargetList: TTargetList;
+    procedure EditTarget;
+    Procedure DeleteTarget;
+    procedure ActivateTarget;
+    procedure ShowLog;
+    procedure MoveUp;
+    procedure MoveDown;
     procedure EnableTargetControls(AEnabled: boolean);
     procedure PingTarget(ATarget: TTarget);
     procedure ClearStringGrid;
@@ -88,35 +98,21 @@ implementation
 procedure TForm_Main.Button_StartClick(Sender: TObject);
 begin
   if not Timer.Enabled then
-  begin
     Timer.Interval := SpinEdit_Time.Value * 1000;
-  end;
+
   Timer.Enabled := not Timer.Enabled;
 end;
 
 procedure TForm_Main.Button_DeleteClick(Sender: TObject);
 begin
-  if StringGrid_Targets.Row > 0 then
-  begin
-    if MessageDlg('Das Ziel "' + TargetList.Items[StringGrid_Targets.Row - 1].Address +
-      '" wirklich löschen?', mtConfirmation, [mbYes, mbNo], 0) = mrYes then
-    begin
-      TargetDatabase.RemoveTarget(TargetList[StringGrid_Targets.Row - 1].ID);
-      TargetList.Delete(StringGrid_Targets.Row - 1);
-      SaveTargetsOrder;
-      FillStringGrid;
-      EnableTargetControls(StringGrid_Targets.Row > 0);
-    end;
-  end;
+  DeleteTarget;
 end;
 
 procedure TForm_Main.Edit_AddTargetKeyDown(Sender: TObject; var Key: word; Shift: TShiftState);
 begin
   Shift := Shift;
   if key = VK_RETURN then
-  begin
     Button_AddTarget.Click;
-  end;
 end;
 
 procedure TForm_Main.Button_AddTargetClick(Sender: TObject);
@@ -132,62 +128,28 @@ begin
 end;
 
 procedure TForm_Main.Button_ActiveClick(Sender: TObject);
-var
-  Target: TTarget;
 begin
-  Target := TargetList[StringGrid_Targets.Row - 1];
-  Target.Active := not Target.Active;
-  TargetDatabase.ChangeTarget(Target);
-  FillStringGrid;
+  ActivateTarget;
 end;
 
 procedure TForm_Main.Button_MoveUpClick(Sender: TObject);
 begin
-  if StringGrid_Targets.Row > 1 then
-  begin
-    TargetList.Move(StringGrid_Targets.Row - 1, StringGrid_Targets.Row - 2);
-    SaveTargetsOrder;
-    FillStringGrid;
-    StringGrid_Targets.Row := StringGrid_Targets.Row - 1;
-  end;
+  MoveUp;
 end;
 
 procedure TForm_Main.Button_MoveDownClick(Sender: TObject);
 begin
-  if StringGrid_Targets.Row < StringGrid_Targets.RowCount - 1 then
-  begin
-    TargetList.Move(StringGrid_Targets.Row - 1, StringGrid_Targets.Row);
-    SaveTargetsOrder;
-    FillStringGrid;
-    StringGrid_Targets.Row := StringGrid_Targets.Row + 1;
-  end;
+  MoveDown;
 end;
 
-procedure TForm_Main.Button_ChangeClick(Sender: TObject);
-var
-  Target: TTarget;
+procedure TForm_Main.Button_EditClick(Sender: TObject);
 begin
-  Target := TargetList[StringGrid_Targets.Row - 1];
-  Form_Change.Edit_Target.Text := Target.Address;
-  Form_Change.Edit_Target.SelectAll;
-
-  if Form_Change.ShowModal = mrOk then
-  begin
-    Target.Address := Form_Change.Edit_Target.Text;
-    TargetDatabase.ChangeTarget(Target);
-    FillStringGrid;
-  end;
+  EditTarget;
 end;
 
 procedure TForm_Main.Button_LogClick(Sender: TObject);
 begin
-  if (StringGrid_Targets.Row > 0) then
-  begin
-    Form_Log.LogTarget := TargetList[StringGrid_Targets.Row - 1];
-    Form_Log.Caption := 'Protokoll für ' + Form_Log.LogTarget.Address;
-    Form_Log.ReadLog;
-    Form_Log.Show;
-  end;
+  ShowLog;
 end;
 
 procedure TForm_Main.FormClose(Sender: TObject; var CloseAction: TCloseAction);
@@ -258,9 +220,7 @@ procedure TForm_Main.SpinEdit_TimeKeyDown(Sender: TObject; var Key: word; Shift:
 begin
   Shift := Shift;
   if (key = VK_RETURN) and Button_Start.Enabled then
-  begin
     Button_Start.Click;
-  end;
 end;
 
 procedure TForm_Main.StringGrid_TargetsDrawCell(Sender: TObject; aCol, aRow: integer;
@@ -275,34 +235,59 @@ begin
     if Timer.Enabled then
     begin
       case StringGrid_Targets.Cells[2, aRow] of
-        'ja': begin //erreichbares Ziel
-          StringGrid_Targets.canvas.Brush.Color := TColor($A0DDA0);
-        end;
-        'nein': begin //nicht erreichbares Ziel
-          StringGrid_Targets.canvas.Brush.Color := TColor($A0A0FF);
-        end;
+        'ja': StringGrid_Targets.canvas.Brush.Color := TColor($A0DDA0); //erreichbares Ziel
+        'nein': StringGrid_Targets.canvas.Brush.Color := TColor($A0A0FF); //nicht erreichbares Ziel
       end;
     end;
 
     //deaktiviertes Ziel
     if StringGrid_Targets.Cells[0, aRow] = 'nein' then
-    begin
       StringGrid_Targets.canvas.Brush.Color := TColor($E0E0E0);
-    end;
 
     if gdSelected in aState then
-    begin //selektierte Zeile
-      StringGrid_Targets.Canvas.Font.Style := [fsBold];
-    end
+      StringGrid_Targets.Canvas.Font.Style := [fsBold] //selektierte Zeile
     else
-    begin //nicht selektierte Zeile
-      StringGrid_Targets.Canvas.Font.Style := [];
-    end;
+      StringGrid_Targets.Canvas.Font.Style := [];//nicht selektierte Zeile
 
     StringGrid_Targets.Canvas.FillRect(arect);
     StringGrid_Targets.Canvas.TextOut(aRect.Left + 2, aRect.Top + 2, StringGrid_Targets.Cells[aCol, aRow]);
     StringGrid_Targets.Canvas.FrameRect(aRect);
   end;
+end;
+
+procedure TForm_Main.StringGrid_TargetsKeyDown(Sender: TObject; var Key: Word;
+  Shift: TShiftState);
+begin
+  case Key of
+    VK_DELETE: DeleteTarget;
+    VK_RETURN: ShowLog;
+    VK_F2: EditTarget;
+    VK_SPACE: ActivateTarget;
+    VK_UP:
+      if ssCtrl in Shift then
+      begin
+        MoveUp;
+        Key:= 0;
+      end;
+    VK_DOWN:
+      if ssCtrl in Shift then
+      begin
+        MoveDown;
+        Key:= 0;
+      end;
+  end;
+end;
+
+procedure TForm_Main.StringGrid_TargetsMouseDown(Sender: TObject;
+  Button: TMouseButton; Shift: TShiftState; X, Y: Integer);
+var Col, Row: Integer;
+begin
+  Shift:= Shift;
+  StringGrid_Targets.MouseToCell(X, Y, Col, Row);
+  StringGrid_Targets.Row:= Row;
+
+  if (Button = mbLeft) and (Col = 0) then
+    Button_Active.Click;
 end;
 
 procedure TForm_Main.TimerStartTimer(Sender: TObject);
@@ -333,6 +318,81 @@ begin
   FillStringGrid;
 end;
 
+procedure TForm_Main.EditTarget;
+var
+  Target: TTarget;
+begin
+  Target := TargetList[StringGrid_Targets.Row - 1];
+  Form_Edit.Edit_Target.Text := Target.Address;
+  Form_Edit.Edit_Target.SelectAll;
+
+  if Form_Edit.ShowModal = mrOk then
+  begin
+    Target.Address := Form_Edit.Edit_Target.Text;
+    TargetDatabase.ChangeTarget(Target);
+    FillStringGrid;
+  end;
+end;
+
+procedure TForm_Main.DeleteTarget;
+begin
+  if StringGrid_Targets.Row > 0 then
+  begin
+    if MessageDlg('Das Ziel "' + TargetList.Items[StringGrid_Targets.Row - 1].Address +
+      '" wirklich löschen?', mtConfirmation, [mbYes, mbNo], 0) = mrYes then
+    begin
+      TargetDatabase.RemoveTarget(TargetList[StringGrid_Targets.Row - 1].ID);
+      TargetList.Delete(StringGrid_Targets.Row - 1);
+      SaveTargetsOrder;
+      FillStringGrid;
+      EnableTargetControls(StringGrid_Targets.Row > 0);
+    end;
+  end;
+end;
+
+procedure TForm_Main.ActivateTarget;
+var
+  Target: TTarget;
+begin
+  Target := TargetList[StringGrid_Targets.Row - 1];
+  Target.Active := not Target.Active;
+  TargetDatabase.ChangeTarget(Target);
+  FillStringGrid;
+end;
+
+procedure TForm_Main.ShowLog;
+begin
+  if (StringGrid_Targets.Row > 0) then
+  begin
+    Form_Log.LogTarget := TargetList[StringGrid_Targets.Row - 1];
+    Form_Log.Caption := 'Protokoll für ' + Form_Log.LogTarget.Address;
+    Form_Log.ReadLog;
+    Form_Log.Show;
+  end;
+end;
+
+procedure TForm_Main.MoveUp;
+begin
+  if StringGrid_Targets.Row > 1 then
+  begin
+    TargetList.Move(StringGrid_Targets.Row - 1, StringGrid_Targets.Row - 2);
+    SaveTargetsOrder;
+    FillStringGrid;
+    StringGrid_Targets.Row := StringGrid_Targets.Row - 1;
+  end;
+end;
+
+procedure TForm_Main.MoveDown;
+begin
+  if StringGrid_Targets.Row < StringGrid_Targets.RowCount - 1 then
+  begin
+    TargetList.Move(StringGrid_Targets.Row - 1, StringGrid_Targets.Row);
+    SaveTargetsOrder;
+    FillStringGrid;
+    StringGrid_Targets.Row := StringGrid_Targets.Row + 1;
+  end;
+end;
+
 procedure TForm_Main.EnableTargetControls(AEnabled: boolean);
 begin
   Panel_Footer.Enabled := AEnabled;
@@ -359,9 +419,8 @@ procedure TForm_Main.PrepareDatabase;
 begin
   TargetDatabase.Filename := AppDir + 'targets.sqlite';
   if not FileExists(TargetDatabase.Filename) then
-  begin
     TargetDatabase.CreateDatabase;
-  end;
+
   TargetDatabase.SQLite3Connection.Connected := True;
 end;
 
