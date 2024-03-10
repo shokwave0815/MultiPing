@@ -21,7 +21,7 @@ object Form_Log: TForm_Log
     Align = alClient
     ReadOnly = True
     ScrollBars = ssAutoBoth
-    TabOrder = 1
+    TabOrder = 0
   end
   object Panel1: TPanel
     Left = 0
@@ -34,7 +34,7 @@ object Form_Log: TForm_Log
     Color = clWindow
     ParentBackground = False
     ParentColor = False
-    TabOrder = 0
+    TabOrder = 1
     object DatePicker_Log: TDateTimePicker
       AnchorSideLeft.Control = Label_Date
       AnchorSideTop.Control = Label_Date
@@ -46,7 +46,7 @@ object Form_Log: TForm_Log
       CenturyFrom = 1941
       MaxDate = 2958465
       MinDate = -53780
-      TabOrder = 0
+      TabOrder = 1
       BorderSpacing.Top = 5
       TrailingSeparator = False
       TextForNullDate = 'NULL'
@@ -73,7 +73,7 @@ object Form_Log: TForm_Log
       Width = 170
       BorderSpacing.Left = 10
       Caption = 'ausführliches Protokoll'
-      TabOrder = 1
+      TabOrder = 2
       OnChange = CheckBox_AllEventsChange
     end
     object Label_Date: TLabel
@@ -98,7 +98,7 @@ object Form_Log: TForm_Log
       BorderSpacing.Left = 10
       BorderSpacing.Top = 10
       Caption = 'Filter'
-      TabOrder = 2
+      TabOrder = 0
       OnChange = CheckBox_FilterChange
     end
   end

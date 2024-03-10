@@ -81,6 +81,7 @@ procedure TForm_Log.ReadLog;
 begin
   Memo_Log.Clear;
   Memo_Log.Append(TargetData.ReadLog(LogTarget, CheckBox_AllEvents.Checked, CheckBox_Filter.Checked, DatePicker_Log.Date));
+  Memo_Log.Lines.Delete(Memo_Log.Lines.Count - 1);
 end;
 
 end.
