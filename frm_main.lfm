@@ -19,8 +19,10 @@ object Form_Main: TForm_Main
     Top = 0
     Width = 825
     Align = alTop
-    ClientHeight = 88
-    ClientWidth = 825
+    BevelOuter = bvNone
+    BorderStyle = bsSingle
+    ClientHeight = 84
+    ClientWidth = 821
     Color = clWindow
     ParentBackground = False
     ParentColor = False
@@ -29,9 +31,9 @@ object Form_Main: TForm_Main
       AnchorSideLeft.Control = SpinEdit_Time
       AnchorSideLeft.Side = asrBottom
       AnchorSideTop.Control = SpinEdit_Time
-      Left = 78
+      Left = 77
       Height = 31
-      Top = 36
+      Top = 35
       Width = 94
       BorderSpacing.Left = 5
       Caption = 'Start'
@@ -42,9 +44,9 @@ object Form_Main: TForm_Main
       AnchorSideLeft.Control = Label_AddTarget
       AnchorSideTop.Control = Label_AddTarget
       AnchorSideTop.Side = asrBottom
-      Left = 192
+      Left = 191
       Height = 28
-      Top = 36
+      Top = 35
       Width = 200
       BorderSpacing.Top = 5
       TabOrder = 2
@@ -54,9 +56,9 @@ object Form_Main: TForm_Main
       AnchorSideLeft.Control = Button_Start
       AnchorSideLeft.Side = asrBottom
       AnchorSideTop.Control = Label_Time
-      Left = 192
+      Left = 191
       Height = 20
-      Top = 11
+      Top = 10
       Width = 175
       BorderSpacing.Left = 20
       Caption = 'neues Ziel (IP oder Name):'
@@ -66,35 +68,22 @@ object Form_Main: TForm_Main
       AnchorSideLeft.Control = Edit_AddTarget
       AnchorSideLeft.Side = asrBottom
       AnchorSideTop.Control = Edit_AddTarget
-      Left = 397
+      Left = 396
       Height = 31
-      Top = 36
+      Top = 35
       Width = 94
       BorderSpacing.Left = 5
       Caption = 'Hinzufügen'
       TabOrder = 3
       OnClick = Button_AddTargetClick
     end
-    object Button_Delete: TButton
-      AnchorSideLeft.Control = Button_Log
-      AnchorSideTop.Control = Button_Log
-      AnchorSideTop.Side = asrBottom
-      Left = 714
-      Height = 31
-      Top = 47
-      Width = 100
-      BorderSpacing.Top = 5
-      Caption = 'Löschen'
-      TabOrder = 6
-      OnClick = Button_DeleteClick
-    end
     object SpinEdit_Time: TSpinEdit
       AnchorSideLeft.Control = Label_Time
       AnchorSideTop.Control = Label_Time
       AnchorSideTop.Side = asrBottom
-      Left = 11
+      Left = 10
       Height = 28
-      Top = 36
+      Top = 35
       Width = 62
       BorderSpacing.Top = 5
       MinValue = 1
@@ -105,61 +94,19 @@ object Form_Main: TForm_Main
     object Label_Time: TLabel
       AnchorSideLeft.Control = Panel_Header
       AnchorSideTop.Control = Panel_Header
-      Left = 11
+      Left = 10
       Height = 20
-      Top = 11
+      Top = 10
       Width = 45
       BorderSpacing.Left = 10
       BorderSpacing.Top = 10
       Caption = 'Zeit(s):'
       ParentColor = False
     end
-    object Button_Log: TButton
-      AnchorSideTop.Control = Panel_Header
-      AnchorSideRight.Control = Panel_Header
-      AnchorSideRight.Side = asrBottom
-      AnchorSideBottom.Side = asrBottom
-      Left = 714
-      Height = 31
-      Top = 11
-      Width = 100
-      Anchors = [akTop, akRight]
-      BorderSpacing.Top = 10
-      BorderSpacing.Right = 10
-      Caption = 'Protokoll'
-      TabOrder = 4
-      OnClick = Button_LogClick
-    end
-    object Button_Change: TButton
-      AnchorSideTop.Control = Button_Delete
-      AnchorSideRight.Control = Button_Delete
-      Left = 608
-      Height = 31
-      Top = 47
-      Width = 100
-      Anchors = [akTop, akRight]
-      BorderSpacing.Right = 6
-      Caption = 'Ändern'
-      TabOrder = 5
-      OnClick = Button_ChangeClick
-    end
-    object Button_Active: TButton
-      AnchorSideTop.Control = Label_AddTarget
-      AnchorSideRight.Control = Button_Log
-      Left = 609
-      Height = 31
-      Top = 11
-      Width = 100
-      Anchors = [akTop, akRight]
-      BorderSpacing.Right = 5
-      Caption = '(De)Aktivieren'
-      TabOrder = 7
-      OnClick = Button_ActiveClick
-    end
   end
   object StringGrid_Targets: TStringGrid
     Left = 10
-    Height = 403
+    Height = 348
     Top = 98
     Width = 805
     Align = alClient
@@ -219,6 +166,75 @@ object Form_Main: TForm_Main
       168
     )
   end
+  object Panel_Footer: TPanel
+    Left = 0
+    Height = 55
+    Top = 456
+    Width = 825
+    Align = alBottom
+    BevelOuter = bvNone
+    BorderStyle = bsSingle
+    ClientHeight = 51
+    ClientWidth = 821
+    ParentBackground = False
+    TabOrder = 2
+    object Button_Active: TButton
+      AnchorSideLeft.Control = Panel_Footer
+      AnchorSideTop.Control = Panel_Footer
+      Left = 10
+      Height = 31
+      Top = 10
+      Width = 100
+      BorderSpacing.Left = 10
+      BorderSpacing.Top = 10
+      BorderSpacing.Right = 5
+      Caption = '(De)Aktivieren'
+      TabOrder = 0
+      OnClick = Button_ActiveClick
+    end
+    object Button_Change: TButton
+      AnchorSideLeft.Control = Button_Active
+      AnchorSideLeft.Side = asrBottom
+      AnchorSideTop.Control = Button_Active
+      Left = 115
+      Height = 31
+      Top = 10
+      Width = 100
+      BorderSpacing.Left = 5
+      Caption = 'Ändern'
+      TabOrder = 1
+      OnClick = Button_ChangeClick
+    end
+    object Button_Delete: TButton
+      AnchorSideLeft.Control = Button_Change
+      AnchorSideLeft.Side = asrBottom
+      AnchorSideTop.Control = Button_Change
+      Left = 220
+      Height = 31
+      Top = 10
+      Width = 100
+      BorderSpacing.Left = 5
+      Caption = 'Löschen'
+      TabOrder = 2
+      OnClick = Button_DeleteClick
+    end
+    object Button_Log: TButton
+      AnchorSideTop.Control = Panel_Footer
+      AnchorSideRight.Control = Panel_Footer
+      AnchorSideRight.Side = asrBottom
+      AnchorSideBottom.Side = asrBottom
+      Left = 711
+      Height = 31
+      Top = 10
+      Width = 100
+      Anchors = [akTop, akRight]
+      BorderSpacing.Top = 10
+      BorderSpacing.Right = 10
+      Caption = 'Protokoll'
+      TabOrder = 3
+      OnClick = Button_LogClick
+    end
+  end
   object Timer: TTimer
     Enabled = False
     Interval = 10000
@@ -229,6 +245,7 @@ object Form_Main: TForm_Main
     Top = 230
   end
   object PopupMenu_StringGrid: TPopupMenu
+    OnPopup = PopupMenu_StringGridPopup
     Left = 120
     Top = 230
     object MenuItem_Log: TMenuItem

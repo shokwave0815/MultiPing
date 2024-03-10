@@ -16,13 +16,14 @@ type
   TForm_Main = class(TForm)
     Button_Active: TButton;
     Button_Change: TButton;
-    Button_Start: TButton;
-    Button_AddTarget: TButton;
     Button_Delete: TButton;
     Button_Log: TButton;
+    Button_Start: TButton;
+    Button_AddTarget: TButton;
     Edit_AddTarget: TEdit;
     Label_AddTarget: TLabel;
     Label_Time: TLabel;
+    Panel_Footer: TPanel;
     Separator1: TMenuItem;
     MenuItem_Active: TMenuItem;
     MenuItem_Delete: TMenuItem;
@@ -45,6 +46,7 @@ type
     procedure FormResize(Sender: TObject);
     procedure FormShow(Sender: TObject);
     procedure FormWindowStateChange(Sender: TObject);
+    procedure PopupMenu_StringGridPopup(Sender: TObject);
     procedure SpinEdit_TimeKeyDown(Sender: TObject; var Key: word; Shift: TShiftState);
     procedure StringGrid_TargetsDrawCell(Sender: TObject; aCol, aRow: integer; aRect: TRect; aState: TGridDrawState);
     procedure TimerStartTimer(Sender: TObject);
@@ -57,6 +59,7 @@ type
     myHeight, myWidth: integer;
     PingCmd: TPINGSend;
     TargetList: TTargetList;
+    procedure EnableTargetControls(AEnabled: Boolean);
     procedure PingTarget(ATarget: TTarget);
     procedure ClearGrid;
     procedure PrepareDatabase;
@@ -97,6 +100,7 @@ begin
       TargetList.Delete(StringGrid_Targets.Row - 1);
       StringGrid_Targets.RowCount := StringGrid_Targets.RowCount - 1;
       PrintTargets;
+      EnableTargetControls(StringGrid_Targets.Row > 0);
     end;
   end;
 end;
@@ -117,6 +121,7 @@ begin
     TargetData.AddTarget(Edit_AddTarget.Text);
     LoadTargets;
     PrintTargets;
+    EnableTargetControls(StringGrid_Targets.Row > 0);
   end;
 end;
 
@@ -195,7 +200,7 @@ begin
     LoadTargets;
     PrintTargets;
     Form_Log.DatePicker_Log.Date:= now;
-
+    EnableTargetControls(StringGrid_Targets.Row > 0);
     isStartup := False;
   end;
 end;
@@ -210,10 +215,18 @@ begin
   end;
 end;
 
+procedure TForm_Main.PopupMenu_StringGridPopup(Sender: TObject);
+begin
+  MenuItem_Active.Enabled:= StringGrid_Targets.Row > 0;
+  MenuItem_Change.Enabled:= StringGrid_Targets.Row > 0;
+  MenuItem_Delete.Enabled:= StringGrid_Targets.Row > 0;
+  MenuItem_Log.Enabled:= StringGrid_Targets.Row > 0;
+end;
+
 procedure TForm_Main.SpinEdit_TimeKeyDown(Sender: TObject; var Key: word; Shift: TShiftState);
 begin
   Shift := Shift;
-  if key = VK_RETURN then
+  if (key = VK_RETURN) and Button_Start.Enabled then
   begin
     Button_Start.Click;
   end;
@@ -290,6 +303,12 @@ begin
     end;
   end;
   PrintTargets;
+end;
+
+procedure TForm_Main.EnableTargetControls(AEnabled: Boolean);
+begin
+  Panel_Footer.Enabled:= AEnabled;
+  Button_Start.Enabled:= AEnabled;
 end;
 
 procedure TForm_Main.PingTarget(ATarget: TTarget);
