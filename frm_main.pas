@@ -67,6 +67,7 @@ type
     procedure PingTarget(ATarget: TTarget);
     procedure ClearGrid;
     procedure PrepareDatabase;
+    procedure SaveOrder;
     procedure PrintTargets;
     procedure LoadTargets;
     procedure LoadConfig;
@@ -124,6 +125,7 @@ begin
   begin
     TargetData.AddTarget(Edit_AddTarget.Text);
     LoadTargets;
+    SaveOrder;
     PrintTargets;
     EnableTargetControls(StringGrid_Targets.Row > 0);
   end;
@@ -144,6 +146,7 @@ begin
   if StringGrid_Targets.Row > 1 then
   begin
     TargetList.Move(StringGrid_Targets.Row - 1, StringGrid_Targets.Row - 2);
+    SaveOrder;
     PrintTargets;
     StringGrid_Targets.Row:= StringGrid_Targets.Row - 1;
   end;
@@ -154,6 +157,7 @@ begin
   if StringGrid_Targets.Row < StringGrid_Targets.RowCount - 1 then
   begin
     TargetList.Move(StringGrid_Targets.Row - 1, StringGrid_Targets.Row);
+    SaveOrder;
     PrintTargets;
     StringGrid_Targets.Row:= StringGrid_Targets.Row + 1;
   end;
@@ -359,6 +363,16 @@ begin
     TargetData.CreateDatabase;
   end;
   TargetData.SQLite3Connection.Connected := True;
+end;
+
+procedure TForm_Main.SaveOrder;
+var i: Integer;
+begin
+  for i:= 0 to TargetList.Count -1 do
+  begin
+    TargetList[i].Position := i;
+    TargetData.ChangeTarget(TargetList[i]);
+  end;
 end;
 
 procedure TForm_Main.PrintTargets;

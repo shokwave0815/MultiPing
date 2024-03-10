@@ -34,15 +34,22 @@ implementation
 
 {$R *.lfm}
 
+function CompareTargetsByPosition(const a, b: TTarget): Integer;
+begin
+  Result:= a.Position - b.Position;
+end;
+
 { TTargetData }
+
+{*** Database ***}
 
 procedure TTargetData.CreateDatabase;
 begin
   SQLite3Connection.Open;
   SQLTransaction.Active := True;
 
-  SQLite3Connection.ExecuteDirect('CREATE TABLE tblTargets(id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT, target TEXT NOT NULL, active BOOLEAN);');
-  SQLite3Connection.ExecuteDirect('CREATE INDEX idxTargets ON tblTargets(id COLLATE NOCASE);');
+  SQLite3Connection.ExecuteDirect('CREATE TABLE tblTargets(id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT, target TEXT NOT NULL, active BOOLEAN, position Integer);');
+  SQLite3Connection.ExecuteDirect('CREATE INDEX idxTargets ON tblTargets(position COLLATE NOCASE);');
   SQLite3Connection.ExecuteDirect('CREATE TABLE tblLog(ping_result BOOLEAN, ping_start DATETIME, ping_time INTEGER, target_id INTEGER NOT NULL, FOREIGN KEY (target_id) REFERENCES tblTargets (id));');
 
   SQLTransaction.Commit;
@@ -55,14 +62,17 @@ begin
   SQLite3Connection.ExecuteDirect('Begin Transaction');
 end;
 
+{*** Target ***}
+
 procedure TTargetData.AddTarget(ATarget: string);
 begin
   SQLQuery.Close;
   SQLQuery.SQL.Clear;
 
-  SQLQuery.SQL.Text := 'INSERT INTO tblTargets VALUES(NULL, :Target, :Active);';
+  SQLQuery.SQL.Text := 'INSERT INTO tblTargets VALUES(NULL, :Target, :Active, :Position);';
   SQLQuery.ParamByName('Target').AsString := ATarget;
   SQLQuery.ParamByName('Active').AsBoolean := True;
+  SQLQuery.ParamByName('Position').AsInteger := Integer.MaxValue;
 
   SQLQuery.ExecSQL;
   SQLTransaction.Commit;
@@ -75,7 +85,7 @@ begin
   SQLQuery.Close;
   SQLQuery.SQL.Clear;
 
-  SQLQuery.SQL.Text := 'SELECT id, target, active FROM tblTargets;';
+  SQLQuery.SQL.Text := 'SELECT id, target, active, position FROM tblTargets;';
 
   SQLQuery.Open;
 
@@ -86,10 +96,12 @@ begin
     NewTarget.Address := SQLQuery.FieldByName('target').AsString;
     NewTarget.ID := SQLQuery.FieldByName('id').AsInteger;
     NewTarget.Active := SQLQuery.FieldByName('active').AsBoolean;
+    NewTarget.Position := SQLQuery.FieldByName('position').AsInteger;
 
     ATargetList.Add(NewTarget);
     SQLQuery.Next;
   end;
+  ATargetList.Sort(@CompareTargetsByPosition);
 end;
 
 procedure TTargetData.ChangeTarget(ATarget: TTarget);
@@ -97,9 +109,12 @@ begin
   SQLQuery.Close;
   SQLQuery.SQL.Clear;
 
-  SQLQuery.SQL.Text := 'UPDATE tblTargets SET target= :Target, active = :Active WHERE id= :TargetID;';
+  SQLQuery.SQL.Text := 'UPDATE tblTargets ' +
+                    'SET target= :Target, active = :Active, position = :Position ' +
+                    'WHERE id= :TargetID;';
   SQLQuery.ParamByName('Target').AsString := ATarget.Address;
   SQLQuery.ParamByName('Active').AsBoolean := ATarget.Active;
+  SQLQuery.ParamByName('Position').AsInteger := ATarget.Position;
   SQLQuery.ParamByName('TargetID').AsInteger := ATarget.ID;
 
   SQLQuery.ExecSQL;
@@ -125,6 +140,8 @@ begin
 
   ClearDatabase;
 end;
+
+{*** Log ***}
 
 procedure TTargetData.AddLogEntry(ATarget: TTarget);
 begin
