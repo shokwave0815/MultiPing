@@ -24,7 +24,7 @@ type
     procedure ChangeTarget(ATarget: TTarget);
     procedure RemoveTarget(AID: integer);
     procedure AddLogEntry(ATarget: TTarget);
-    function ReadLog(ATarget: TTarget; AAll: Boolean; ADate: TDate): String;
+    function ReadLog(ATarget: TTarget; AAll: Boolean; AFiltered: Boolean; ADate: TDate): String;
   end;
 
 var
@@ -141,17 +141,25 @@ begin
   SQLTransaction.Commit;
 end;
 
-function TTargetData.ReadLog(ATarget: TTarget; AAll: Boolean; ADate: TDate): String;
+function TTargetData.ReadLog(ATarget: TTarget; AAll: Boolean; AFiltered: Boolean; ADate: TDate): String;
 var LastState: boolean;
 begin
   SQLQuery.Close;
   SQLQuery.SQL.Clear;
-
-  SQLQuery.SQL.Text := 'SELECT ping_result, ping_start, ping_time ' +
-                       'FROM tblLog ' +
-                       'WHERE target_id = :TargetID AND date(ping_start) = :PingStart;';
-  SQLQuery.ParamByName('TargetID').asInteger := ATarget.ID;
-  SQLQuery.ParamByName('PingStart').asString := FormatDateTime('YYYY"-"MM"-"DD', ADate);
+  if AFiltered then
+  begin
+    SQLQuery.SQL.Text := 'SELECT ping_result, ping_start, ping_time ' +
+                         'FROM tblLog ' +
+                         'WHERE target_id = :TargetID AND date(ping_start) = :PingStart;';
+    SQLQuery.ParamByName('TargetID').asInteger := ATarget.ID;
+    SQLQuery.ParamByName('PingStart').asString := FormatDateTime('YYYY"-"MM"-"DD', ADate);
+  end else
+  begin
+    SQLQuery.SQL.Text := 'SELECT ping_result, ping_start, ping_time ' +
+                         'FROM tblLog ' +
+                         'WHERE target_id = :TargetID;';
+    SQLQuery.ParamByName('TargetID').asInteger := ATarget.ID;
+  end;
 
   SQLQuery.Open;
 
@@ -162,7 +170,13 @@ begin
   begin
     if (AAll) or (LastState <> SQLQuery.FieldByName('ping_result').AsBoolean) then
     begin
-      Result += TimeToStr(SQLQuery.FieldByName('ping_start').AsDateTime) + ' - '  + BoolToStr(SQLQuery.FieldByName('ping_result').AsBoolean, 'OK', 'Fehler') + ' - ' + IntToStr(SQLQuery.FieldByName('ping_time').AsInteger) + 'ms' + LineEnding;
+      if AFiltered then
+      begin
+        Result += TimeToStr(SQLQuery.FieldByName('ping_start').AsDateTime) + ' - '  + BoolToStr(SQLQuery.FieldByName('ping_result').AsBoolean, 'OK', 'Fehler') + ' - ' + IntToStr(SQLQuery.FieldByName('ping_time').AsInteger) + 'ms' + LineEnding;
+      end else
+      begin
+        Result += DateTimeToStr(SQLQuery.FieldByName('ping_start').AsDateTime) + ' - '  + BoolToStr(SQLQuery.FieldByName('ping_result').AsBoolean, 'OK', 'Fehler') + ' - ' + IntToStr(SQLQuery.FieldByName('ping_time').AsInteger) + 'ms' + LineEnding;
+      end;
       LastState := SQLQuery.FieldByName('ping_result').AsBoolean;
     end;
     SQLQuery.Next;

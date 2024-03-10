@@ -372,6 +372,8 @@ begin
   //Einstellungen
   SpinEdit_Time.Value := cfgINI.ReadInteger('Prefs', 'Time', 30);
   Form_Log.CheckBox_AllEvents.Checked := cfgIni.ReadBool('Prefs', 'allEvents', False);
+  Form_Log.CheckBox_Filter.Checked := cfgIni.ReadBool('Prefs', 'Filtered', True);
+  Form_Log.DatePicker_Log.Enabled := cfgIni.ReadBool('Prefs', 'Filtered', True);
 
   FreeAndNil(CfgINI);
 end;
@@ -403,6 +405,7 @@ begin
   //Einstellungen
   cfgIni.WriteInteger('Prefs', 'Time', SpinEdit_Time.Value);
   cfgIni.WriteBool('Prefs', 'allEvents', Form_Log.CheckBox_AllEvents.Checked);
+  cfgIni.WriteBool('Prefs', 'Filtered', Form_Log.CheckBox_Filter.Checked);
   FreeAndNil(cfgINI);
 end;
 

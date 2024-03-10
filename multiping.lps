@@ -9,7 +9,7 @@
         <IsPartOfProject Value="True"/>
         <EditorIndex Value="5"/>
         <CursorPos Y="18"/>
-        <UsageCount Value="141"/>
+        <UsageCount Value="142"/>
         <Loaded Value="True"/>
       </Unit>
       <Unit>
@@ -19,9 +19,9 @@
         <HasResources Value="True"/>
         <ResourceBaseClass Value="Form"/>
         <IsVisibleTab Value="True"/>
-        <TopLine Value="306"/>
-        <CursorPos Y="341"/>
-        <UsageCount Value="141"/>
+        <TopLine Value="360"/>
+        <CursorPos X="34" Y="376"/>
+        <UsageCount Value="142"/>
         <Loaded Value="True"/>
         <LoadedDesigner Value="True"/>
       </Unit>
@@ -31,7 +31,7 @@
         <EditorIndex Value="4"/>
         <TopLine Value="26"/>
         <CursorPos X="17" Y="46"/>
-        <UsageCount Value="141"/>
+        <UsageCount Value="142"/>
         <Loaded Value="True"/>
       </Unit>
       <Unit>
@@ -41,8 +41,9 @@
         <HasResources Value="True"/>
         <ResourceBaseClass Value="Form"/>
         <EditorIndex Value="3"/>
-        <CursorPos X="14" Y="56"/>
-        <UsageCount Value="134"/>
+        <TopLine Value="56"/>
+        <CursorPos X="3" Y="66"/>
+        <UsageCount Value="135"/>
         <Loaded Value="True"/>
         <LoadedDesigner Value="True"/>
       </Unit>
@@ -53,9 +54,9 @@
         <HasResources Value="True"/>
         <ResourceBaseClass Value="DataModule"/>
         <EditorIndex Value="1"/>
-        <TopLine Value="90"/>
-        <CursorPos X="63" Y="100"/>
-        <UsageCount Value="131"/>
+        <TopLine Value="158"/>
+        <CursorPos X="23" Y="178"/>
+        <UsageCount Value="132"/>
         <Loaded Value="True"/>
         <LoadedDesigner Value="True"/>
       </Unit>
@@ -66,7 +67,8 @@
         <HasResources Value="True"/>
         <ResourceBaseClass Value="Form"/>
         <EditorIndex Value="2"/>
-        <UsageCount Value="107"/>
+        <TopLine Value="31"/>
+        <UsageCount Value="108"/>
         <Loaded Value="True"/>
         <LoadedDesigner Value="True"/>
       </Unit>
@@ -115,14 +117,6 @@
       </Unit>
     </Units>
     <JumpHistory HistoryIndex="29">
-      <Position>
-        <Filename Value="frm_log.pas"/>
-        <Caret Line="53" Column="5" TopLine="37"/>
-      </Position>
-      <Position>
-        <Filename Value="frm_main.pas"/>
-        <Caret Line="50" TopLine="45"/>
-      </Position>
       <Position>
         <Filename Value="frm_main.pas"/>
         <Caret Line="175" Column="3" TopLine="164"/>
@@ -234,6 +228,14 @@
       <Position>
         <Filename Value="frm_main.pas"/>
         <Caret Line="128" Column="35" TopLine="111"/>
+      </Position>
+      <Position>
+        <Filename Value="frm_log.pas"/>
+        <Caret Line="56" Column="14"/>
+      </Position>
+      <Position>
+        <Filename Value="frm_log.pas"/>
+        <Caret Line="58" Column="14" TopLine="34"/>
       </Position>
     </JumpHistory>
     <RunParams>

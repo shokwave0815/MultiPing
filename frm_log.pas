@@ -13,12 +13,14 @@ type
   { TForm_Log }
 
   TForm_Log = class(TForm)
+    CheckBox_Filter: TCheckBox;
     CheckBox_AllEvents: TCheckBox;
     DatePicker_Log: TDateTimePicker;
     Label_Date: TLabel;
     Memo_Log: TMemo;
     Panel1: TPanel;
     procedure CheckBox_AllEventsChange(Sender: TObject);
+    procedure CheckBox_FilterChange(Sender: TObject);
     procedure DatePicker_LogEditingDone(Sender: TObject);
     procedure FormCreate(Sender: TObject);
     procedure FormKeyDown(Sender: TObject; var Key: word; Shift: TShiftState);
@@ -57,6 +59,13 @@ begin
     ReadLog;
 end;
 
+procedure TForm_Log.CheckBox_FilterChange(Sender: TObject);
+begin
+  DatePicker_Log.Enabled:= CheckBox_Filter.Checked;
+  if not isStartup then
+    ReadLog;
+end;
+
 procedure TForm_Log.DatePicker_LogEditingDone(Sender: TObject);
 begin
   if not isStartup then
@@ -71,7 +80,7 @@ end;
 procedure TForm_Log.ReadLog;
 begin
   Memo_Log.Clear;
-  Memo_Log.Append(TargetData.ReadLog(LogTarget, CheckBox_AllEvents.Checked, DatePicker_Log.Date));
+  Memo_Log.Append(TargetData.ReadLog(LogTarget, CheckBox_AllEvents.Checked, CheckBox_Filter.Checked, DatePicker_Log.Date));
 end;
 
 end.
