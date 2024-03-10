@@ -79,10 +79,10 @@ object Form_Main: TForm_Main
       AnchorSideLeft.Control = Button_Log
       AnchorSideTop.Control = Button_Log
       AnchorSideTop.Side = asrBottom
-      Left = 720
+      Left = 714
       Height = 31
       Top = 47
-      Width = 94
+      Width = 100
       BorderSpacing.Top = 5
       Caption = 'Löschen'
       TabOrder = 6
@@ -119,10 +119,10 @@ object Form_Main: TForm_Main
       AnchorSideRight.Control = Panel_Header
       AnchorSideRight.Side = asrBottom
       AnchorSideBottom.Side = asrBottom
-      Left = 720
+      Left = 714
       Height = 31
       Top = 11
-      Width = 94
+      Width = 100
       Anchors = [akTop, akRight]
       BorderSpacing.Top = 10
       BorderSpacing.Right = 10
@@ -133,10 +133,10 @@ object Form_Main: TForm_Main
     object Button_Change: TButton
       AnchorSideTop.Control = Button_Delete
       AnchorSideRight.Control = Button_Delete
-      Left = 620
+      Left = 608
       Height = 31
       Top = 47
-      Width = 94
+      Width = 100
       Anchors = [akTop, akRight]
       BorderSpacing.Right = 6
       Caption = 'Ändern'
@@ -146,13 +146,13 @@ object Form_Main: TForm_Main
     object Button_Active: TButton
       AnchorSideTop.Control = Label_AddTarget
       AnchorSideRight.Control = Button_Log
-      Left = 621
+      Left = 609
       Height = 31
       Top = 11
-      Width = 94
+      Width = 100
       Anchors = [akTop, akRight]
       BorderSpacing.Right = 5
-      Caption = '(de)aktivieren'
+      Caption = '(De)Aktivieren'
       TabOrder = 7
       OnClick = Button_ActiveClick
     end

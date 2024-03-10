@@ -81,3 +81,4 @@ lib/
 *.dbg
 *.sqlite
 targets.txt
+config.ini
