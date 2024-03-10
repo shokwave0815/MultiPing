@@ -33,10 +33,13 @@ object Form_Main: TForm_Main
       AnchorSideTop.Control = SpinEdit_Time
       Left = 77
       Height = 31
+      Hint = 'Startet das Anpingen der Ziele'
       Top = 35
       Width = 94
       BorderSpacing.Left = 5
       Caption = 'Start'
+      ParentShowHint = False
+      ShowHint = True
       TabOrder = 1
       OnClick = Button_StartClick
     end
@@ -46,9 +49,12 @@ object Form_Main: TForm_Main
       AnchorSideTop.Side = asrBottom
       Left = 191
       Height = 28
+      Hint = 'Ein Name oder eine IP eines neuen Zieles'
       Top = 35
       Width = 200
       BorderSpacing.Top = 5
+      ParentShowHint = False
+      ShowHint = True
       TabOrder = 2
       OnKeyDown = Edit_AddTargetKeyDown
     end
@@ -70,10 +76,13 @@ object Form_Main: TForm_Main
       AnchorSideTop.Control = Edit_AddTarget
       Left = 396
       Height = 31
+      Hint = 'Fügt das neue Ziel zur Liste hinzu'
       Top = 35
       Width = 94
       BorderSpacing.Left = 5
       Caption = 'Hinzufügen'
+      ParentShowHint = False
+      ShowHint = True
       TabOrder = 3
       OnClick = Button_AddTargetClick
     end
@@ -83,11 +92,14 @@ object Form_Main: TForm_Main
       AnchorSideTop.Side = asrBottom
       Left = 10
       Height = 28
+      Hint = 'Intervall in Sekunden bis zum nächsten Ping'
       Top = 35
       Width = 62
       BorderSpacing.Top = 5
       MinValue = 1
       OnKeyDown = SpinEdit_TimeKeyDown
+      ParentShowHint = False
+      ShowHint = True
       TabOrder = 0
       Value = 30
     end
@@ -152,6 +164,7 @@ object Form_Main: TForm_Main
         Width = 168
       end>
     FixedCols = 0
+    Flat = True
     Options = [goFixedVertLine, goFixedHorzLine, goVertLine, goHorzLine, goColSizing, goRowSelect, goDblClickAutoSize, goSmoothScroll]
     PopupMenu = PopupMenu_StringGrid
     TabOrder = 0
@@ -184,11 +197,14 @@ object Form_Main: TForm_Main
       AnchorSideTop.Control = Button_MoveDown
       Left = 208
       Height = 31
+      Hint = 'de- bzw. aktiviert ein Ziel'
       Top = 10
       Width = 110
       BorderSpacing.Left = 5
       BorderSpacing.Right = 5
       Caption = '(De)Aktivieren'
+      ParentShowHint = False
+      ShowHint = True
       TabOrder = 2
       OnClick = Button_ActiveClick
     end
@@ -198,10 +214,13 @@ object Form_Main: TForm_Main
       AnchorSideTop.Control = Button_Active
       Left = 323
       Height = 31
+      Hint = 'Ändert ein Ziel'
       Top = 10
       Width = 100
       BorderSpacing.Left = 5
-      Caption = 'Ändern'
+      Caption = 'Bearbeiten'
+      ParentShowHint = False
+      ShowHint = True
       TabOrder = 3
       OnClick = Button_ChangeClick
     end
@@ -211,10 +230,13 @@ object Form_Main: TForm_Main
       AnchorSideTop.Control = Button_Change
       Left = 428
       Height = 31
+      Hint = 'Löscht ein Ziel aus der Liste'
       Top = 10
       Width = 100
       BorderSpacing.Left = 5
       Caption = 'Löschen'
+      ParentShowHint = False
+      ShowHint = True
       TabOrder = 4
       OnClick = Button_DeleteClick
     end
@@ -225,12 +247,15 @@ object Form_Main: TForm_Main
       AnchorSideBottom.Side = asrBottom
       Left = 711
       Height = 31
+      Hint = 'Zeigt das Protokoll eines Ziels'
       Top = 10
       Width = 100
       Anchors = [akTop, akRight]
       BorderSpacing.Top = 10
       BorderSpacing.Right = 10
       Caption = 'Protokoll'
+      ParentShowHint = False
+      ShowHint = True
       TabOrder = 5
       OnClick = Button_LogClick
     end
@@ -239,11 +264,14 @@ object Form_Main: TForm_Main
       AnchorSideTop.Control = Panel_Footer
       Left = 10
       Height = 31
+      Hint = 'Verschiebt das Ziel eine Position nach oben in der Liste'
       Top = 10
       Width = 94
       BorderSpacing.Left = 10
       BorderSpacing.Top = 10
       Caption = 'Hoch'
+      ParentShowHint = False
+      ShowHint = True
       TabOrder = 0
       OnClick = Button_MoveUpClick
     end
@@ -253,10 +281,13 @@ object Form_Main: TForm_Main
       AnchorSideTop.Control = Button_MoveUp
       Left = 109
       Height = 31
+      Hint = 'Verschiebt das Ziel eine Position nach unten in der Liste'
       Top = 10
       Width = 94
       BorderSpacing.Left = 5
       Caption = 'Runter'
+      ParentShowHint = False
+      ShowHint = True
       TabOrder = 1
       OnClick = Button_MoveDownClick
     end
