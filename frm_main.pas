@@ -14,6 +14,8 @@ type
   { TForm_Main }
 
   TForm_Main = class(TForm)
+    Button_MoveDown: TButton;
+    Button_MoveUp: TButton;
     Button_Active: TButton;
     Button_Change: TButton;
     Button_Delete: TButton;
@@ -34,6 +36,8 @@ type
     StringGrid_Targets: TStringGrid;
     SpinEdit_Time: TSpinEdit;
     Timer: TTimer;
+    procedure Button_MoveDownClick(Sender: TObject);
+    procedure Button_MoveUpClick(Sender: TObject);
     procedure Button_ActiveClick(Sender: TObject);
     procedure Button_AddTargetClick(Sender: TObject);
     procedure Button_ChangeClick(Sender: TObject);
@@ -133,6 +137,26 @@ begin
   Target.Active:= not Target.Active;
   TargetData.ChangeTarget(Target);
   PrintTargets;
+end;
+
+procedure TForm_Main.Button_MoveUpClick(Sender: TObject);
+begin
+  if StringGrid_Targets.Row > 1 then
+  begin
+    TargetList.Move(StringGrid_Targets.Row - 1, StringGrid_Targets.Row - 2);
+    PrintTargets;
+    StringGrid_Targets.Row:= StringGrid_Targets.Row - 1;
+  end;
+end;
+
+procedure TForm_Main.Button_MoveDownClick(Sender: TObject);
+begin
+  if StringGrid_Targets.Row < StringGrid_Targets.RowCount - 1 then
+  begin
+    TargetList.Move(StringGrid_Targets.Row - 1, StringGrid_Targets.Row);
+    PrintTargets;
+    StringGrid_Targets.Row:= StringGrid_Targets.Row + 1;
+  end;
 end;
 
 procedure TForm_Main.Button_ChangeClick(Sender: TObject);

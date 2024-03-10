@@ -179,43 +179,43 @@ object Form_Main: TForm_Main
     ParentBackground = False
     TabOrder = 2
     object Button_Active: TButton
-      AnchorSideLeft.Control = Panel_Footer
-      AnchorSideTop.Control = Panel_Footer
-      Left = 10
+      AnchorSideLeft.Control = Button_MoveDown
+      AnchorSideLeft.Side = asrBottom
+      AnchorSideTop.Control = Button_MoveDown
+      Left = 208
       Height = 31
       Top = 10
-      Width = 100
-      BorderSpacing.Left = 10
-      BorderSpacing.Top = 10
+      Width = 110
+      BorderSpacing.Left = 5
       BorderSpacing.Right = 5
       Caption = '(De)Aktivieren'
-      TabOrder = 0
+      TabOrder = 2
       OnClick = Button_ActiveClick
     end
     object Button_Change: TButton
       AnchorSideLeft.Control = Button_Active
       AnchorSideLeft.Side = asrBottom
       AnchorSideTop.Control = Button_Active
-      Left = 115
+      Left = 323
       Height = 31
       Top = 10
       Width = 100
       BorderSpacing.Left = 5
       Caption = 'Ändern'
-      TabOrder = 1
+      TabOrder = 3
       OnClick = Button_ChangeClick
     end
     object Button_Delete: TButton
       AnchorSideLeft.Control = Button_Change
       AnchorSideLeft.Side = asrBottom
       AnchorSideTop.Control = Button_Change
-      Left = 220
+      Left = 428
       Height = 31
       Top = 10
       Width = 100
       BorderSpacing.Left = 5
       Caption = 'Löschen'
-      TabOrder = 2
+      TabOrder = 4
       OnClick = Button_DeleteClick
     end
     object Button_Log: TButton
@@ -231,8 +231,34 @@ object Form_Main: TForm_Main
       BorderSpacing.Top = 10
       BorderSpacing.Right = 10
       Caption = 'Protokoll'
-      TabOrder = 3
+      TabOrder = 5
       OnClick = Button_LogClick
+    end
+    object Button_MoveUp: TButton
+      AnchorSideLeft.Control = Panel_Footer
+      AnchorSideTop.Control = Panel_Footer
+      Left = 10
+      Height = 31
+      Top = 10
+      Width = 94
+      BorderSpacing.Left = 10
+      BorderSpacing.Top = 10
+      Caption = 'Hoch'
+      TabOrder = 0
+      OnClick = Button_MoveUpClick
+    end
+    object Button_MoveDown: TButton
+      AnchorSideLeft.Control = Button_MoveUp
+      AnchorSideLeft.Side = asrBottom
+      AnchorSideTop.Control = Button_MoveUp
+      Left = 109
+      Height = 31
+      Top = 10
+      Width = 94
+      BorderSpacing.Left = 5
+      Caption = 'Runter'
+      TabOrder = 1
+      OnClick = Button_MoveDownClick
     end
   end
   object Timer: TTimer
