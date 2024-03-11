@@ -26,12 +26,14 @@ type
     FID: Integer;
     FPosition: Integer;
     FLastLogEntry: TLogEntry;
+    FNumberOfErrors: Integer;
   public
     property Active: Boolean read FActive write FActive;
     property Address: String read FAddress write FAddress;
     property ID: Integer read FID write FID;
     property Position: Integer read FPosition write FPosition;
     property LastLogEntry: TLogEntry read FLastLogEntry write FLastLogEntry;
+    property NumberOfErrors: Integer read FNumberOfErrors write FNumberOfErrors;
     constructor Create;
     destructor Destroy; override;
   end;

@@ -125,6 +125,7 @@ object Form_Main: TForm_Main
     AutoEdit = False
     BorderSpacing.Around = 10
     BorderStyle = bsNone
+    ColCount = 6
     Columns = <    
       item
         Font.Height = -15
@@ -162,6 +163,12 @@ object Form_Main: TForm_Main
         Title.Font.Height = -15
         Title.Caption = 'Zeitpunkt'
         Width = 168
+      end    
+      item
+        Font.Height = -15
+        Title.Font.Height = -15
+        Title.Caption = 'Fehler Heute'
+        Width = 97
       end>
     FixedCols = 0
     Flat = True
@@ -179,6 +186,7 @@ object Form_Main: TForm_Main
       105
       130
       168
+      97
     )
   end
   object Panel_Footer: TPanel

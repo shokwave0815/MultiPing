@@ -28,6 +28,7 @@ type
     procedure RemoveTarget(AID: integer);
     procedure AddLogEntry(ATarget: TTarget);
     function ReadLog(ATarget: TTarget; AAll: Boolean; AFiltered: Boolean; ADate: TDate): String;
+    function ReadErrors(ATarget: TTarget): Integer;
   end;
 
 var
@@ -218,6 +219,20 @@ begin
     SQLQuery.Next;
   end;
 
+end;
+
+function TTargetDatabase.ReadErrors(ATarget: TTarget): Integer;
+begin
+  SQLQuery.Close;
+  SQLQuery.SQL.Clear;
+  SQLQuery.SQL.Text := 'SELECT COUNT(ping_result) AS result ' +
+                       'FROM tblLog ' +
+                       'WHERE target_id = :TargetID AND date(ping_start) = :PingStart AND ping_result = FALSE;';
+  SQLQuery.ParamByName('TargetID').asInteger := ATarget.ID;
+  SQLQuery.ParamByName('PingStart').asString := FormatDateTime('YYYY"-"MM"-"DD', now);
+  SQLQuery.Open;
+
+  Result:= SQLQuery.FieldByName('result').AsInteger;
 end;
 
 end.

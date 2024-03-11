@@ -80,6 +80,7 @@ type
     procedure SaveTargetsOrder;
     procedure FillStringGrid;
     procedure LoadTargets;
+    procedure LoadErrors;
     procedure LoadConfig;
     procedure SaveConfig;
   public
@@ -405,6 +406,8 @@ begin
   ATarget.LastLogEntry.Start := now;
   ATarget.LastLogEntry.PingTime := PingCmd.PingTime;
   ATarget.LastLogEntry.Interval := Timer.Interval;
+  if not ATarget.LastLogEntry.Result then
+    ATarget.NumberOfErrors:= ATarget.NumberOfErrors + 1;
 
   TargetDatabase.AddLogEntry(ATarget);
 end;
@@ -446,6 +449,7 @@ begin
   begin
     StringGrid_Targets.Cells[0, i + 1] := BoolToStr(TargetList[i].Active, 'ja', 'nein');
     StringGrid_Targets.Cells[1, i + 1] := TargetList[i].Address;
+    StringGrid_Targets.Cells[5, i + 1] := IntToStr(TargetList[i].NumberOfErrors);
 
     LastLogEntry := TargetList[i].LastLogEntry;
     if (LastLogEntry <> nil) and (LastLogEntry.Start > 0) then
@@ -462,6 +466,16 @@ procedure TForm_Main.LoadTargets;
 begin
   TargetList.Clear;
   TargetDatabase.ReadTargets(TargetList);
+  LoadErrors;
+end;
+
+procedure TForm_Main.LoadErrors;
+var i: Integer;
+begin
+  for i:= 0 to TargetList.Count - 1 do
+  begin
+    TargetList[i].NumberOfErrors:= TargetDatabase.ReadErrors(TargetList[i]);
+  end;
 end;
 
 procedure TForm_Main.LoadConfig;
@@ -481,11 +495,12 @@ begin
   Form_Log.Height := Scale96ToForm(cfgINI.ReadInteger('LogWindow', 'Height', 400));
 
   //Größe der Spalten des StringGrid
-  StringGrid_Targets.Columns.Items[0].Width := Scale96ToForm(cfgINI.ReadInteger('SG', '0', 130));
-  StringGrid_Targets.Columns.Items[1].Width := Scale96ToForm(cfgINI.ReadInteger('SG', '1', 300));
-  StringGrid_Targets.Columns.Items[2].Width := Scale96ToForm(cfgINI.ReadInteger('SG', '2', 150));
+  StringGrid_Targets.Columns.Items[0].Width := Scale96ToForm(cfgINI.ReadInteger('SG', '0', 80));
+  StringGrid_Targets.Columns.Items[1].Width := Scale96ToForm(cfgINI.ReadInteger('SG', '1', 150));
+  StringGrid_Targets.Columns.Items[2].Width := Scale96ToForm(cfgINI.ReadInteger('SG', '2', 100));
   StringGrid_Targets.Columns.Items[3].Width := Scale96ToForm(cfgINI.ReadInteger('SG', '3', 130));
-  StringGrid_Targets.Columns.Items[4].Width := Scale96ToForm(cfgINI.ReadInteger('SG', '4', 200));
+  StringGrid_Targets.Columns.Items[4].Width := Scale96ToForm(cfgINI.ReadInteger('SG', '4', 170));
+  StringGrid_Targets.Columns.Items[5].Width := Scale96ToForm(cfgINI.ReadInteger('SG', '5', 100));
 
   //Einstellungen
   SpinEdit_Time.Value := cfgINI.ReadInteger('Prefs', 'Time', 30);
@@ -519,6 +534,7 @@ begin
   cfgINI.WriteInteger('SG', '2', ScaleFormTo96(StringGrid_Targets.Columns.Items[2].Width));
   cfgINI.WriteInteger('SG', '3', ScaleFormTo96(StringGrid_Targets.Columns.Items[3].Width));
   cfgINI.WriteInteger('SG', '4', ScaleFormTo96(StringGrid_Targets.Columns.Items[4].Width));
+  cfgINI.WriteInteger('SG', '5', ScaleFormTo96(StringGrid_Targets.Columns.Items[5].Width));
 
   //Einstellungen
   cfgIni.WriteInteger('Prefs', 'Time', SpinEdit_Time.Value);
