@@ -66,11 +66,11 @@ object Form_Log: TForm_Log
       AnchorSideLeft.Side = asrBottom
       AnchorSideTop.Control = Label_Date
       AnchorSideTop.Side = asrCenter
-      Left = 148
+      Left = 150
       Height = 19
       Top = 9
       Width = 139
-      BorderSpacing.Left = 8
+      BorderSpacing.Left = 10
       Caption = 'ausführliches Protokoll'
       TabOrder = 2
       OnChange = CheckBox_AllEventsChange
@@ -101,10 +101,15 @@ object Form_Log: TForm_Log
       OnChange = CheckBox_FilterChange
     end
     object Label_Errors: TLabel
-      Left = 148
+      AnchorSideLeft.Control = DatePicker_Log
+      AnchorSideLeft.Side = asrBottom
+      AnchorSideTop.Control = DatePicker_Log
+      AnchorSideTop.Side = asrCenter
+      Left = 150
       Height = 15
-      Top = 38
+      Top = 34
       Width = 83
+      BorderSpacing.Left = 10
       Caption = 'Anzahl Fehler: 0'
     end
   end
