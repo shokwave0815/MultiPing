@@ -1,5 +1,5 @@
 # MultiPing
-A tool to ping multible targets automaticly.
+A tool to ping multible targets automaticly. This project is a fun project so there will be no support by me.
 
 Buildtools:
 - Lazarus 3.2
