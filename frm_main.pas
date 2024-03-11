@@ -368,6 +368,7 @@ begin
     Form_Log.LogTarget := TargetList[StringGrid_Targets.Row - 1];
     Form_Log.Caption := 'Protokoll für ' + Form_Log.LogTarget.Address;
     Form_Log.ReadLog;
+    Form_Log.Label_Errors.Caption:= 'Anzahl Fehler: ' + IntToStr(TargetDatabase.ReadErrors(Form_Log.LogTarget, Form_Log.CheckBox_Filter.Checked, Form_Log.DatePicker_Log.Date));
     Form_Log.Show;
   end;
 end;
@@ -474,7 +475,7 @@ var i: Integer;
 begin
   for i:= 0 to TargetList.Count - 1 do
   begin
-    TargetList[i].NumberOfErrors:= TargetDatabase.ReadErrors(TargetList[i]);
+    TargetList[i].NumberOfErrors:= TargetDatabase.ReadErrors(TargetList[i], True, now);
   end;
 end;
 

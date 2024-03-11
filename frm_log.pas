@@ -16,6 +16,7 @@ type
     CheckBox_Filter: TCheckBox;
     CheckBox_AllEvents: TCheckBox;
     DatePicker_Log: TDateTimePicker;
+    Label_Errors: TLabel;
     Label_Date: TLabel;
     Memo_Log: TMemo;
     Panel1: TPanel;
@@ -27,8 +28,9 @@ type
     procedure FormShow(Sender: TObject);
   private
     isStartup: boolean;
+    FLogTarget: TTarget;
   public
-    LogTarget: TTarget;
+    property LogTarget: TTarget read FLogTarget write FLogTarget;
     procedure ReadLog;
   end;
 
@@ -63,13 +65,19 @@ procedure TForm_Log.CheckBox_FilterChange(Sender: TObject);
 begin
   DatePicker_Log.Enabled:= CheckBox_Filter.Checked;
   if not isStartup then
+  begin
     ReadLog;
+    Label_Errors.Caption:= 'Anzahl Fehler: ' + IntToStr(TargetDatabase.ReadErrors(FLogTarget, CheckBox_Filter.Checked, DatePicker_Log.Date));
+  end;
 end;
 
 procedure TForm_Log.DatePicker_LogEditingDone(Sender: TObject);
 begin
   if not isStartup then
+  begin
     ReadLog;
+    Label_Errors.Caption:= 'Anzahl Fehler: ' + IntToStr(TargetDatabase.ReadErrors(FLogTarget, CheckBox_Filter.Checked, DatePicker_Log.Date));
+  end;
 end;
 
 procedure TForm_Log.FormCreate(Sender: TObject);
@@ -80,7 +88,7 @@ end;
 procedure TForm_Log.ReadLog;
 begin
   Memo_Log.Clear;
-  Memo_Log.Append(TargetDatabase.ReadLog(LogTarget, CheckBox_AllEvents.Checked, CheckBox_Filter.Checked, DatePicker_Log.Date));
+  Memo_Log.Append(TargetDatabase.ReadLog(FLogTarget, CheckBox_AllEvents.Checked, CheckBox_Filter.Checked, DatePicker_Log.Date));
   Memo_Log.Lines.Delete(Memo_Log.Lines.Count - 1);
 end;
 
