@@ -79,6 +79,7 @@ type
     procedure PrepareDatabase;
     procedure SaveTargetsOrder;
     procedure FillStringGrid;
+    procedure FillStringGridRow(ATarget: TTarget);
     procedure LoadTargets;
     procedure LoadErrors;
     procedure LoadConfig;
@@ -442,25 +443,33 @@ end;
 procedure TForm_Main.FillStringGrid;
 var
   i: integer;
-  LastLogEntry: TLogEntry;
 begin
   StringGrid_Targets.BeginUpdate;
   StringGrid_Targets.RowCount := TargetList.Count + 1;
   for i := 0 to TargetList.Count - 1 do
   begin
-    StringGrid_Targets.Cells[0, i + 1] := BoolToStr(TargetList[i].Active, 'ja', 'nein');
-    StringGrid_Targets.Cells[1, i + 1] := TargetList[i].Address;
-    StringGrid_Targets.Cells[5, i + 1] := IntToStr(TargetList[i].NumberOfErrors);
-
-    LastLogEntry := TargetList[i].LastLogEntry;
-    if (LastLogEntry <> nil) and (LastLogEntry.Start > 0) then
-    begin
-      StringGrid_Targets.Cells[2, i + 1] := BoolToStr(LastLogEntry.Result, 'ja', 'nein');
-      StringGrid_Targets.Cells[3, i + 1] := IntToStr(LastLogEntry.PingTime) + ' ms';
-      StringGrid_Targets.Cells[4, i + 1] := DateTimeToStr(LastLogEntry.Start);
-    end;
+    FillStringGridRow(TargetList[i]);
   end;
   StringGrid_Targets.EndUpdate;
+end;
+
+procedure TForm_Main.FillStringGridRow(ATarget: TTarget);
+var Row: Integer;
+    LastLogEntry: TLogEntry;
+begin
+  Row:= ATarget.Position + 1;
+
+  StringGrid_Targets.Cells[0, Row] := BoolToStr(ATarget.Active, 'ja', 'nein');
+  StringGrid_Targets.Cells[1, Row] := ATarget.Address;
+  StringGrid_Targets.Cells[5, Row] := IntToStr(ATarget.NumberOfErrors);
+
+  LastLogEntry := ATarget.LastLogEntry;
+  if (LastLogEntry <> nil) and (LastLogEntry.Start > 0) then
+  begin
+    StringGrid_Targets.Cells[2, Row] := BoolToStr(LastLogEntry.Result, 'ja', 'nein');
+    StringGrid_Targets.Cells[3, Row] := IntToStr(LastLogEntry.PingTime) + ' ms';
+    StringGrid_Targets.Cells[4, Row] := DateTimeToStr(LastLogEntry.Start);
+  end;
 end;
 
 procedure TForm_Main.LoadTargets;
