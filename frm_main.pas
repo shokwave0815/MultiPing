@@ -6,7 +6,7 @@ interface
 
 uses
   Classes, SysUtils, Forms, Controls, Graphics, Dialogs, StdCtrls, ExtCtrls,
-  Grids, Spin, pingsend, target, fgl, frm_log, LCLType, Menus, Types, INIFiles,
+  Grids, Spin, target, fgl, frm_log, LCLType, Menus, Types, INIFiles,
   frm_targetdm, frm_edit, pingthread;
 
 type

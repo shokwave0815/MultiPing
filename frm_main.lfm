@@ -3,7 +3,7 @@ object Form_Main: TForm_Main
   Height = 511
   Top = 250
   Width = 825
-  Caption = 'MultiPing V0.5 ©2024 by I.Steiniger'
+  Caption = 'MultiPing V0.6 ©2024 by I.Steiniger'
   ClientHeight = 511
   ClientWidth = 825
   Color = clWindow
