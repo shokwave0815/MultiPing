@@ -7,7 +7,7 @@ interface
 uses
   Classes, SysUtils, Forms, Controls, Graphics, Dialogs, StdCtrls, ExtCtrls,
   Grids, Spin, pingsend, target, fgl, frm_log, LCLType, Menus, Types, INIFiles,
-  frm_targetdm, frm_edit;
+  frm_targetdm, frm_edit, pingthread;
 
 type
 
@@ -51,6 +51,7 @@ type
     procedure FormShow(Sender: TObject);
     procedure FormWindowStateChange(Sender: TObject);
     procedure PopupMenu_StringGridPopup(Sender: TObject);
+    procedure SpinEdit_TimeChange(Sender: TObject);
     procedure SpinEdit_TimeKeyDown(Sender: TObject; var Key: word; Shift: TShiftState);
     procedure StringGrid_TargetsDrawCell(Sender: TObject; aCol, aRow: integer; aRect: TRect; aState: TGridDrawState);
     procedure StringGrid_TargetsKeyDown(Sender: TObject; var Key: Word;
@@ -65,7 +66,6 @@ type
     AppDir: string;
     cfgIni: TIniFile;
     myHeight, myWidth: integer;
-    PingCmd: TPINGSend;
     TargetList: TTargetList;
     procedure EditTarget;
     Procedure DeleteTarget;
@@ -75,6 +75,7 @@ type
     procedure MoveDown;
     procedure EnableTargetControls(AEnabled: boolean);
     procedure PingTarget(ATarget: TTarget);
+    procedure PingThreadFinish(ATarget: TTarget);
     procedure ClearStringGrid;
     procedure PrepareDatabase;
     procedure SaveTargetsOrder;
@@ -121,7 +122,7 @@ procedure TForm_Main.Button_AddTargetClick(Sender: TObject);
 begin
   if Trim(Edit_AddTarget.Text) <> '' then
   begin
-    TargetDatabase.AddTarget(Edit_AddTarget.Text);
+    TargetDatabase.AddTarget(Edit_AddTarget.Text, TargetList.Count);
     SaveTargetsOrder;
     LoadTargets;
     FillStringGrid;
@@ -161,7 +162,6 @@ begin
   SaveConfig;
 
   FreeAndNil(TargetList);
-  FreeAndNil(PingCmd);
 
   CloseAction := caFree;
 end;
@@ -170,7 +170,6 @@ procedure TForm_Main.FormCreate(Sender: TObject);
 begin
   isStartup := True;
   AppDir := ExtractFilePath(ParamStr(0));
-  PingCmd := TPINGSend.Create;
   TargetList := TTargetList.Create;
 end;
 
@@ -216,6 +215,11 @@ begin
   MenuItem_Change.Enabled := StringGrid_Targets.Row > 0;
   MenuItem_Delete.Enabled := StringGrid_Targets.Row > 0;
   MenuItem_Log.Enabled := StringGrid_Targets.Row > 0;
+end;
+
+procedure TForm_Main.SpinEdit_TimeChange(Sender: TObject);
+begin
+
 end;
 
 procedure TForm_Main.SpinEdit_TimeKeyDown(Sender: TObject; var Key: word; Shift: TShiftState);
@@ -303,6 +307,7 @@ procedure TForm_Main.TimerStopTimer(Sender: TObject);
 begin
   Button_Start.Caption := 'Start';
   SpinEdit_Time.Enabled := True;
+  FillStringGrid;
 end;
 
 procedure TForm_Main.TimerTimer(Sender: TObject);
@@ -401,16 +406,22 @@ begin
 end;
 
 procedure TForm_Main.PingTarget(ATarget: TTarget);
+var PT: TPingThread;
 begin
-  ATarget.LastLogEntry.Start := now;
-  ATarget.LastLogEntry.Result := PingCmd.Ping(ATarget.Address);
-  ATarget.LastLogEntry.PingTime := PingCmd.PingTime;
-  ATarget.LastLogEntry.Interval := Timer.Interval;
-  if not ATarget.LastLogEntry.Result then
-    ATarget.NumberOfErrors:= ATarget.NumberOfErrors + 1;
+  if not ATarget.Running then
+  begin
+    ATarget.Running:= True;
+    PT:= TPingThread.Create(True, ATarget);
+    PT.OnFinish:= @PingThreadFinish;
+    PT.Start;
+  end;
+end;
 
+procedure TForm_Main.PingThreadFinish(ATarget: TTarget);
+begin
   TargetDatabase.AddLogEntry(ATarget);
   FillStringGridRow(ATarget);
+  ATarget.Running:= False;
   Application.ProcessMessages;
 end;
 

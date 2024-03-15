@@ -13,7 +13,6 @@ type
     Start: TDateTime;
     Result: boolean;
     PingTime: integer;
-    Interval: cardinal;
   end;
 
 
@@ -27,6 +26,7 @@ type
     FPosition: Integer;
     FLastLogEntry: TLogEntry;
     FNumberOfErrors: Integer;
+    FRunning: Boolean;
   public
     property Active: Boolean read FActive write FActive;
     property Address: String read FAddress write FAddress;
@@ -34,6 +34,7 @@ type
     property Position: Integer read FPosition write FPosition;
     property LastLogEntry: TLogEntry read FLastLogEntry write FLastLogEntry;
     property NumberOfErrors: Integer read FNumberOfErrors write FNumberOfErrors;
+    property Running: Boolean read FRunning write FRunning;
     constructor Create;
     destructor Destroy; override;
   end;

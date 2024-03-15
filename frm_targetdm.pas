@@ -22,7 +22,7 @@ type
     property Filename: String read GetFilename write SetFilename;
     procedure CreateDatabase;
     procedure ClearDatabase;
-    procedure AddTarget(ATarget: string);
+    procedure AddTarget(ATarget: string; APosition: Integer);
     procedure ReadTargets(var ATargetList: TTargetList);
     procedure ChangeTarget(ATarget: TTarget);
     procedure RemoveTarget(AID: integer);
@@ -82,7 +82,7 @@ end;
                                       Target
 ******************************************************************************}
 
-procedure TTargetDatabase.AddTarget(ATarget: string);
+procedure TTargetDatabase.AddTarget(ATarget: string; APosition: Integer);
 begin
   SQLQuery.Close;
   SQLQuery.SQL.Clear;
@@ -90,7 +90,7 @@ begin
   SQLQuery.SQL.Text := 'INSERT INTO tblTargets VALUES(NULL, :Target, :Active, :Position);';
   SQLQuery.ParamByName('Target').AsString := ATarget;
   SQLQuery.ParamByName('Active').AsBoolean := True;
-  SQLQuery.ParamByName('Position').AsInteger := Integer.MaxValue;
+  SQLQuery.ParamByName('Position').AsInteger := APosition;
 
   SQLQuery.ExecSQL;
   SQLTransaction.Commit;
