@@ -403,8 +403,8 @@ end;
 
 procedure TForm_Main.PingTarget(ATarget: TTarget);
 begin
-  ATarget.LastLogEntry.Result := PingCmd.Ping(ATarget.Address);
   ATarget.LastLogEntry.Start := now;
+  ATarget.LastLogEntry.Result := PingCmd.Ping(ATarget.Address);
   ATarget.LastLogEntry.PingTime := PingCmd.PingTime;
   ATarget.LastLogEntry.Interval := Timer.Interval;
   if not ATarget.LastLogEntry.Result then
