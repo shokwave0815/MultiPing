@@ -22,6 +22,7 @@ type
     Button_Log: TButton;
     Button_Start: TButton;
     Button_AddTarget: TButton;
+    CheckBox_Alert: TCheckBox;
     Edit_AddTarget: TEdit;
     Label_AddTarget: TLabel;
     Label_Time: TLabel;
@@ -76,6 +77,7 @@ type
     procedure EnableTargetControls(AEnabled: boolean);
     procedure PingTarget(ATarget: TTarget);
     procedure PingThreadFinished(ATarget: TTarget);
+    procedure CheckErrorsInLine(ATarget: TTarget);
     procedure ClearStringGrid;
     procedure PrepareDatabase;
     procedure SaveTargetsOrder;
@@ -420,6 +422,16 @@ begin
   FillStringGridRow(ATarget);
   ATarget.Running:= False;
   Application.ProcessMessages;
+  CheckErrorsInLine(ATarget);
+end;
+
+procedure TForm_Main.CheckErrorsInLine(ATarget: TTarget);
+begin
+  if (CheckBox_Alert.Checked) and (ATarget.ErrorsInLine > 2) and not (ATarget.WarningShown) then
+  begin
+    ATarget.WarningShown:= True;
+    MessageDlg('MultiPing', 'Das Ziel "' +  ATarget.Address + '" ist länger nicht erreichbar.', mtWarning, [mbOK], 0);
+  end;
 end;
 
 procedure TForm_Main.ClearStringGrid;
@@ -525,6 +537,7 @@ begin
   Form_Log.CheckBox_AllEvents.Checked := cfgIni.ReadBool('Prefs', 'allEvents', False);
   Form_Log.CheckBox_Filter.Checked := cfgIni.ReadBool('Prefs', 'Filtered', True);
   Form_Log.DatePicker_Log.Enabled := cfgIni.ReadBool('Prefs', 'Filtered', True);
+  CheckBox_Alert.Checked := cfgIni.ReadBool('Prefs', 'Alert', False);
 
   FreeAndNil(CfgINI);
 end;
@@ -558,6 +571,7 @@ begin
   cfgIni.WriteInteger('Prefs', 'Time', SpinEdit_Time.Value);
   cfgIni.WriteBool('Prefs', 'allEvents', Form_Log.CheckBox_AllEvents.Checked);
   cfgIni.WriteBool('Prefs', 'Filtered', Form_Log.CheckBox_Filter.Checked);
+  cfgIni.WriteBool('Prefs', 'Alert', CheckBox_Alert.Checked);
   FreeAndNil(cfgINI);
 end;
 

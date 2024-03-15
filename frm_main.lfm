@@ -116,6 +116,20 @@ object Form_Main: TForm_Main
       Caption = 'Zeit(s):'
       ParentColor = False
     end
+    object CheckBox_Alert: TCheckBox
+      AnchorSideTop.Control = Panel_Header
+      AnchorSideRight.Control = Panel_Header
+      AnchorSideRight.Side = asrBottom
+      Left = 750
+      Height = 24
+      Top = 10
+      Width = 61
+      Anchors = [akTop, akRight]
+      BorderSpacing.Top = 10
+      BorderSpacing.Right = 10
+      Caption = 'Alarm'
+      TabOrder = 4
+    end
   end
   object StringGrid_Targets: TStringGrid
     Left = 10

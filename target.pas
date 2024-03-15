@@ -15,7 +15,6 @@ type
     PingTime: integer;
   end;
 
-
   { TTarget }
 
   TTarget = class(TObject)
@@ -27,6 +26,8 @@ type
     FLastLogEntry: TLogEntry;
     FNumberOfErrors: Integer;
     FRunning: Boolean;
+    FErrorsInLine: Integer;
+    FWarningShown: Boolean;
   public
     property Active: Boolean read FActive write FActive;
     property Address: String read FAddress write FAddress;
@@ -35,6 +36,8 @@ type
     property LastLogEntry: TLogEntry read FLastLogEntry write FLastLogEntry;
     property NumberOfErrors: Integer read FNumberOfErrors write FNumberOfErrors;
     property Running: Boolean read FRunning write FRunning;
+    property ErrorsInLine: Integer read FErrorsInLine write FErrorsInLine;
+    property WarningShown: Boolean read FWarningShown write FWarningShown;
     constructor Create;
     destructor Destroy; override;
   end;

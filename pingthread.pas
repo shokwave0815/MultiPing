@@ -42,13 +42,26 @@ begin
 end;
 
 procedure TPingThread.Execute;
+var
+  OldResult: Boolean;
 begin
   try
+    OldResult:= FTarget.LastLogEntry.Result;
     FTarget.LastLogEntry.Start := now;
     FTarget.LastLogEntry.Result := FPingCmd.Ping(FTarget.Address);
     FTarget.LastLogEntry.PingTime := FPingCmd.PingTime;
+
     if not FTarget.LastLogEntry.Result then
       FTarget.NumberOfErrors := FTarget.NumberOfErrors + 1;
+
+    if not OldResult and not FTarget.LastLogEntry.Result then
+      FTarget.ErrorsInLine:= FTarget.ErrorsInLine + 1
+    else
+      If not OldResult and FTarget.LastLogEntry.Result then
+      begin
+        FTarget.ErrorsInLine:= 0;
+        FTarget.WarningShown:= False;
+      end;
   finally
     Synchronize(@ReturnTarget);
   end;

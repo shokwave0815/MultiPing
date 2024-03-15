@@ -199,14 +199,15 @@ begin
   end;
 
   SQLQuery.Open;
-
   SQLQuery.First;
+
   Result:='';
   LastState := not SQLQuery.FieldByName('ping_result').AsBoolean;  //to print first event
   while not SQLQuery.EOF do
   begin
     if (AAll) or (LastState <> SQLQuery.FieldByName('ping_result').AsBoolean) then
     begin
+
       if AFiltered then
       begin
         Result += TimeToStr(SQLQuery.FieldByName('ping_start').AsDateTime);

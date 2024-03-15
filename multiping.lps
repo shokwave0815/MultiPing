@@ -18,8 +18,9 @@
         <ComponentName Value="Form_Main"/>
         <HasResources Value="True"/>
         <ResourceBaseClass Value="Form"/>
-        <TopLine Value="363"/>
-        <CursorPos X="3" Y="367"/>
+        <IsVisibleTab Value="True"/>
+        <TopLine Value="523"/>
+        <CursorPos X="68" Y="540"/>
         <UsageCount Value="201"/>
         <Loaded Value="True"/>
         <LoadedDesigner Value="True"/>
@@ -28,7 +29,8 @@
         <Filename Value="target.pas"/>
         <IsPartOfProject Value="True"/>
         <EditorIndex Value="5"/>
-        <CursorPos Y="16"/>
+        <TopLine Value="19"/>
+        <CursorPos X="75" Y="40"/>
         <UsageCount Value="201"/>
         <Loaded Value="True"/>
       </Unit>
@@ -39,7 +41,6 @@
         <HasResources Value="True"/>
         <ResourceBaseClass Value="Form"/>
         <EditorIndex Value="4"/>
-        <TopLine Value="76"/>
         <CursorPos X="71" Y="79"/>
         <UsageCount Value="306"/>
         <Loaded Value="True"/>
@@ -51,10 +52,8 @@
         <ComponentName Value="TargetDatabase"/>
         <HasResources Value="True"/>
         <ResourceBaseClass Value="DataModule"/>
-        <IsVisibleTab Value="True"/>
         <EditorIndex Value="2"/>
-        <TopLine Value="195"/>
-        <CursorPos X="7" Y="224"/>
+        <CursorPos X="3" Y="203"/>
         <UsageCount Value="303"/>
         <Loaded Value="True"/>
         <LoadedDesigner Value="True"/>
@@ -74,8 +73,9 @@
         <Filename Value="pingthread.pas"/>
         <IsPartOfProject Value="True"/>
         <EditorIndex Value="1"/>
-        <CursorPos Y="48"/>
-        <UsageCount Value="25"/>
+        <TopLine Value="41"/>
+        <CursorPos X="24" Y="63"/>
+        <UsageCount Value="26"/>
         <Loaded Value="True"/>
       </Unit>
       <Unit>
@@ -95,36 +95,12 @@
       <Unit>
         <Filename Value="synapse/pingsend.pas"/>
         <EditorIndex Value="-1"/>
-        <TopLine Value="596"/>
+        <TopLine Value="627"/>
         <CursorPos Y="639"/>
         <UsageCount Value="10"/>
       </Unit>
     </Units>
     <JumpHistory HistoryIndex="29">
-      <Position>
-        <Filename Value="frm_main.pas"/>
-        <Caret Line="78" Column="31" TopLine="65"/>
-      </Position>
-      <Position>
-        <Filename Value="frm_main.pas"/>
-        <Caret Line="422" Column="32" TopLine="420"/>
-      </Position>
-      <Position>
-        <Filename Value="frm_main.pas"/>
-        <Caret Line="78" Column="49" TopLine="70"/>
-      </Position>
-      <Position>
-        <Filename Value="pingthread.pas"/>
-        <Caret Line="24" Column="66" TopLine="33"/>
-      </Position>
-      <Position>
-        <Filename Value="frm_main.pas"/>
-        <Caret Line="77" Column="22" TopLine="65"/>
-      </Position>
-      <Position>
-        <Filename Value="frm_main.pas"/>
-        <Caret Line="410" Column="8" TopLine="402"/>
-      </Position>
       <Position>
         <Filename Value="frm_main.pas"/>
         <Caret Line="49" Column="22" TopLine="41"/>
@@ -220,6 +196,30 @@
       <Position>
         <Filename Value="frm_main.pas"/>
         <Caret Line="73" Column="21" TopLine="68"/>
+      </Position>
+      <Position>
+        <Filename Value="frm_main.pas"/>
+        <Caret Line="78" Column="26" TopLine="71"/>
+      </Position>
+      <Position>
+        <Filename Value="frm_main.pas"/>
+        <Caret Line="79" Column="49" TopLine="67"/>
+      </Position>
+      <Position>
+        <Filename Value="frm_main.pas"/>
+        <Caret Line="431" Column="113" TopLine="420"/>
+      </Position>
+      <Position>
+        <Filename Value="frm_main.pas"/>
+        <Caret Line="432" TopLine="418"/>
+      </Position>
+      <Position>
+        <Filename Value="frm_main.pas"/>
+        <Caret Line="430" Column="92" TopLine="419"/>
+      </Position>
+      <Position>
+        <Filename Value="frm_main.pas"/>
+        <Caret Line="540" Column="68" TopLine="523"/>
       </Position>
     </JumpHistory>
     <RunParams>
