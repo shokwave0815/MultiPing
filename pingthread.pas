@@ -26,7 +26,6 @@ type
     constructor Create(CreateSuspended: boolean; ATarget: TTarget);
     destructor Destroy; override;
     property OnFinish: TReturnTarget read FOnFinish write FOnFinish;
-    property Target: TTarget read FTarget write FTarget;
   end;
 
 
@@ -44,13 +43,16 @@ end;
 
 procedure TPingThread.Execute;
 begin
-  FTarget.LastLogEntry.Start := now;
-  FTarget.LastLogEntry.Result := FPingCmd.Ping(FTarget.Address);
-  FTarget.LastLogEntry.PingTime := FPingCmd.PingTime;
-  if not FTarget.LastLogEntry.Result then
-    FTarget.NumberOfErrors := FTarget.NumberOfErrors + 1;
+  try
+    FTarget.LastLogEntry.Start := now;
+    FTarget.LastLogEntry.Result := FPingCmd.Ping(FTarget.Address);
+    FTarget.LastLogEntry.PingTime := FPingCmd.PingTime;
+    if not FTarget.LastLogEntry.Result then
+      FTarget.NumberOfErrors := FTarget.NumberOfErrors + 1;
+  finally
+    Synchronize(@ReturnTarget);
+  end;
 
-  Synchronize(@ReturnTarget);
 end;
 
 constructor TPingThread.Create(CreateSuspended: boolean; ATarget: TTarget);

@@ -2,7 +2,7 @@
 <CONFIG>
   <ProjectSession>
     <Version Value="12"/>
-    <BuildModes Active="Debug"/>
+    <BuildModes Active="Release"/>
     <Units>
       <Unit>
         <Filename Value="multiping.lpr"/>
@@ -19,8 +19,8 @@
         <HasResources Value="True"/>
         <ResourceBaseClass Value="Form"/>
         <IsVisibleTab Value="True"/>
-        <TopLine Value="297"/>
-        <CursorPos X="18" Y="310"/>
+        <TopLine Value="95"/>
+        <CursorPos X="26" Y="162"/>
         <UsageCount Value="201"/>
         <Loaded Value="True"/>
         <LoadedDesigner Value="True"/>
@@ -73,9 +73,9 @@
         <Filename Value="pingthread.pas"/>
         <IsPartOfProject Value="True"/>
         <EditorIndex Value="1"/>
-        <TopLine Value="44"/>
-        <CursorPos X="30" Y="53"/>
-        <UsageCount Value="22"/>
+        <TopLine Value="39"/>
+        <CursorPos Y="48"/>
+        <UsageCount Value="23"/>
         <Loaded Value="True"/>
       </Unit>
       <Unit>
@@ -92,16 +92,15 @@
         <CursorPos X="3" Y="265"/>
         <UsageCount Value="10"/>
       </Unit>
+      <Unit>
+        <Filename Value="synapse/pingsend.pas"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="627"/>
+        <CursorPos Y="639"/>
+        <UsageCount Value="10"/>
+      </Unit>
     </Units>
     <JumpHistory HistoryIndex="29">
-      <Position>
-        <Filename Value="frm_main.pas"/>
-        <Caret Line="81" TopLine="71"/>
-      </Position>
-      <Position>
-        <Filename Value="frm_main.pas"/>
-        <Caret Line="77" Column="22" TopLine="68"/>
-      </Position>
       <Position>
         <Filename Value="pingthread.pas"/>
         <Caret Line="20" Column="50"/>
@@ -213,6 +212,14 @@
       <Position>
         <Filename Value="frm_main.pas"/>
         <Caret Line="470" TopLine="459"/>
+      </Position>
+      <Position>
+        <Filename Value="pingthread.pas"/>
+        <Caret Line="29" TopLine="24"/>
+      </Position>
+      <Position>
+        <Filename Value="frm_main.pas"/>
+        <Caret Line="310" Column="18" TopLine="151"/>
       </Position>
     </JumpHistory>
     <RunParams>

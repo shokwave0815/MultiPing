@@ -158,11 +158,8 @@ end;
 procedure TForm_Main.FormClose(Sender: TObject; var CloseAction: TCloseAction);
 begin
   Timer.Enabled := False;
-
   SaveConfig;
-
   FreeAndNil(TargetList);
-
   CloseAction := caFree;
 end;
 
