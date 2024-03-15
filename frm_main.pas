@@ -315,7 +315,6 @@ var
 begin
   for i := 0 to TargetList.Count - 1 do
   begin
-//    showMessage(IntToStr(trunc(TargetList[i].LastLogEntry.Start)) + '   ' +InTToStr(trunc(now)));
     If (TargetList[i].LastLogEntry.Start > 0) and (trunc(TargetList[i].LastLogEntry.Start) < trunc(now)) then
       TargetList[i].NumberOfErrors:= 0;
 
