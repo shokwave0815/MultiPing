@@ -75,7 +75,7 @@ type
     procedure MoveDown;
     procedure EnableTargetControls(AEnabled: boolean);
     procedure PingTarget(ATarget: TTarget);
-    procedure PingThreadFinish(ATarget: TTarget);
+    procedure PingThreadFinished(ATarget: TTarget);
     procedure ClearStringGrid;
     procedure PrepareDatabase;
     procedure SaveTargetsOrder;
@@ -409,12 +409,12 @@ begin
   begin
     ATarget.Running:= True;
     PT:= TPingThread.Create(True, ATarget);
-    PT.OnFinish:= @PingThreadFinish;
+    PT.OnFinish:= @PingThreadFinished;
     PT.Start;
   end;
 end;
 
-procedure TForm_Main.PingThreadFinish(ATarget: TTarget);
+procedure TForm_Main.PingThreadFinished(ATarget: TTarget);
 begin
   TargetDatabase.AddLogEntry(ATarget);
   FillStringGridRow(ATarget);
