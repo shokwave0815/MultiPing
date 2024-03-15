@@ -303,7 +303,6 @@ procedure TForm_Main.TimerStopTimer(Sender: TObject);
 begin
   Button_Start.Caption := 'Start';
   SpinEdit_Time.Enabled := True;
-  FillStringGrid;
 end;
 
 procedure TForm_Main.TimerTimer(Sender: TObject);
@@ -317,7 +316,6 @@ begin
       PingTarget(TargetList.Items[i]);
     end;
   end;
-  FillStringGrid;
 end;
 
 procedure TForm_Main.EditTarget;
@@ -412,6 +410,8 @@ begin
     ATarget.NumberOfErrors:= ATarget.NumberOfErrors + 1;
 
   TargetDatabase.AddLogEntry(ATarget);
+  FillStringGridRow(ATarget);
+  Application.ProcessMessages;
 end;
 
 procedure TForm_Main.ClearStringGrid;

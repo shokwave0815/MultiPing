@@ -19,8 +19,8 @@
         <HasResources Value="True"/>
         <ResourceBaseClass Value="Form"/>
         <IsVisibleTab Value="True"/>
-        <TopLine Value="449"/>
-        <CursorPos X="36" Y="471"/>
+        <TopLine Value="435"/>
+        <CursorPos Y="457"/>
         <UsageCount Value="201"/>
         <Loaded Value="True"/>
         <LoadedDesigner Value="True"/>
@@ -72,14 +72,6 @@
       </Unit>
     </Units>
     <JumpHistory HistoryIndex="29">
-      <Position>
-        <Filename Value="frm_main.pas"/>
-        <Caret Line="71" Column="28" TopLine="59"/>
-      </Position>
-      <Position>
-        <Filename Value="frm_main.pas"/>
-        <Caret Line="72" Column="30" TopLine="59"/>
-      </Position>
       <Position>
         <Filename Value="frm_main.pas"/>
         <Caret Line="392" Column="3" TopLine="338"/>
@@ -191,6 +183,14 @@
       <Position>
         <Filename Value="frm_main.pas"/>
         <Caret Line="452" Column="36" TopLine="445"/>
+      </Position>
+      <Position>
+        <Filename Value="frm_main.pas"/>
+        <Caret Line="445" TopLine="442"/>
+      </Position>
+      <Position>
+        <Filename Value="frm_main.pas"/>
+        <Caret Line="81" TopLine="71"/>
       </Position>
     </JumpHistory>
     <RunParams>
