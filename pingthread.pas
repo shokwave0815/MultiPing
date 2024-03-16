@@ -52,16 +52,21 @@ begin
     FTarget.LastLogEntry.PingTime := FPingCmd.PingTime;
 
     if not FTarget.LastLogEntry.Result then
+    begin
       FTarget.NumberOfErrors := FTarget.NumberOfErrors + 1;
+    end;
 
     if not OldResult and not FTarget.LastLogEntry.Result then
-      FTarget.ErrorsInLine:= FTarget.ErrorsInLine + 1
-    else
+    begin
+      FTarget.ErrorsInLine:= FTarget.ErrorsInLine + 1;
+    end
+    else begin
       If not OldResult and FTarget.LastLogEntry.Result then
       begin
         FTarget.ErrorsInLine:= 0;
         FTarget.WarningShown:= False;
       end;
+    end;
   finally
     Synchronize(@ReturnTarget);
   end;

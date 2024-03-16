@@ -19,8 +19,8 @@
         <HasResources Value="True"/>
         <ResourceBaseClass Value="Form"/>
         <IsVisibleTab Value="True"/>
-        <TopLine Value="305"/>
-        <CursorPos X="105" Y="319"/>
+        <TopLine Value="68"/>
+        <CursorPos X="21" Y="84"/>
         <UsageCount Value="201"/>
         <Loaded Value="True"/>
         <LoadedDesigner Value="True"/>
@@ -29,7 +29,6 @@
         <Filename Value="target.pas"/>
         <IsPartOfProject Value="True"/>
         <EditorIndex Value="5"/>
-        <TopLine Value="19"/>
         <CursorPos X="75" Y="40"/>
         <UsageCount Value="201"/>
         <Loaded Value="True"/>
@@ -41,7 +40,7 @@
         <HasResources Value="True"/>
         <ResourceBaseClass Value="Form"/>
         <EditorIndex Value="4"/>
-        <CursorPos X="71" Y="79"/>
+        <CursorPos X="8" Y="63"/>
         <UsageCount Value="306"/>
         <Loaded Value="True"/>
         <LoadedDesigner Value="True"/>
@@ -53,7 +52,7 @@
         <HasResources Value="True"/>
         <ResourceBaseClass Value="DataModule"/>
         <EditorIndex Value="2"/>
-        <CursorPos X="3" Y="203"/>
+        <CursorPos X="9" Y="5"/>
         <UsageCount Value="303"/>
         <Loaded Value="True"/>
         <LoadedDesigner Value="True"/>
@@ -73,9 +72,8 @@
         <Filename Value="pingthread.pas"/>
         <IsPartOfProject Value="True"/>
         <EditorIndex Value="1"/>
-        <TopLine Value="41"/>
-        <CursorPos X="24" Y="63"/>
-        <UsageCount Value="27"/>
+        <CursorPos X="11" Y="68"/>
+        <UsageCount Value="49"/>
         <Loaded Value="True"/>
       </Unit>
       <Unit>
@@ -83,36 +81,24 @@
         <EditorIndex Value="-1"/>
         <TopLine Value="1810"/>
         <CursorPos X="18" Y="1821"/>
-        <UsageCount Value="9"/>
+        <UsageCount Value="7"/>
       </Unit>
       <Unit>
         <Filename Value="../../lazarus/fpc/3.2.2/source/rtl/objpas/classes/classes.inc"/>
         <EditorIndex Value="-1"/>
         <TopLine Value="263"/>
         <CursorPos X="3" Y="265"/>
-        <UsageCount Value="9"/>
+        <UsageCount Value="7"/>
       </Unit>
       <Unit>
         <Filename Value="synapse/pingsend.pas"/>
         <EditorIndex Value="-1"/>
         <TopLine Value="627"/>
         <CursorPos Y="639"/>
-        <UsageCount Value="10"/>
+        <UsageCount Value="8"/>
       </Unit>
     </Units>
     <JumpHistory HistoryIndex="29">
-      <Position>
-        <Filename Value="frm_main.pas"/>
-        <Caret Line="49" Column="22" TopLine="41"/>
-      </Position>
-      <Position>
-        <Filename Value="pingthread.pas"/>
-        <Caret Line="27" Column="34" TopLine="20"/>
-      </Position>
-      <Position>
-        <Filename Value="frm_main.pas"/>
-        <Caret Line="164" TopLine="148"/>
-      </Position>
       <Position>
         <Filename Value="pingthread.pas"/>
         <Caret Line="20" Column="7" TopLine="7"/>
@@ -220,6 +206,18 @@
       <Position>
         <Filename Value="frm_main.pas"/>
         <Caret Line="540" Column="68" TopLine="523"/>
+      </Position>
+      <Position>
+        <Filename Value="frm_main.pas"/>
+        <Caret Line="106" Column="8"/>
+      </Position>
+      <Position>
+        <Filename Value="frm_main.pas"/>
+        <Caret Line="83" Column="31" TopLine="68"/>
+      </Position>
+      <Position>
+        <Filename Value="frm_main.pas"/>
+        <Caret Line="84" Column="15" TopLine="68"/>
       </Position>
     </JumpHistory>
     <RunParams>

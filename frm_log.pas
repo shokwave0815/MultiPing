@@ -47,7 +47,9 @@ procedure TForm_Log.FormKeyDown(Sender: TObject; var Key: word; Shift: TShiftSta
 begin
   Shift := Shift;
   if key = VK_ESCAPE then
+  begin
     Close;
+  end;
 end;
 
 procedure TForm_Log.FormShow(Sender: TObject);
@@ -58,7 +60,9 @@ end;
 procedure TForm_Log.CheckBox_AllEventsChange(Sender: TObject);
 begin
   if not isStartup then
+  begin
     ReadLog;
+  end;
 end;
 
 procedure TForm_Log.CheckBox_FilterChange(Sender: TObject);

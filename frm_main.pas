@@ -52,7 +52,6 @@ type
     procedure FormShow(Sender: TObject);
     procedure FormWindowStateChange(Sender: TObject);
     procedure PopupMenu_StringGridPopup(Sender: TObject);
-    procedure SpinEdit_TimeChange(Sender: TObject);
     procedure SpinEdit_TimeKeyDown(Sender: TObject; var Key: word; Shift: TShiftState);
     procedure StringGrid_TargetsDrawCell(Sender: TObject; aCol, aRow: integer; aRect: TRect; aState: TGridDrawState);
     procedure StringGrid_TargetsKeyDown(Sender: TObject; var Key: Word;
@@ -81,8 +80,8 @@ type
     procedure ClearStringGrid;
     procedure PrepareDatabase;
     procedure SaveTargetsOrder;
-    procedure FillStringGrid;
-    procedure FillStringGridRow(ATarget: TTarget);
+    procedure UpdateStringGrid;
+    procedure UpdateStringGridRow(ATarget: TTarget);
     procedure LoadTargets;
     procedure LoadErrors;
     procedure LoadConfig;
@@ -103,7 +102,9 @@ implementation
 procedure TForm_Main.Button_StartClick(Sender: TObject);
 begin
   if not Timer.Enabled then
+  begin
     Timer.Interval := SpinEdit_Time.Value * 1000;
+  end;
 
   Timer.Enabled := not Timer.Enabled;
 end;
@@ -117,7 +118,9 @@ procedure TForm_Main.Edit_AddTargetKeyDown(Sender: TObject; var Key: word; Shift
 begin
   Shift := Shift;
   if key = VK_RETURN then
+  begin
     Button_AddTarget.Click;
+  end;
 end;
 
 procedure TForm_Main.Button_AddTargetClick(Sender: TObject);
@@ -127,7 +130,7 @@ begin
     TargetDatabase.AddTarget(Edit_AddTarget.Text, TargetList.Count);
     SaveTargetsOrder;
     LoadTargets;
-    FillStringGrid;
+    UpdateStringGrid;
     EnableTargetControls(StringGrid_Targets.Row > 0);
   end;
 end;
@@ -189,7 +192,7 @@ begin
 
     PrepareDatabase;
     LoadTargets;
-    FillStringGrid;
+    UpdateStringGrid;
 
     Form_Log.DatePicker_Log.Date := now;
     EnableTargetControls(StringGrid_Targets.Row > 0);
@@ -216,16 +219,13 @@ begin
   MenuItem_Log.Enabled := StringGrid_Targets.Row > 0;
 end;
 
-procedure TForm_Main.SpinEdit_TimeChange(Sender: TObject);
-begin
-
-end;
-
 procedure TForm_Main.SpinEdit_TimeKeyDown(Sender: TObject; var Key: word; Shift: TShiftState);
 begin
   Shift := Shift;
   if (key = VK_RETURN) and Button_Start.Enabled then
+  begin
     Button_Start.Click;
+  end;
 end;
 
 procedure TForm_Main.StringGrid_TargetsDrawCell(Sender: TObject; aCol, aRow: integer;
@@ -247,12 +247,17 @@ begin
 
     //deaktiviertes Ziel
     if StringGrid_Targets.Cells[0, aRow] = 'nein' then
+    begin
       StringGrid_Targets.canvas.Brush.Color := TColor($E0E0E0);
+    end;
 
     if gdSelected in aState then
+    begin
       StringGrid_Targets.Canvas.Font.Style := [fsBold] //selektierte Zeile
-    else
+    end
+    else begin
       StringGrid_Targets.Canvas.Font.Style := [];//nicht selektierte Zeile
+    end;
 
     StringGrid_Targets.Canvas.FillRect(arect);
     StringGrid_Targets.Canvas.TextOut(aRect.Left + 2, aRect.Top + 2, StringGrid_Targets.Cells[aCol, aRow]);
@@ -292,7 +297,9 @@ begin
   StringGrid_Targets.Row:= Row;
 
   if (Button = mbLeft) and (Col = 0) then
+  begin
     Button_Active.Click;
+  end;
 end;
 
 procedure TForm_Main.TimerStartTimer(Sender: TObject);
@@ -306,7 +313,7 @@ procedure TForm_Main.TimerStopTimer(Sender: TObject);
 begin
   Button_Start.Caption := 'Start';
   SpinEdit_Time.Enabled := True;
-  FillStringGrid;
+  UpdateStringGrid;
 end;
 
 procedure TForm_Main.TimerTimer(Sender: TObject);
@@ -316,7 +323,9 @@ begin
   for i := 0 to TargetList.Count - 1 do
   begin
     If (TargetList[i].LastLogEntry.Start > 0) and (trunc(TargetList[i].LastLogEntry.Start) < trunc(now)) then
+    begin
       TargetList[i].NumberOfErrors:= 0;
+    end;
 
     if TargetList.Items[i].Active then
     begin
@@ -337,7 +346,7 @@ begin
   begin
     Target.Address := Form_Edit.Edit_Target.Text;
     TargetDatabase.ChangeTarget(Target);
-    FillStringGrid;
+    UpdateStringGrid;
   end;
 end;
 
@@ -351,7 +360,7 @@ begin
       TargetDatabase.RemoveTarget(TargetList[StringGrid_Targets.Row - 1].ID);
       TargetList.Delete(StringGrid_Targets.Row - 1);
       SaveTargetsOrder;
-      FillStringGrid;
+      UpdateStringGrid;
       EnableTargetControls(StringGrid_Targets.Row > 0);
     end;
   end;
@@ -364,7 +373,7 @@ begin
   Target := TargetList[StringGrid_Targets.Row - 1];
   Target.Active := not Target.Active;
   TargetDatabase.ChangeTarget(Target);
-  FillStringGrid;
+  UpdateStringGrid;
 end;
 
 procedure TForm_Main.ShowLog;
@@ -385,7 +394,7 @@ begin
   begin
     TargetList.Move(StringGrid_Targets.Row - 1, StringGrid_Targets.Row - 2);
     SaveTargetsOrder;
-    FillStringGrid;
+    UpdateStringGrid;
     StringGrid_Targets.Row := StringGrid_Targets.Row - 1;
   end;
 end;
@@ -396,7 +405,7 @@ begin
   begin
     TargetList.Move(StringGrid_Targets.Row - 1, StringGrid_Targets.Row);
     SaveTargetsOrder;
-    FillStringGrid;
+    UpdateStringGrid;
     StringGrid_Targets.Row := StringGrid_Targets.Row + 1;
   end;
 end;
@@ -422,7 +431,7 @@ end;
 procedure TForm_Main.PingThreadFinished(ATarget: TTarget);
 begin
   TargetDatabase.AddLogEntry(ATarget);
-  FillStringGridRow(ATarget);
+  UpdateStringGridRow(ATarget);
   ATarget.Running:= False;
   Application.ProcessMessages;
   CheckErrorsInLine(ATarget);
@@ -447,7 +456,9 @@ procedure TForm_Main.PrepareDatabase;
 begin
   TargetDatabase.Filename := AppDir + 'targets.sqlite';
   if not FileExists(TargetDatabase.Filename) then
+  begin
     TargetDatabase.CreateDatabase;
+  end;
 
   TargetDatabase.SQLite3Connection.Connected := True;
 end;
@@ -463,7 +474,7 @@ begin
   end;
 end;
 
-procedure TForm_Main.FillStringGrid;
+procedure TForm_Main.UpdateStringGrid;
 var
   i: integer;
 begin
@@ -471,12 +482,12 @@ begin
   StringGrid_Targets.RowCount := TargetList.Count + 1;
   for i := 0 to TargetList.Count - 1 do
   begin
-    FillStringGridRow(TargetList[i]);
+    UpdateStringGridRow(TargetList[i]);
   end;
   StringGrid_Targets.EndUpdate;
 end;
 
-procedure TForm_Main.FillStringGridRow(ATarget: TTarget);
+procedure TForm_Main.UpdateStringGridRow(ATarget: TTarget);
 var Row: Integer;
     LastLogEntry: TLogEntry;
 begin

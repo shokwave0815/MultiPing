@@ -219,7 +219,9 @@ begin
       Result += ' - '  + BoolToStr(SQLQuery.FieldByName('ping_result').AsBoolean, 'OK', 'Fehler');
 
       if AAll then
+      begin
         Result += ' - ' + IntToStr(SQLQuery.FieldByName('ping_time').AsInteger) + ' ms';
+      end;
 
       Result += LineEnding;
 

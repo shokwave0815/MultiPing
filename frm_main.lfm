@@ -97,7 +97,6 @@ object Form_Main: TForm_Main
       Width = 62
       BorderSpacing.Top = 5
       MinValue = 1
-      OnChange = SpinEdit_TimeChange
       OnKeyDown = SpinEdit_TimeKeyDown
       ParentShowHint = False
       ShowHint = True
