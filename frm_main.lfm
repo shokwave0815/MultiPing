@@ -3,7 +3,7 @@ object Form_Main: TForm_Main
   Height = 511
   Top = 250
   Width = 825
-  Caption = 'MultiPing V0.6 ©2024 by I.Steiniger'
+  Caption = 'MultiPing V0.7 ©2024 by I.Steiniger'
   ClientHeight = 511
   ClientWidth = 825
   Color = clWindow
@@ -116,18 +116,45 @@ object Form_Main: TForm_Main
       ParentColor = False
     end
     object CheckBox_Alert: TCheckBox
+      AnchorSideTop.Control = SpinEdit_Alert
+      AnchorSideTop.Side = asrCenter
+      AnchorSideRight.Control = SpinEdit_Alert
+      Left = 594
+      Height = 24
+      Top = 8
+      Width = 96
+      Anchors = [akTop, akRight]
+      BorderSpacing.Right = 5
+      Caption = 'Alarm nach'
+      TabOrder = 4
+      OnChange = CheckBox_AlertChange
+    end
+    object SpinEdit_Alert: TSpinEdit
+      AnchorSideTop.Control = Label_Alert
+      AnchorSideTop.Side = asrCenter
+      AnchorSideRight.Control = Label_Alert
+      Left = 695
+      Height = 28
+      Top = 6
+      Width = 63
+      Anchors = [akTop, akRight]
+      BorderSpacing.Right = 5
+      MinValue = 1
+      TabOrder = 5
+      Value = 3
+    end
+    object Label_Alert: TLabel
       AnchorSideTop.Control = Panel_Header
       AnchorSideRight.Control = Panel_Header
       AnchorSideRight.Side = asrBottom
-      Left = 750
-      Height = 24
+      Left = 763
+      Height = 20
       Top = 10
-      Width = 61
+      Width = 48
       Anchors = [akTop, akRight]
       BorderSpacing.Top = 10
       BorderSpacing.Right = 10
-      Caption = 'Alarm'
-      TabOrder = 4
+      Caption = 'Fehlern'
     end
   end
   object StringGrid_Targets: TStringGrid

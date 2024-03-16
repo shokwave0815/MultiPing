@@ -24,6 +24,7 @@ type
     Button_AddTarget: TButton;
     CheckBox_Alert: TCheckBox;
     Edit_AddTarget: TEdit;
+    Label_Alert: TLabel;
     Label_AddTarget: TLabel;
     Label_Time: TLabel;
     Panel_Footer: TPanel;
@@ -34,6 +35,7 @@ type
     MenuItem_Log: TMenuItem;
     Panel_Header: TPanel;
     PopupMenu_StringGrid: TPopupMenu;
+    SpinEdit_Alert: TSpinEdit;
     StringGrid_Targets: TStringGrid;
     SpinEdit_Time: TSpinEdit;
     Timer: TTimer;
@@ -45,6 +47,7 @@ type
     procedure Button_LogClick(Sender: TObject);
     procedure Button_StartClick(Sender: TObject);
     procedure Button_DeleteClick(Sender: TObject);
+    procedure CheckBox_AlertChange(Sender: TObject);
     procedure Edit_AddTargetKeyDown(Sender: TObject; var Key: word; Shift: TShiftState);
     procedure FormClose(Sender: TObject; var CloseAction: TCloseAction);
     procedure FormCreate(Sender: TObject);
@@ -112,6 +115,11 @@ end;
 procedure TForm_Main.Button_DeleteClick(Sender: TObject);
 begin
   DeleteTarget;
+end;
+
+procedure TForm_Main.CheckBox_AlertChange(Sender: TObject);
+begin
+  SpinEdit_Alert.Enabled:= CheckBox_Alert.Checked;
 end;
 
 procedure TForm_Main.Edit_AddTargetKeyDown(Sender: TObject; var Key: word; Shift: TShiftState);
@@ -196,6 +204,7 @@ begin
 
     Form_Log.DatePicker_Log.Date := now;
     EnableTargetControls(StringGrid_Targets.Row > 0);
+    SpinEdit_Alert.Enabled:= CheckBox_Alert.Checked;
 
     isStartup := False;
   end;
@@ -439,7 +448,7 @@ end;
 
 procedure TForm_Main.CheckErrorsInLine(ATarget: TTarget);
 begin
-  if (CheckBox_Alert.Checked) and (ATarget.ErrorsInLine > 2) and not (ATarget.WarningShown) then
+  if (CheckBox_Alert.Checked) and (ATarget.ErrorsInLine >= SpinEdit_Alert.Value) and not (ATarget.WarningShown) then
   begin
     ATarget.WarningShown:= True;
     MessageDlg('MultiPing', 'Das Ziel "' +  ATarget.Address + '" ist länger nicht erreichbar.', mtWarning, [mbOK], 0);
@@ -552,6 +561,7 @@ begin
   Form_Log.CheckBox_Filter.Checked := cfgIni.ReadBool('Prefs', 'Filtered', True);
   Form_Log.DatePicker_Log.Enabled := cfgIni.ReadBool('Prefs', 'Filtered', True);
   CheckBox_Alert.Checked := cfgIni.ReadBool('Prefs', 'Alert', False);
+  SpinEdit_Alert.Value := cfgINI.ReadInteger('Prefs', 'AlertCount', 3);
 
   FreeAndNil(CfgINI);
 end;
@@ -586,6 +596,7 @@ begin
   cfgIni.WriteBool('Prefs', 'allEvents', Form_Log.CheckBox_AllEvents.Checked);
   cfgIni.WriteBool('Prefs', 'Filtered', Form_Log.CheckBox_Filter.Checked);
   cfgIni.WriteBool('Prefs', 'Alert', CheckBox_Alert.Checked);
+  cfgIni.WriteInteger('Prefs', 'AlertCount', SpinEdit_Alert.Value);
   FreeAndNil(cfgINI);
 end;
 
