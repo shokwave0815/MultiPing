@@ -6,8 +6,8 @@ interface
 
 uses
   Classes, SysUtils, Forms, Controls, Graphics, Dialogs, StdCtrls, ExtCtrls,
-  Grids, Spin, target, fgl, frm_log, LCLType, Menus, Types, INIFiles,
-  frm_targetdm, frm_edit, pingthread;
+  Grids, Spin, LCLType, Menus, Types,
+  frm_targetdm, frm_edit, frm_log, configuration, pingthread, target;
 
 type
 
@@ -65,11 +65,10 @@ type
     procedure TimerStopTimer(Sender: TObject);
     procedure TimerTimer(Sender: TObject);
   private
-    isStartup: boolean;
-    AppDir: string;
-    cfgIni: TIniFile;
-    myHeight, myWidth: integer;
+    isStartup: Boolean;
+    AppDir: String;
     TargetList: TTargetList;
+    Config: TConfiguration;
     procedure EditTarget;
     Procedure DeleteTarget;
     procedure ActivateTarget;
@@ -87,10 +86,8 @@ type
     procedure UpdateStringGridRow(ATarget: TTarget);
     procedure LoadTargets;
     procedure LoadErrors;
-    procedure LoadConfig;
-    procedure SaveConfig;
   public
-
+    myHeight, myWidth: integer;
   end;
 
 var
@@ -171,7 +168,8 @@ end;
 procedure TForm_Main.FormClose(Sender: TObject; var CloseAction: TCloseAction);
 begin
   Timer.Enabled := False;
-  SaveConfig;
+  Config.Save;
+  FreeAndNil(Config);
   FreeAndNil(TargetList);
   CloseAction := caFree;
 end;
@@ -196,7 +194,8 @@ procedure TForm_Main.FormShow(Sender: TObject);
 begin
   if isStartup then
   begin
-    LoadConfig;
+    Config:= TConfiguration.Create(AppDir + 'config.ini', TForm(Self));
+    Config.Load;
 
     PrepareDatabase;
     LoadTargets;
@@ -448,7 +447,7 @@ end;
 
 procedure TForm_Main.CheckErrorsInLine(ATarget: TTarget);
 begin
-  if (CheckBox_Alert.Checked) and (ATarget.ErrorsInLine >= SpinEdit_Alert.Value) and not (ATarget.WarningShown) then
+  if (CheckBox_Alert.Checked) and (ATarget.CurrentErrors >= SpinEdit_Alert.Value) and not (ATarget.WarningShown) then
   begin
     ATarget.WarningShown:= True;
     MessageDlg('MultiPing', 'Das Ziel "' +  ATarget.Address + '" ist länger nicht erreichbar.', mtWarning, [mbOK], 0);
@@ -529,75 +528,6 @@ begin
   begin
     TargetList[i].NumberOfErrors:= TargetDatabase.ReadErrors(TargetList[i], True, now);
   end;
-end;
-
-procedure TForm_Main.LoadConfig;
-begin
-  cfgINI := TINIFile.Create(AppDir + 'config.ini');
-
-  //Dimension und Position der MainForm
-  Top := Scale96ToScreen(cfgINI.ReadInteger('Window', 'Top', 100));
-  Left := Scale96ToScreen(cfgINI.ReadInteger('Window', 'Left', 200));
-  Width := Scale96ToForm(cfgINI.ReadInteger('Window', 'Width', 800));
-  Height := Scale96ToForm(cfgINI.ReadInteger('Window', 'Height', 600));
-  WindowState := TWindowState(cfgINI.ReadInteger('Window', 'State', 0));
-  myHeight := Height;
-  myWidth := Width;
-
-  Form_Log.Width := Scale96ToForm(cfgINI.ReadInteger('LogWindow', 'Width', 450));
-  Form_Log.Height := Scale96ToForm(cfgINI.ReadInteger('LogWindow', 'Height', 400));
-
-  //Größe der Spalten des StringGrid
-  StringGrid_Targets.Columns.Items[0].Width := Scale96ToForm(cfgINI.ReadInteger('SG', '0', 80));
-  StringGrid_Targets.Columns.Items[1].Width := Scale96ToForm(cfgINI.ReadInteger('SG', '1', 150));
-  StringGrid_Targets.Columns.Items[2].Width := Scale96ToForm(cfgINI.ReadInteger('SG', '2', 100));
-  StringGrid_Targets.Columns.Items[3].Width := Scale96ToForm(cfgINI.ReadInteger('SG', '3', 130));
-  StringGrid_Targets.Columns.Items[4].Width := Scale96ToForm(cfgINI.ReadInteger('SG', '4', 170));
-  StringGrid_Targets.Columns.Items[5].Width := Scale96ToForm(cfgINI.ReadInteger('SG', '5', 100));
-
-  //Einstellungen
-  SpinEdit_Time.Value := cfgINI.ReadInteger('Prefs', 'Time', 30);
-  Form_Log.CheckBox_AllEvents.Checked := cfgIni.ReadBool('Prefs', 'allEvents', False);
-  Form_Log.CheckBox_Filter.Checked := cfgIni.ReadBool('Prefs', 'Filtered', True);
-  Form_Log.DatePicker_Log.Enabled := cfgIni.ReadBool('Prefs', 'Filtered', True);
-  CheckBox_Alert.Checked := cfgIni.ReadBool('Prefs', 'Alert', False);
-  SpinEdit_Alert.Value := cfgINI.ReadInteger('Prefs', 'AlertCount', 3);
-
-  FreeAndNil(CfgINI);
-end;
-
-procedure TForm_Main.SaveConfig;
-begin
-  cfgINI := TINIFile.Create(AppDir + 'config.ini');
-
-  //Dimension und Position der MainForm
-  if (WindowState = wsNormal) then //nicht speichern, wenn maximiert, minimiert
-  begin
-    cfgINI.WriteInteger('Window', 'Top', ScaleScreenTo96(Top));
-    cfgINI.WriteInteger('Window', 'Left', ScaleScreenTo96(Left));
-    cfgINI.WriteInteger('Window', 'Width', ScaleFormTo96(Width));
-    cfgINI.WriteInteger('Window', 'Height', ScaleFormTo96(Height));
-  end;
-  cfgINI.WriteInteger('Window', 'State', Ord(WindowState));
-
-  cfgINI.WriteInteger('LogWindow', 'Width', ScaleFormTo96(Form_Log.Width));
-  cfgINI.WriteInteger('LogWindow', 'Height', ScaleFormTo96(Form_Log.Height));
-
-  //Größe der Spalten des StringGrid
-  cfgINI.WriteInteger('SG', '0', ScaleFormTo96(StringGrid_Targets.Columns.Items[0].Width));
-  cfgINI.WriteInteger('SG', '1', ScaleFormTo96(StringGrid_Targets.Columns.Items[1].Width));
-  cfgINI.WriteInteger('SG', '2', ScaleFormTo96(StringGrid_Targets.Columns.Items[2].Width));
-  cfgINI.WriteInteger('SG', '3', ScaleFormTo96(StringGrid_Targets.Columns.Items[3].Width));
-  cfgINI.WriteInteger('SG', '4', ScaleFormTo96(StringGrid_Targets.Columns.Items[4].Width));
-  cfgINI.WriteInteger('SG', '5', ScaleFormTo96(StringGrid_Targets.Columns.Items[5].Width));
-
-  //Einstellungen
-  cfgIni.WriteInteger('Prefs', 'Time', SpinEdit_Time.Value);
-  cfgIni.WriteBool('Prefs', 'allEvents', Form_Log.CheckBox_AllEvents.Checked);
-  cfgIni.WriteBool('Prefs', 'Filtered', Form_Log.CheckBox_Filter.Checked);
-  cfgIni.WriteBool('Prefs', 'Alert', CheckBox_Alert.Checked);
-  cfgIni.WriteInteger('Prefs', 'AlertCount', SpinEdit_Alert.Value);
-  FreeAndNil(cfgINI);
 end;
 
 end.

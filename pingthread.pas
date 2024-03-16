@@ -58,12 +58,12 @@ begin
 
     if not OldResult and not FTarget.LastLogEntry.Result then
     begin
-      FTarget.ErrorsInLine:= FTarget.ErrorsInLine + 1;
+      FTarget.CurrentErrors:= FTarget.CurrentErrors + 1;
     end
     else begin
       If not OldResult and FTarget.LastLogEntry.Result then
       begin
-        FTarget.ErrorsInLine:= 0;
+        FTarget.CurrentErrors:= 0;
         FTarget.WarningShown:= False;
       end;
     end;

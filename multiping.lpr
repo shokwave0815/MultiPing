@@ -11,7 +11,7 @@ uses
   {$ENDIF}
   Interfaces, // this includes the LCL widgetset
   Forms, datetimectrls, frm_main, target, frm_log, frm_targetdm, frm_edit,
-pingthread
+pingthread, configuration
   { you can add units after this };
 
 {$R *.res}

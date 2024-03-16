@@ -26,7 +26,7 @@ type
     FLastLogEntry: TLogEntry;
     FNumberOfErrors: Integer;
     FRunning: Boolean;
-    FErrorsInLine: Integer;
+    FCurrentErrors: Integer;
     FWarningShown: Boolean;
   public
     property Active: Boolean read FActive write FActive;
@@ -36,7 +36,7 @@ type
     property LastLogEntry: TLogEntry read FLastLogEntry write FLastLogEntry;
     property NumberOfErrors: Integer read FNumberOfErrors write FNumberOfErrors;
     property Running: Boolean read FRunning write FRunning;
-    property ErrorsInLine: Integer read FErrorsInLine write FErrorsInLine;
+    property CurrentErrors: Integer read FCurrentErrors write FCurrentErrors;
     property WarningShown: Boolean read FWarningShown write FWarningShown;
     constructor Create;
     destructor Destroy; override;
