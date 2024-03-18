@@ -19,7 +19,6 @@
         <HasResources Value="True"/>
         <ResourceBaseClass Value="Form"/>
         <IsVisibleTab Value="True"/>
-        <TopLine Value="439"/>
         <CursorPos Y="448"/>
         <UsageCount Value="201"/>
         <Loaded Value="True"/>
@@ -72,8 +71,7 @@
         <Filename Value="pingthread.pas"/>
         <IsPartOfProject Value="True"/>
         <EditorIndex Value="1"/>
-        <TopLine Value="34"/>
-        <CursorPos X="5" Y="53"/>
+        <CursorPos X="104" Y="51"/>
         <UsageCount Value="147"/>
         <Loaded Value="True"/>
       </Unit>
@@ -84,6 +82,13 @@
         <TopLine Value="93"/>
         <CursorPos Y="105"/>
         <UsageCount Value="114"/>
+      </Unit>
+      <Unit>
+        <Filename Value="synapse/pingsend.pas"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="102"/>
+        <CursorPos X="3" Y="106"/>
+        <UsageCount Value="10"/>
       </Unit>
     </Units>
     <JumpHistory HistoryIndex="15">
@@ -149,7 +154,7 @@
       </Position>
       <Position>
         <Filename Value="pingthread.pas"/>
-        <Caret Line="53" Column="36" TopLine="47"/>
+        <Caret Line="53" Column="19" TopLine="34"/>
       </Position>
     </JumpHistory>
     <RunParams>
