@@ -27,6 +27,7 @@ type
     Label_Alert: TLabel;
     Label_AddTarget: TLabel;
     Label_Time: TLabel;
+    Panel_Close: TPanel;
     Panel_Footer: TPanel;
     Separator1: TMenuItem;
     MenuItem_Active: TMenuItem;
@@ -69,6 +70,7 @@ type
     AppDir: String;
     TargetList: TTargetList;
     Config: TConfiguration;
+    ThreadCount: Integer;
     procedure EditTarget;
     Procedure DeleteTarget;
     procedure ActivateTarget;
@@ -170,6 +172,15 @@ begin
   Timer.Enabled := False;
   Config.Save;
   FreeAndNil(Config);
+
+  Panel_Close.Visible:= True;
+  while ThreadCount > 0 do
+  begin
+    Panel_Close.Caption:= 'Programm wird beendet...' + IntToStr(ThreadCount);
+    Application.ProcessMessages;
+    sleep(1000);
+  end;
+
   FreeAndNil(TargetList);
   CloseAction := caFree;
 end;
@@ -177,6 +188,7 @@ end;
 procedure TForm_Main.FormCreate(Sender: TObject);
 begin
   isStartup := True;
+  ThreadCount:= 0;
   AppDir := ExtractFilePath(ParamStr(0));
   TargetList := TTargetList.Create;
 end;
@@ -429,6 +441,7 @@ var PT: TPingThread;
 begin
   if not ATarget.Running then
   begin
+    Inc(ThreadCount);
     ATarget.Running:= True;
     PT:= TPingThread.Create(True, ATarget);
     PT.OnFinish:= @PingThreadFinished;
@@ -443,6 +456,7 @@ begin
   ATarget.Running:= False;
   Application.ProcessMessages;
   CheckErrorsInLine(ATarget);
+  Dec(ThreadCount);
 end;
 
 procedure TForm_Main.CheckErrorsInLine(ATarget: TTarget);

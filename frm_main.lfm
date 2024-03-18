@@ -343,6 +343,20 @@ object Form_Main: TForm_Main
       OnClick = Button_MoveDownClick
     end
   end
+  object Panel_Close: TPanel
+    AnchorSideLeft.Control = Owner
+    AnchorSideLeft.Side = asrCenter
+    AnchorSideTop.Control = Owner
+    AnchorSideTop.Side = asrCenter
+    Left = 306
+    Height = 63
+    Top = 224
+    Width = 213
+    Caption = 'Programm wird beendet'
+    ParentBackground = False
+    TabOrder = 3
+    Visible = False
+  end
   object Timer: TTimer
     Enabled = False
     Interval = 10000
