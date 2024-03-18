@@ -18,6 +18,7 @@
         <ComponentName Value="Form_Main"/>
         <HasResources Value="True"/>
         <ResourceBaseClass Value="Form"/>
+        <IsVisibleTab Value="True"/>
         <TopLine Value="439"/>
         <CursorPos Y="448"/>
         <UsageCount Value="201"/>
@@ -70,9 +71,8 @@
       <Unit>
         <Filename Value="pingthread.pas"/>
         <IsPartOfProject Value="True"/>
-        <IsVisibleTab Value="True"/>
         <EditorIndex Value="1"/>
-        <TopLine Value="47"/>
+        <TopLine Value="34"/>
         <CursorPos X="5" Y="53"/>
         <UsageCount Value="147"/>
         <Loaded Value="True"/>
