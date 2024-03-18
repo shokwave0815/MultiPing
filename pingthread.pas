@@ -5,7 +5,7 @@ unit pingthread;
 interface
 
 uses
-  Classes, SysUtils, pingsend, target;
+  Classes, SysUtils, pingsend, target, Dialogs;
 
 type
 
@@ -48,7 +48,7 @@ begin
   try
     OldResult:= FTarget.LastLogEntry.Result;
     FTarget.LastLogEntry.Start := now;
-    FTarget.LastLogEntry.Result := FPingCmd.Ping(FTarget.Address);
+    FTarget.LastLogEntry.Result := FPingCmd.Ping(FTarget.Address) and (FPingCmd.ReplyFrom = FTarget.Address);
     FTarget.LastLogEntry.PingTime := FPingCmd.PingTime;
 
     if not FTarget.LastLogEntry.Result then
