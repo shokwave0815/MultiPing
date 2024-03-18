@@ -13,6 +13,7 @@ object Form_Main: TForm_Main
   OnResize = FormResize
   OnShow = FormShow
   OnWindowStateChange = FormWindowStateChange
+  LCLVersion = '3.2.0.0'
   object Panel_Header: TPanel
     Left = 0
     Height = 88
@@ -21,8 +22,8 @@ object Form_Main: TForm_Main
     Align = alTop
     BevelOuter = bvNone
     BorderStyle = bsSingle
-    ClientHeight = 84
-    ClientWidth = 821
+    ClientHeight = 88
+    ClientWidth = 825
     Color = clWindow
     ParentBackground = False
     ParentColor = False
@@ -238,8 +239,8 @@ object Form_Main: TForm_Main
     Align = alBottom
     BevelOuter = bvNone
     BorderStyle = bsSingle
-    ClientHeight = 51
-    ClientWidth = 821
+    ClientHeight = 55
+    ClientWidth = 825
     ParentBackground = False
     TabOrder = 2
     object Button_Active: TButton

@@ -178,7 +178,7 @@ begin
   begin
     Panel_Close.Caption:= 'Programm wird beendet...' + IntToStr(ThreadCount);
     Application.ProcessMessages;
-    sleep(1000);
+    sleep(500);
   end;
 
   FreeAndNil(TargetList);
@@ -441,10 +441,10 @@ var PT: TPingThread;
 begin
   if not ATarget.Running then
   begin
-    Inc(ThreadCount);
     ATarget.Running:= True;
     PT:= TPingThread.Create(True, ATarget);
     PT.OnFinish:= @PingThreadFinished;
+    Inc(ThreadCount);
     PT.Start;
   end;
 end;
