@@ -71,6 +71,10 @@ type
     TargetList: TTargetList;
     Config: TConfiguration;
     ThreadCount: Integer;
+    LastTimer: TDate;
+    function CheckNewDate: Boolean;
+    procedure DoDayChange;
+    procedure PingAllTargets;
     procedure EditTarget;
     Procedure DeleteTarget;
     procedure ActivateTarget;
@@ -80,7 +84,7 @@ type
     procedure EnableTargetControls(AEnabled: boolean);
     procedure PingTarget(ATarget: TTarget);
     procedure PingThreadFinished(ATarget: TTarget);
-    procedure CheckErrorsInLine(ATarget: TTarget);
+    procedure CheckCurrentErrors(ATarget: TTarget);
     procedure ClearStringGrid;
     procedure PrepareDatabase;
     procedure SaveTargetsOrder;
@@ -188,6 +192,7 @@ end;
 procedure TForm_Main.FormCreate(Sender: TObject);
 begin
   isStartup := True;
+  LastTimer:= Now;
   ThreadCount:= 0;
   AppDir := ExtractFilePath(ParamStr(0));
   TargetList := TTargetList.Create;
@@ -338,15 +343,37 @@ end;
 
 procedure TForm_Main.TimerTimer(Sender: TObject);
 var
-  i: integer;
+  IsNewDate: Boolean;
+begin
+  IsNewDate:= CheckNewDate;
+  LastTimer:= Now;
+  if IsNewDate then
+  begin
+    DoDayChange;;
+  end;
+  PingAllTargets;
+end;
+
+function TForm_Main.CheckNewDate: Boolean;
+begin
+  Result:= Trunc(LastTimer) < Trunc(Now);
+end;
+
+procedure TForm_Main.DoDayChange;
+var i: Integer;
+begin
+  Form_Log.DatePicker_Log.Date:= Now;
+  for i := 0 to TargetList.Count - 1 do
+  begin
+    TargetList[i].NumberOfErrors:= 0;
+  end;
+end;
+
+procedure TForm_Main.PingAllTargets;
+var i: Integer;
 begin
   for i := 0 to TargetList.Count - 1 do
   begin
-    If (TargetList[i].LastLogEntry.Start > 0) and (trunc(TargetList[i].LastLogEntry.Start) < trunc(now)) then
-    begin
-      TargetList[i].NumberOfErrors:= 0;
-    end;
-
     if TargetList.Items[i].Active then
     begin
       PingTarget(TargetList.Items[i]);
@@ -455,11 +482,11 @@ begin
   UpdateStringGridRow(ATarget);
   ATarget.Running:= False;
   Application.ProcessMessages;
-  CheckErrorsInLine(ATarget);
+  CheckCurrentErrors(ATarget);
   Dec(ThreadCount);
 end;
 
-procedure TForm_Main.CheckErrorsInLine(ATarget: TTarget);
+procedure TForm_Main.CheckCurrentErrors(ATarget: TTarget);
 begin
   if (CheckBox_Alert.Checked) and (ATarget.CurrentErrors >= SpinEdit_Alert.Value) and not (ATarget.WarningShown) then
   begin
@@ -519,10 +546,10 @@ begin
   StringGrid_Targets.Cells[1, Row] := ATarget.Address;
   StringGrid_Targets.Cells[5, Row] := IntToStr(ATarget.NumberOfErrors);
 
-  LastLogEntry := ATarget.LastLogEntry;
+  LastLogEntry := ATarget.CurrentLogEntry;
   if (LastLogEntry <> nil) and (LastLogEntry.Start > 0) then
   begin
-    StringGrid_Targets.Cells[2, Row] := BoolToStr(LastLogEntry.Result, 'ja', 'nein');
+    StringGrid_Targets.Cells[2, Row] := BoolToStr(LastLogEntry.Successful, 'ja', 'nein');
     StringGrid_Targets.Cells[3, Row] := IntToStr(LastLogEntry.PingTime) + ' ms';
     StringGrid_Targets.Cells[4, Row] := DateTimeToStr(LastLogEntry.Start);
   end;

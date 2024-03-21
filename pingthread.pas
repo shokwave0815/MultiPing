@@ -5,27 +5,28 @@ unit pingthread;
 interface
 
 uses
-  Classes, SysUtils, pingsend, target, Dialogs;
+  Classes, SysUtils, pingsend, target;
 
 type
 
-  TReturnTarget = procedure(ATartget: TTarget) of object;
+  TOnFinish = procedure(ATartget: TTarget) of object;
 
   { TPingThread }
 
   TPingThread = class(TThread)
   private
-    FOnFinish: TReturnTarget;
+    FOnFinish: TOnFinish;
     FTarget: TTarget;
     FPingCmd: TPINGSend;
-    procedure ReturnTarget;
-
+    procedure CallOnFinish;
+    procedure HandleErrors(const OldResult: Boolean);
+    procedure ResetAlarm;
   protected
     procedure Execute; override;
   public
     constructor Create(CreateSuspended: boolean; ATarget: TTarget);
     destructor Destroy; override;
-    property OnFinish: TReturnTarget read FOnFinish write FOnFinish;
+    property OnFinish: TOnFinish read FOnFinish write FOnFinish;
   end;
 
 
@@ -33,7 +34,7 @@ implementation
 
 { TPingThread }
 
-procedure TPingThread.ReturnTarget;
+procedure TPingThread.CallOnFinish;
 begin
   if Assigned(FOnFinish) then
   begin
@@ -41,34 +42,45 @@ begin
   end;
 end;
 
+procedure TPingThread.HandleErrors(const OldResult: Boolean);
+begin
+  if not FTarget.CurrentLogEntry.Successful then
+  begin
+    FTarget.NumberOfErrors := FTarget.NumberOfErrors + 1;
+  end;
+
+  if not OldResult and not FTarget.CurrentLogEntry.Successful then
+  begin
+    FTarget.CurrentErrors:= FTarget.CurrentErrors + 1;
+  end
+  else begin
+    if not OldResult and FTarget.CurrentLogEntry.Successful then
+    begin
+      ResetAlarm;
+    end;
+  end;
+end;
+
+procedure TPingThread.ResetAlarm;
+begin
+  FTarget.CurrentErrors:= 0;
+  FTarget.WarningShown:= False;
+end;
+
 procedure TPingThread.Execute;
 var
   OldResult: Boolean;
 begin
   try
-    OldResult:= FTarget.LastLogEntry.Result;
-    FTarget.LastLogEntry.Start := now;
-    FTarget.LastLogEntry.Result := FPingCmd.Ping(FTarget.Address) and (FPingCmd.ReplyError = IE_NoError);
-    FTarget.LastLogEntry.PingTime := FPingCmd.PingTime;
+    OldResult:= FTarget.CurrentLogEntry.Successful;
 
-    if not FTarget.LastLogEntry.Result then
-    begin
-      FTarget.NumberOfErrors := FTarget.NumberOfErrors + 1;
-    end;
+    FTarget.CurrentLogEntry.Start := now;
+    FTarget.CurrentLogEntry.Successful := FPingCmd.Ping(FTarget.Address) and (FPingCmd.ReplyError = IE_NoError);
+    FTarget.CurrentLogEntry.PingTime := FPingCmd.PingTime;
 
-    if not OldResult and not FTarget.LastLogEntry.Result then
-    begin
-      FTarget.CurrentErrors:= FTarget.CurrentErrors + 1;
-    end
-    else begin
-      If not OldResult and FTarget.LastLogEntry.Result then
-      begin
-        FTarget.CurrentErrors:= 0;
-        FTarget.WarningShown:= False;
-      end;
-    end;
+    HandleErrors(OldResult);
   finally
-    Synchronize(@ReturnTarget);
+    Synchronize(@CallOnFinish);
   end;
 
 end;

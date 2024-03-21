@@ -169,9 +169,9 @@ begin
   SQLQuery.SQL.Clear;
 
   SQLQuery.SQL.Text := 'INSERT INTO tblLog VALUES(:PingResult, :PingStart, :PingTime, :TargetID);';
-  SQLQuery.ParamByName('PingResult').AsBoolean := ATarget.LastLogEntry.Result;
-  SQLQuery.ParamByName('PingStart').AsDateTime := ATarget.LastLogEntry.Start;
-  SQLQuery.ParamByName('PingTime').AsInteger := ATarget.LastLogEntry.PingTime;
+  SQLQuery.ParamByName('PingResult').AsBoolean := ATarget.CurrentLogEntry.Successful;
+  SQLQuery.ParamByName('PingStart').AsDateTime := ATarget.CurrentLogEntry.Start;
+  SQLQuery.ParamByName('PingTime').AsInteger := ATarget.CurrentLogEntry.PingTime;
   SQLQuery.ParamByName('TargetID').AsInteger := ATarget.ID;
 
   SQLQuery.ExecSQL;
