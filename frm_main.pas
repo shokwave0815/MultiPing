@@ -70,9 +70,9 @@ type
     AppDir: String;
     TargetList: TTargetList;
     Config: TConfiguration;
-    ThreadCount: Integer;
     LastTimer: TDate;
-    function CheckNewDate: Boolean;
+    function ThreadsAreRunning: Boolean;
+    function IsNewDate: Boolean;
     procedure DoDayChange;
     procedure PingAllTargets;
     procedure EditTarget;
@@ -174,18 +174,21 @@ end;
 procedure TForm_Main.FormClose(Sender: TObject; var CloseAction: TCloseAction);
 begin
   Timer.Enabled := False;
-  Config.Save;
-  FreeAndNil(Config);
-
+  Button_Start.Enabled:= False;
   Panel_Close.Visible:= True;
-  while ThreadCount > 0 do
-  begin
-    Panel_Close.Caption:= 'Programm wird beendet...' + IntToStr(ThreadCount);
-    Application.ProcessMessages;
-    sleep(500);
-  end;
 
+  while ThreadsAreRunning do
+  begin
+    Application.ProcessMessages;
+    sleep(200);
+  end;
   FreeAndNil(TargetList);
+
+  if Config <> NIL then
+  begin
+    Config.Save;
+    FreeAndNil(Config);
+  end;
   CloseAction := caFree;
 end;
 
@@ -193,7 +196,6 @@ procedure TForm_Main.FormCreate(Sender: TObject);
 begin
   isStartup := True;
   LastTimer:= Now;
-  ThreadCount:= 0;
   AppDir := ExtractFilePath(ParamStr(0));
   TargetList := TTargetList.Create;
 end;
@@ -342,19 +344,26 @@ begin
 end;
 
 procedure TForm_Main.TimerTimer(Sender: TObject);
-var
-  IsNewDate: Boolean;
 begin
-  IsNewDate:= CheckNewDate;
-  LastTimer:= Now;
   if IsNewDate then
   begin
     DoDayChange;;
   end;
+  LastTimer:= Now;
   PingAllTargets;
 end;
 
-function TForm_Main.CheckNewDate: Boolean;
+function TForm_Main.ThreadsAreRunning: Boolean;
+var i: Integer;
+begin
+  Result:= False;
+  for i:= 0 to TargetList.Count - 1 do
+  begin
+    Result:= Result or TargetList[i].Running;
+  end;
+end;
+
+function TForm_Main.IsNewDate: Boolean;
 begin
   Result:= Trunc(LastTimer) < Trunc(Now);
 end;
@@ -471,7 +480,6 @@ begin
     ATarget.Running:= True;
     PT:= TPingThread.Create(True, ATarget);
     PT.OnFinish:= @PingThreadFinished;
-    Inc(ThreadCount);
     PT.Start;
   end;
 end;
@@ -479,11 +487,10 @@ end;
 procedure TForm_Main.PingThreadFinished(ATarget: TTarget);
 begin
   TargetDatabase.AddLogEntry(ATarget);
-  UpdateStringGridRow(ATarget);
   ATarget.Running:= False;
+  UpdateStringGridRow(ATarget);
   Application.ProcessMessages;
   CheckCurrentErrors(ATarget);
-  Dec(ThreadCount);
 end;
 
 procedure TForm_Main.CheckCurrentErrors(ATarget: TTarget);

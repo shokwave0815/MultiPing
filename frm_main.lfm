@@ -13,7 +13,6 @@ object Form_Main: TForm_Main
   OnResize = FormResize
   OnShow = FormShow
   OnWindowStateChange = FormWindowStateChange
-  LCLVersion = '3.2.0.0'
   object Panel_Header: TPanel
     Left = 0
     Height = 88
@@ -22,8 +21,8 @@ object Form_Main: TForm_Main
     Align = alTop
     BevelOuter = bvNone
     BorderStyle = bsSingle
-    ClientHeight = 88
-    ClientWidth = 825
+    ClientHeight = 84
+    ClientWidth = 821
     Color = clWindow
     ParentBackground = False
     ParentColor = False
@@ -239,8 +238,8 @@ object Form_Main: TForm_Main
     Align = alBottom
     BevelOuter = bvNone
     BorderStyle = bsSingle
-    ClientHeight = 55
-    ClientWidth = 825
+    ClientHeight = 51
+    ClientWidth = 821
     ParentBackground = False
     TabOrder = 2
     object Button_Active: TButton
@@ -349,10 +348,10 @@ object Form_Main: TForm_Main
     AnchorSideLeft.Side = asrCenter
     AnchorSideTop.Control = Owner
     AnchorSideTop.Side = asrCenter
-    Left = 306
+    Left = 221
     Height = 62
     Top = 224
-    Width = 212
+    Width = 383
     Caption = 'Programm wird beendet'
     ParentBackground = False
     TabOrder = 3

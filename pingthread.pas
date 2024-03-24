@@ -74,7 +74,7 @@ begin
   try
     OldResult:= FTarget.CurrentLogEntry.Successful;
 
-    FTarget.CurrentLogEntry.Start := now;
+    FTarget.CurrentLogEntry.Start := Now;
     FTarget.CurrentLogEntry.Successful := FPingCmd.Ping(FTarget.Address) and (FPingCmd.ReplyError = IE_NoError);
     FTarget.CurrentLogEntry.PingTime := FPingCmd.PingTime;
 
