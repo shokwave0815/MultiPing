@@ -2,7 +2,7 @@
 <CONFIG>
   <ProjectSession>
     <Version Value="12"/>
-    <BuildModes Active="Debug"/>
+    <BuildModes Active="Release"/>
     <Units>
       <Unit>
         <Filename Value="multiping.lpr"/>
@@ -18,7 +18,6 @@
         <ComponentName Value="Form_Main"/>
         <HasResources Value="True"/>
         <ResourceBaseClass Value="Form"/>
-        <IsVisibleTab Value="True"/>
         <TopLine Value="171"/>
         <CursorPos X="31" Y="177"/>
         <UsageCount Value="201"/>
@@ -81,9 +80,10 @@
       <Unit>
         <Filename Value="configuration.pas"/>
         <IsPartOfProject Value="True"/>
+        <IsVisibleTab Value="True"/>
         <EditorIndex Value="1"/>
-        <TopLine Value="90"/>
-        <CursorPos X="39" Y="94"/>
+        <TopLine Value="134"/>
+        <CursorPos X="20" Y="98"/>
         <UsageCount Value="303"/>
         <Loaded Value="True"/>
       </Unit>
@@ -95,7 +95,7 @@
         <UsageCount Value="10"/>
       </Unit>
     </Units>
-    <JumpHistory HistoryIndex="29">
+    <JumpHistory HistoryIndex="28">
       <Position>
         <Filename Value="frm_targetdm.pas"/>
         <Caret Line="30" Column="11" TopLine="10"/>
@@ -163,10 +163,6 @@
       <Position>
         <Filename Value="frm_main.pas"/>
         <Caret Line="366" Column="40" TopLine="359"/>
-      </Position>
-      <Position>
-        <Filename Value="frm_main.pas"/>
-        <Caret Line="177" Column="44" TopLine="326"/>
       </Position>
       <Position>
         <Filename Value="frm_main.pas"/>
